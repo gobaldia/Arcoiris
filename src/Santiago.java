@@ -9,5 +9,5 @@
  * @author Usuario
  */
 public class Santiago {
-    
+    String test = "prueba";
 }
