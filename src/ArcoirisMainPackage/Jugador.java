@@ -28,6 +28,18 @@ public class Jugador {
     public int getEdad() {
         return edad;
     }
+
+    public Jugador(String unNombre, String unAlias, int unaEdad) {
+        this.setNombre(unNombre);
+        this.setAlias(unAlias);
+        this.setEdad(unaEdad);
+    }
+    
+    public Jugador(){
+        this.setNombre("Sin nombre");
+        this.setAlias("Sin alias");
+        this.setEdad(0);
+    }
     
     
 }
