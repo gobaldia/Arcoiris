@@ -9,5 +9,15 @@
  * @author Usuario
  */
 public class Santiago {
-    String test = "prueba";
+    public static void main(String[] args){
+        
+        
+        
+    }
+    
+    
+    public static void MostrarMatriz(int[][] unaMatriz){
+        
+    }
+            
 }

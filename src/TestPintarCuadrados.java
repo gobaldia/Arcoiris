@@ -57,20 +57,25 @@ public class TestPintarCuadrados {
                 diferencia1 = 4;
                 dif3 = diferencia1 + 1;
                 break;
+            case 5:
+                diferencia1 = 5;
+                dif3 = diferencia1 + 1;
+            case 6:
+                diferencia1 = 6;
+                dif3 = diferencia1 + 1;
             default:
                 break;
         }
 
         boolean bandera = false;
 
-        if ((Math.abs((i - 4)) == diferencia1) || (Math.abs((j - 4)) == diferencia1)) {
+        if ((Math.abs((i - 6)) == diferencia1) || (Math.abs((j - 6)) == diferencia1)) {
 
-            if (Math.abs((i - 4)) != dif3 && (Math.abs((j - 4)) != dif3)
-                    && Math.abs((i - 4)) != 4 && (Math.abs((j - 4)) != 4)) {
+            if (Math.abs((i - 6)) != dif3 && (Math.abs((j - 6)) != dif3)
+                    && Math.abs((i - 6)) != 6 && (Math.abs((j - 6)) != 6)) {
                 bandera = true;
             }       
         }
         return bandera;
     }
-
 }
