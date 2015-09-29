@@ -5,10 +5,10 @@ public class Juego {
      public static final String ANSI_RESET = "\u001B[0m";
     
     public static void main(String[] args){
-        mostrarTablero();
+        mostrarTablero("I", 1);
     }
     
-    public static char[][] mostrarTablero(){
+    public static char[][] mostrarTablero(String modalidad, int cuadradoExterior){
         char[][] tablero = new char[15][14];
         int filas = tablero.length;
         int cols = tablero[0].length;
@@ -25,16 +25,24 @@ public class Juego {
                 } else if (j == 0) {
                     tablero[i][j] = letras[i-2];
                 } else {
-                    tablero[i][j] = 'O';
-                }
-            }
+                    if (modalidad.equals("I") && cuadradoExterior == 1) {
+                            if (j == 1 && i < filas) {
+                                tablero[i][j] = 'B';
+                        }
+                        } else {
+                        tablero[i][j] = 'o';
+                    }
+                    
+                }           }
         }
         
-        for (int i = 0; i < filas; i++) {            
-            if(i > 1){
-                System.out.println("  +-+-+-+-+-+-+-+-+-+-+-+-+-+");
-            } else if( i == 0 || i == 1){
-                System.out.print(" ");
+        for (int i = 0; i < filas; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (i < 2) {
+                    System.out.print(tablero[i][j] + " ");
+                } else {
+                System.out.print(tablero[i][j] + "|");
+                }
             }
             
             for (int j = 0; j < cols; j++) {
@@ -55,6 +63,9 @@ public class Juego {
             }
 
             System.out.println("");
+            if (i > 0) {
+                System.out.println(" +-+-+-+-+-+-+-+-+-+-+-+-+-+");
+            }
         }
         return tablero;
     }
