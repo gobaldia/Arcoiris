@@ -60,6 +60,7 @@ public class TestPintarCuadrados {
             case 5:
                 diferencia1 = 5;
                 dif3 = diferencia1 + 1;
+                break;
             case 6:
                 diferencia1 = 6;
                 dif3 = diferencia1 + 1;

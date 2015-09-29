@@ -1,6 +1,8 @@
 package ArcoirisMainPackage;
 
 public class Juego {
+     public static final String ANSI_RED = "\u001B[31m";
+     public static final String ANSI_RESET = "\u001B[0m";
     
     public static void main(String[] args){
         mostrarTablero();
@@ -23,19 +25,37 @@ public class Juego {
                 } else if (j == 0) {
                     tablero[i][j] = letras[i-2];
                 } else {
-                    tablero[i][j] = 'o';
+                    tablero[i][j] = 'O';
                 }
             }
         }
         
-        for (int i = 0; i < filas; i++) {
-            for (int j = 0; j < cols; j++) {
-                System.out.print(tablero[i][j]);
+        for (int i = 0; i < filas; i++) {            
+            if(i > 1){
+                System.out.println("  +-+-+-+-+-+-+-+-+-+-+-+-+-+");
+            } else if( i == 0 || i == 1){
+                System.out.print(" ");
             }
+            
+            for (int j = 0; j < cols; j++) {
+                if(i > 1 && j > 0){
+                    System.out.print("|" + tablero[i][j]);
+                } else {
+                    System.out.print(tablero[i][j] + " ");
+                }
+            }
+            
+            if(i > 1){
+                System.out.print("|");
+            }
+            
+            if(i == tablero.length -1){
+                System.out.println();
+                System.out.println("  +-+-+-+-+-+-+-+-+-+-+-+-+-+");
+            }
+
             System.out.println("");
         }
-        
-        
         return tablero;
     }
 }
