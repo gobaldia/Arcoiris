@@ -1,129 +1,43 @@
 package ArcoirisMainPackage;
 
+import java.util.ArrayList;
+
 public class Juego {
-     public static final String ANSI_RED = "\u001B[31m";
-     public static final String ANSI_RESET = "\u001B[0m";
+    private ArrayList<Jugador> listaDeJugadores;
+    private ArrayList<Partida> listaDePartidas;
     
-    public static void main(String[] args){
-        mostrarTablero("I", 1);
-        System.out.println();
-        System.out.println();
-        System.out.println();
-        mostrarTablero2();
+    public ArrayList<Jugador> getListaDeJugadores(){
+        return this.listaDeJugadores;
+    }
+    public ArrayList<Partida> getListaDePartidas(){
+        return this.listaDePartidas;
     }
     
-    public static char[][] mostrarTablero(String modalidad, int cuadradoExterior){
-        char[][] tablero = new char[15][14];
-        int filas = tablero.length;
-        int cols = tablero[0].length;
-        char[] letras = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'};
-        char[] numeros = {' ', '1', '2', '3', '4', '5', '6', '7', '8', '9', '1', '1', '1', '1'};
-        char[] numeros2 = {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '0', '1', '2', '3'};
-        
-        for (int i = 0; i < filas; i++) {
-            for (int j = 0; j < cols; j++) {
-                if (i == 0) {
-                    tablero[i][j] = numeros[j];
-                } else if (i == 1) {
-                    tablero[i][j] = numeros2[j];
-                } else if (j == 0) {
-                    tablero[i][j] = letras[i-2];
-                } else {
-                    if (modalidad.equals("I") && cuadradoExterior == 1) {
-                            if (j == 1 && i < filas) {
-                                tablero[i][j] = 'B';
-                        }
-                        } else {
-                        tablero[i][j] = 'o';
-                    }
-                    
-                }           }
-        }
-        
-        for (int i = 0; i < filas; i++) {
-            for (int j = 0; j < cols; j++) {
-                if (i < 2) {
-                    System.out.print(tablero[i][j] + " ");
-                } else {
-                System.out.print(tablero[i][j] + "|");
-                }
-            }
-            
-            for (int j = 0; j < cols; j++) {
-                if(i > 1 && j > 0){
-                    System.out.print("|" + tablero[i][j]);
-                } else {
-                    System.out.print(tablero[i][j] + " ");
-                }
-            }
-            
-            if(i > 1){
-                System.out.print("|");
-            }
-            
-            if(i == tablero.length -1){
-                System.out.println();
-                System.out.println("  +-+-+-+-+-+-+-+-+-+-+-+-+-+");
-            }
-
-            System.out.println("");
-            if (i > 0) {
-                System.out.println(" +-+-+-+-+-+-+-+-+-+-+-+-+-+");
-            }
-        }
-        return tablero;
+    public void setListaDeJugadores(ArrayList<Jugador> unaLista){
+        this.listaDeJugadores = unaLista;
     }
     
-    //Gabriel agregue este porque al hacer pull tenia mil conflictos.. luego lo vemos.. este muestra bien el tablero..
-    //me falta pintarlo q no tuve tiempo y no se porque no me anda la pintada >.<!
-    public static char[][] mostrarTablero2(){
-        char[][] tablero = new char[15][14];
-        int filas = tablero.length;
-        int cols = tablero[0].length;
-        char[] letras = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'};
-        char[] numeros = {' ', '1', '2', '3', '4', '5', '6', '7', '8', '9', '1', '1', '1', '1'};
-        char[] numeros2 = {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '0', '1', '2', '3'};
-        
-        for (int i = 0; i < filas; i++) {
-            for (int j = 0; j < cols; j++) {
-                if (i == 0) {
-                    tablero[i][j] = numeros[j];
-                } else if (i == 1) {
-                    tablero[i][j] = numeros2[j];
-                } else if (j == 0) {
-                    tablero[i][j] = letras[i-2];
-                } else {
-                    tablero[i][j] = 'O';
-                }
+    public void setListaDePartidas(ArrayList<Partida> unaLista){
+        this.listaDePartidas = unaLista;
+    }
+    
+    public Juego(){
+        this.setListaDeJugadores(new ArrayList<Jugador>());
+        this.setListaDePartidas(new ArrayList<Partida>());        
+    }    
+    
+    
+    public void agregarJugador(Jugador unJugador) {
+        this.getListaDeJugadores().add(unJugador);
+    }
+    
+    public boolean existeJugador(String unAlias) {
+        boolean existe = false;
+        for (int i = 0; i < this.getListaDeJugadores().size(); i++) {
+            if (this.getListaDeJugadores().get(i).getAlias().equals(unAlias)) {
+                existe = true;
             }
         }
-        
-        for (int i = 0; i < filas; i++) {            
-            if(i > 1){
-                System.out.println("  +-+-+-+-+-+-+-+-+-+-+-+-+-+");
-            } else if( i == 0 || i == 1){
-                System.out.print(" ");
-            }
-            
-            for (int j = 0; j < cols; j++) {
-                if(i > 1 && j > 0){
-                    System.out.print("|" + tablero[i][j]);
-                } else {
-                    System.out.print(tablero[i][j] + " ");
-                }
-            }
-            
-            if(i > 1){
-                System.out.print("|");
-            }
-            
-            if(i == tablero.length -1){
-                System.out.println();
-                System.out.println("  +-+-+-+-+-+-+-+-+-+-+-+-+-+");
-            }
-
-            System.out.println("");
-        }
-        return tablero;
+        return existe;
     }
 }
