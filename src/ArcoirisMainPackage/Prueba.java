@@ -1,5 +1,9 @@
 package ArcoirisMainPackage;
 
+import java.util.InputMismatchException;
+import java.util.Scanner;
+import java.util.regex.Pattern;
+
 public class Prueba {
 
     public static final String ANSI_RED = "\u001B[31m";
@@ -7,17 +11,51 @@ public class Prueba {
 
     public static void main(String[] args) {
         System.out.println("*-*-*-*-*- ARCOIRIS -*-*-*-*-*\n");
-        menuPrincipal();
-        
-//        mostrarTablero("I", 1);
-//        System.out.println();
-//        System.out.println();
-//        System.out.println();
-//        mostrarTablero2();
+
+        //Creo el Scanner para manejar los datos ingresados por el usuario.        
+        Scanner input = new Scanner(System.in);
+
+        //Creo una instancia de Juego con el cual voy a manejar el sistema.
+        Juego miJuego = new Juego();
+
+        int opcion = -1;
+
+        //Manejo de menu
+        while (opcion != 0) {
+            try {
+                System.out.println();
+                MostrarMenuPrincipal();
+
+                opcion = input.nextInt();
+                switch (opcion) {
+                    case 0:
+                        System.out.println("Saliendo del juego...");
+                        break;
+                    case 1:// Registrar Jugador
+                        CrearJugador(input, miJuego);
+                        System.out.println("\nPresione enter para continuar...");
+                        LeoComando();
+                        break;
+                    case 2: // Configurar partida
+                        break;
+                    case 3: //Jugar
+                        break;
+                    case 4: //Ranking
+                        break;
+                    case 5: //Replicar partida
+                        break;
+                    default:
+                        System.out.println("\n¡Error!, Opción no existe");
+                        break;
+                }
+            } catch (InputMismatchException ex) {
+                input.nextLine();
+                System.out.println("\n¡ERROR!, Solo números son permitidos...");
+            }
+        }//Fin while
     }
 
-    
-    public static void menuPrincipal(){
+    public static void MostrarMenuPrincipal() {
         System.out.println("****** MENU PRINCIPAL ******");
         System.out.println("• [1]Registrar jugador");
         System.out.println("• [2]Configurar partida");
@@ -27,11 +65,70 @@ public class Prueba {
         System.out.println("• [0]Salir");
         System.out.println("****************************");
         System.out.print("      -> Ingrese opción: ");
-        
     }
-    
-    
-    
+
+    public static void CrearJugador(Scanner scr, Juego unJuego) {
+        System.out.println("\n(⌐■_■) Registrar un nuevo jugador en el sistema");
+
+        String unNombre;
+        String unAlias;
+        int unaEdad;
+        String textVar;
+
+        scr.nextLine();
+        Jugador unJugador = new Jugador();
+
+        System.out.println("\n****Ingrese datos del Jugador****");
+        System.out.print("Ingrese su nombre: ");
+        unNombre = scr.nextLine();
+        unJugador.setNombre(unNombre);
+
+        System.out.print("Ingrese un alias: ");
+        boolean bandera = false;
+        while (!bandera) {
+            textVar = scr.nextLine();
+            unJugador.setAlias(textVar);
+
+            //Verifico que no exista otro operador con la misma cédula
+            if (unJuego.existeJugador(unJugador)) {
+                System.out.print("El alias ya existe, por favor ingrese otro: ");
+            } else {
+                System.out.print("Ingrese su edad: ");
+
+                while (!bandera) {
+                    textVar = scr.nextLine();
+
+                    //Verifico que el usuario solo ingrese números
+                    if (Pattern.matches("[0-9]+", textVar)) {
+                        unaEdad = Integer.parseInt(textVar);
+
+                        //Valido que sea una cantidad de años coherente
+                        if (unaEdad >= 0 && unaEdad < 100) {
+                            unJugador.setEdad(unaEdad);
+
+                            unJuego.getListaDeJugadores().add(unJugador);
+                            System.out.println("\nRegistro exitoso!");
+                            bandera = true;//Termino el bucle, y vuelvo al menú
+                        } else {
+                            System.out.print("Por favor ingrese una edad real: ");
+                        }
+                    } else {
+                        System.out.print("Solo números son permitidos, ingrese otra edad: ");
+                    }
+                }
+            }
+        }
+    }
+
+    //Este método se utiliza para esperar que el usuario presione la tecla Enter para continuar
+    private static void LeoComando() {
+        try {
+            System.in.read();
+        } catch (Exception e) {
+            System.out.println("¡Error inesperado!, " + e.toString());
+        }
+    }
+
     //**********************************************
     //**********************************************
     //***********************************************/
@@ -154,6 +251,6 @@ public class Prueba {
     /**
      * **********************************************
      * //**********************************************
-    //**********************************************
+     * //**********************************************
      */
 }

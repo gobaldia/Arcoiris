@@ -1,6 +1,7 @@
 package ArcoirisMainPackage;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Juego {
     private ArrayList<Jugador> listaDeJugadores;
@@ -31,10 +32,14 @@ public class Juego {
         this.getListaDeJugadores().add(unJugador);
     }
     
-    public boolean existeJugador(String unAlias) {
+    public boolean existeJugador(Jugador unJugador) {
         boolean existe = false;
-        for (int i = 0; i < this.getListaDeJugadores().size(); i++) {
-            if (this.getListaDeJugadores().get(i).getAlias().equals(unAlias)) {
+        Iterator<Jugador> it = this.getListaDeJugadores().iterator();
+
+        while (it.hasNext()) {
+            Jugador auxJugador = it.next();
+
+            if (auxJugador.equals(unJugador)) {
                 existe = true;
             }
         }

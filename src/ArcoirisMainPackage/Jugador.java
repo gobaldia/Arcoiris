@@ -85,4 +85,8 @@ public class Jugador implements Comparable<Jugador> {
         return this.getAlias().compareTo(unJugador.getAlias());
     }
     
+    @Override
+    public boolean equals(Object unObjeto){
+        return (((Jugador)unObjeto).getAlias().toUpperCase().equals(this.getAlias().toUpperCase()));
+    }
 }
