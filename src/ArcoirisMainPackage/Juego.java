@@ -6,6 +6,10 @@ public class Juego {
     
     public static void main(String[] args){
         mostrarTablero("I", 1);
+        System.out.println();
+        System.out.println();
+        System.out.println();
+        mostrarTablero2();
     }
     
     public static char[][] mostrarTablero(String modalidad, int cuadradoExterior){
