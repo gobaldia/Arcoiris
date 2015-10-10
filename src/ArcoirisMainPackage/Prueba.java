@@ -32,6 +32,9 @@ public class Prueba {
         Jugador j3 = new Jugador("Eliana", "bbbbb", 25);
         Jugador j4 = new Jugador("Lorena", "aaaaaa", 23);
         Jugador j5 = new Jugador("Hector", "adsads", 59);
+        
+        j4.setGanadas(10);
+        j2.setGanadas(5);
 
         miJuego.agregarJugador(j1);
         miJuego.agregarJugador(j2);
@@ -66,6 +69,8 @@ public class Prueba {
                     case 3: //Jugar
                         break;
                     case 4: //Ranking
+                        miJuego.obtenerRanking();
+                        mostrarRanking(miJuego);
                         break;
                     case 5: //Replicar partida
                         break;
@@ -75,7 +80,7 @@ public class Prueba {
                 }
             } catch (InputMismatchException ex) {
                 input.nextLine();
-                System.out.println("\n¡ERROR!, Solo números son permitidos...");
+                System.out.println("\n¡ERROR!, Solo números son permitidos..." + "¯\\_(ツ)_/¯");
             }
         }//Fin while
     }
@@ -443,5 +448,15 @@ public class Prueba {
         }
 
         return bandera;
+    }
+
+    private static void mostrarRanking(Juego unJuego) {
+        System.out.println("*** Ranking de Jugadores ***");
+        for (int i = 0; i < unJuego.getListaDeJugadores().size(); i++) {
+            Jugador j = unJuego.getListaDeJugadores().get(i);
+            System.out.println(j.toString() + " || " + "Ganadas: " + j.getGanadas() + 
+                                                   " | Empatadas: " + j.getEmpates() + 
+                                                   " | Perdidas: " + j.getPerdidas());
+        }
     }
 }
