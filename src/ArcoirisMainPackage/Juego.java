@@ -45,4 +45,8 @@ public class Juego {
         }
         return existe;
     }
+    
+    public void agregarPartida(Partida unaPartida){
+        this.getListaDePartidas().add(unaPartida);
+    }
 }

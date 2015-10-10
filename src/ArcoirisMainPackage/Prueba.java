@@ -149,28 +149,87 @@ public class Prueba {
         System.out.println("\n(⌐■_■) Configurar partida");
 
         if (unJuego.getListaDeJugadores().size() >= 2) {
-            if (AgregarJugadoresaPartida(scr, unJuego)) {
+            Partida unaPartida = new Partida();
+
+            if (AgregarJugadoresaPartida(scr, unJuego, unaPartida)) {
                 String textVar;
+                int opcionElegida;
                 boolean bandera = false;
-                
-                System.out.println("\nElija el marco donde se distribuiran las fichas iniciales");
+
+                System.out.println("\n¿En que marco se distribuiran las fichas inicialmente?");
                 System.out.print("Ingrese 1, 2, 3 o 4 siendo 1 el cuadrado más externo: ");
                 while (!bandera) {
                     textVar = scr.nextLine();
-                }
 
+                    if (Pattern.matches("[0-9]+", textVar)) {
+                        opcionElegida = Integer.parseInt(textVar);
+                        if (opcionElegida > 0 && opcionElegida <= 4) {
+                            unaPartida.setMarcoInicio(opcionElegida);
+
+                            System.out.println("\n¿De que forma se distribuiran las fichas inicialmente?");
+                            System.out.println("1. Al azar.");
+                            System.out.println("2. En 'I', borde superior e inferior en negro N y bordes laterales blancos B.");
+                            System.out.println("3. En 'L', borde izquierdo e inferior blanco, borde superior y derecho negro.");
+                            System.out.print("  -> Elija una opcion: ");
+
+                            while (!bandera) {
+                                textVar = scr.nextLine();
+
+                                if (Pattern.matches("[0-9]+", textVar)) {
+                                    opcionElegida = Integer.parseInt(textVar);
+
+                                    if (opcionElegida > 0 && opcionElegida <= 3) {
+                                        unaPartida.setDistribucionInicialFichas(opcionElegida);
+
+                                        System.out.println("\n¿De que forma desea finalizar el juego?");
+                                        System.out.println("1. Ambos jugadores se quedan sin jugadas.");
+                                        System.out.println("2. Primero en ocupar el centro.");
+                                        System.out.print("  -> Elija una opcion: ");
+
+                                        while (!bandera) {
+                                            textVar = scr.nextLine();
+                                            
+                                            if (Pattern.matches("[0-9]+", textVar)) {
+                                                opcionElegida = Integer.parseInt(textVar);
+
+                                                if (opcionElegida > 0 && opcionElegida <= 2) {
+                                                    unaPartida.setTipoFinPartida(opcionElegida);
+                                                    unJuego.agregarPartida(unaPartida);
+                                                    System.out.println("\nSe configuró la partida exitosamente!");
+                                                    bandera = true;//Termino el bucle, y vuelvo al menú
+                                                } else {
+                                                    System.out.print("Opcion incorrecta, elija otra: ");
+                                                }
+                                            } else {
+                                                System.out.print("Solo numeros son permitidos: ");
+                                            }
+                                        }
+                                    } else {
+                                        System.out.print("Error, solo numeros entre 1 y 3: ");
+                                    }
+                                } else {
+                                    System.out.print("Solo numeros son permitidos: ");
+                                }
+                            }
+                        } else {
+                            System.out.print("Error, solo numeros entre 1 y 4: ");
+                        }
+                    } else {
+                        System.out.print("Solo numeros son permitidos: ");
+                    }
+                }
             }
         } else {
             System.out.println("\nNo es posible configurar la partida, deben existir al menos 2 jugadores registrados.");
         }
     }
 
-    public static boolean AgregarJugadoresaPartida(Scanner scr, Juego unJuego) {
+    public static boolean AgregarJugadoresaPartida(Scanner scr, Juego unJuego, Partida unaPartida) {
         boolean resultado = false;
 
         ArrayList<Jugador> listaJugadores = unJuego.getListaDeJugadores();
 
-        System.out.println("\n****Lista de jugadores****");
+        System.out.println("\n****Lista de jugadores****\n");
         for (int i = 0; i < listaJugadores.size(); i++) {
             System.out.println(i + 1 + ". " + listaJugadores.get(i).toString());
         }
@@ -180,7 +239,7 @@ public class Prueba {
         scr.nextLine();
         boolean bandera = false;
 
-        System.out.print("\nElija jugador A: ");
+        System.out.print("  -> Elija jugador A: ");
         while (!bandera) {
             textVar = scr.nextLine();
 
@@ -188,7 +247,6 @@ public class Prueba {
                 jugadorElejido = Integer.parseInt(textVar);
 
                 if (jugadorElejido > 0 && jugadorElejido <= listaJugadores.size()) {
-                    Partida unaPartida = new Partida();
                     unaPartida.agregarJugadorA(listaJugadores.get(jugadorElejido - 1));
 
                     ArrayList<Jugador> listaSinJugadorSeleccionado = new ArrayList<Jugador>();
@@ -198,11 +256,12 @@ public class Prueba {
                         }
                     }
 
+                    System.out.println();
                     for (int i = 0; i < listaSinJugadorSeleccionado.size(); i++) {
                         System.out.println(i + 1 + ". " + listaSinJugadorSeleccionado.get(i).toString());
                     }
 
-                    System.out.print("\nElija jugador B: ");
+                    System.out.print("  -> Elija jugador B: ");
                     while (!bandera) {
                         textVar = scr.nextLine();
                         if (Pattern.matches("[0-9]+", textVar)) {

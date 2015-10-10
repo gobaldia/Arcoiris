@@ -7,8 +7,10 @@ public class Partida {
     private Jugador jugadorA;
     private Jugador jugadorB;
     private int cantidadMovimientos;
-    private Tablero tableroActual;
+    private int marcoInicio;
     private int tipoFinPartida;
+    private int distribucionInicialFichas; //1-Azar, 2-En I, 3-En L
+    private Tablero tableroActual;    
 
     public ArrayList<Tablero> getListaDeTableros() {
         return this.listaDeTableros;
@@ -18,6 +20,22 @@ public class Partida {
         this.listaDeTableros = unaListaTableros;
     }
 
+    public void setDistribucionInicialFichas(int unaDistribucion){
+        this.distribucionInicialFichas = unaDistribucion;
+    }
+    
+    public int getDistribucionInicialFichas(){
+        return this.distribucionInicialFichas;
+    }
+    
+    public void setMarcoInicio(int unMarco){
+        this.marcoInicio = unMarco;
+    }
+    
+    public int getMarcoInicio(){
+        return this.marcoInicio;
+    }
+    
     public Jugador getJugadorA() {
         return this.jugadorA;
     }
