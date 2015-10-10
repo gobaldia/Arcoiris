@@ -77,7 +77,7 @@ public class Jugador implements Comparable<Jugador> {
     
     @Override
     public String toString(){
-        return "Alias: " + this.getAlias() + "\nNombre: " + this.getNombre() + "\nEdad: " + this.getEdad();
+        return "Alias: " + this.getAlias() + " | Nombre: " + this.getNombre() + " | Edad: " + this.getEdad();
     }
     
     @Override
