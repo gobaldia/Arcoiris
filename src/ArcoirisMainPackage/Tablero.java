@@ -48,6 +48,14 @@ public class Tablero {
         this.AutorMovimiento = AutorMovimiento;
     }
     
-    
+    public boolean formaMarco(int fila, int col, char[][] mat){
+        boolean res;
+        if (mat[fila][col] != mat[12-fila][12-col]) {
+            res = false;
+        } else if (mat[fila][col] != mat[col][12-fila]) {
+            res = false;
+        } else res = mat[fila][col] == mat[12-col][fila];
+        return res;
+    }
     
 }
