@@ -58,5 +58,17 @@ public class Partida {
         this.tipoFinPartida = unTipoFinPartida;
     }
     
+    public Partida(){
+        this.setListaDeTableros(new ArrayList<Tablero>());
+    }
+    
+    
+    public void agregarJugadorA(Jugador unJugador){
+        this.setJugadorA(unJugador);
+    }
+    
+    public void agregarJugadorB(Jugador unJugador){
+        this.setJugadorB(unJugador);
+    }
     
 }
