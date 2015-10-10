@@ -58,4 +58,43 @@ public class Tablero {
         return res;
     }
     
+    public boolean movimientoValido(int filaO, int colO, int filaD, int colD, char[][] mat){
+        boolean haciaAdentro;
+        boolean esDiagonal;
+        boolean esRecto;
+        boolean estaVacio = true;
+        
+        haciaAdentro = filaD >= 12-colO && filaD >= colO && colD >= colO && colD >= 12-colO;
+        esDiagonal = filaD - filaO == colD - colO;
+        esRecto = filaD == filaO || colD == colO;
+        
+        if (esDiagonal) {
+            int inc = 1;
+            while (inc <= filaD) {                
+                if (mat[filaO + inc][colO + inc] != 'o') {
+                    estaVacio = false;
+                }
+                inc++;
+            }
+        } else if (esRecto) {
+            int inc = 1;
+            if (filaO == filaD) {
+                while (inc <= colD) {                    
+                    if (mat[filaO][colD + inc] != 'o') {
+                        estaVacio = false;
+                    }
+                }
+            } else {
+                while (inc <= filaD) {                    
+                    if (mat[filaD + inc][colD] != 'o') {
+                        estaVacio = false;
+                    }
+                }
+            }
+        }
+        
+        
+        return haciaAdentro && (esDiagonal || esRecto) && estaVacio;
+    }
+    
 }
