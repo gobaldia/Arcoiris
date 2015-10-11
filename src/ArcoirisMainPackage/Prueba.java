@@ -18,7 +18,31 @@ public class Prueba {
     public static void main(String[] args) {
         System.out.println("*-*-*-*-*- ARCOIRIS -*-*-*-*-*\n");
 
-        mostrarTablero();
+        System.out.println("            ¡¡GANADOR!!");
+        System.out.println("                AAA");
+        System.out.println("••••••••••••••••••••••••••••••••");
+        System.out.println("•••••___•••••••••••••••••___•••••");
+        System.out.println("••••_____•••••••••••••••_____••••");
+        System.out.println("••••_____•••••••••••••••_____••••");
+        System.out.println("••••_____•••••••••••••••_____••••");
+        System.out.println("••••_____••____•••____••_____•••••");
+        System.out.println("••••_____•______•______•_____•••••");
+        System.out.println("••••_____•______•______•_____•••••");
+        System.out.println("••••_____•____•••••••••••••••••••");
+        System.out.println("••••_____•__••___________••••••••");
+        System.out.println("••••_____•__••_______________••••");
+        System.out.println("••••__________••_____________••••");
+        System.out.println("••••___________••___________•••••");
+        System.out.println("••••_____________•_________••••••");
+        System.out.println("•••••_____________________•••••••");
+        System.out.println("••••••___________________••••••••");
+        System.out.println("••••••$$$$$$$$$$$$$$$$$$$••••••••");
+        System.out.println("••••••$$$$$$$$$$$$$$$$$$$••••••••");
+        System.out.println("••••••$$$$$$$$$$$$$$$$$$$••••••••");
+        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+        
+        //mostrarTablero();
 
         //Creo el Scanner para manejar los datos ingresados por el usuario.        
         Scanner input = new Scanner(System.in);
