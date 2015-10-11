@@ -110,19 +110,20 @@ public class Prueba {
     }
 
     public static void MostrarMenuPrincipal() {
-        System.out.println("****** MENU PRINCIPAL ******");
+        System.out.println("~~~~~~~• MENÚ PRINCIPAL •~~~~~~~");
         System.out.println("• [1]Registrar jugador");
         System.out.println("• [2]Configurar partida");
         System.out.println("• [3]JUGAR");
         System.out.println("• [4]Ranking");
         System.out.println("• [5]Replicar partida");
         System.out.println("• [0]Salir");
-        System.out.println("****************************");
+        System.out.println("~~~~~~~~~~•~~~~~~~~~~•~~~~~~~~~~");
         System.out.print("      -> Ingrese opción: ");
     }
 
     public static void CrearJugador(Scanner scr, Juego unJuego) {
-        System.out.println("\n(⌐■_■) Registro de nuevo jugador");
+        System.out.println("\n~~~~~~~~~~•~~~~~~~~~~•~~~~~~~~~~~");
+        System.out.println("(⌐■_■) Registro de nuevo jugador");
 
         String unNombre;
         String unAlias;
@@ -132,7 +133,7 @@ public class Prueba {
         scr.nextLine();
         Jugador unJugador = new Jugador();
 
-        System.out.println("\n****Ingrese datos del Jugador****");
+        System.out.println("\n~~~~• Ingrese datos del Jugador •~~~~");
         System.out.print("Ingrese su nombre: ");
         unNombre = scr.nextLine();
         unJugador.setNombre(unNombre);
@@ -175,7 +176,8 @@ public class Prueba {
     }
 
     public static void ConfigurarPartida(Scanner scr, Juego unJuego) {
-        System.out.println("\n(⌐■_■) Configurar partida");
+        System.out.println("\n~~~~~~~~~~•~~~~~~~~~~•~~~~~~~~~~");
+        System.out.println("(⌐■_■) Configurar partida");
 
         if (unJuego.getListaDeJugadores().size() >= 2) {
             Partida unaPartida = new Partida();
@@ -185,8 +187,8 @@ public class Prueba {
                 int opcionElegida;
                 boolean bandera = false;
 
-                System.out.println("\n¿En que marco se distribuiran las fichas inicialmente?");
-                System.out.print("Ingrese 1, 2, 3 o 4 siendo 1 el cuadrado más externo: ");
+                System.out.println("\n¿En que marco se distribuirán las fichas inicialmente?");
+                System.out.print("Ingrese 1, 2, 3 o 4 siendo 1 el marco más externo: ");
                 while (!bandera) {
                     textVar = scr.nextLine();
 
@@ -195,11 +197,11 @@ public class Prueba {
                         if (opcionElegida > 0 && opcionElegida <= 4) {
                             unaPartida.setMarcoInicio(opcionElegida);
 
-                            System.out.println("\n¿De que forma se distribuiran las fichas inicialmente?");
+                            System.out.println("\n¿De que forma se distribuirán las fichas inicialmente?");
                             System.out.println("1. Al azar.");
                             System.out.println("2. En 'I', borde superior e inferior en negro N y bordes laterales blancos B.");
                             System.out.println("3. En 'L', borde izquierdo e inferior blanco, borde superior y derecho negro.");
-                            System.out.print("  -> Elija una opcion: ");
+                            System.out.print("  -> Elija una opción: ");
 
                             while (!bandera) {
                                 textVar = scr.nextLine();
@@ -213,7 +215,7 @@ public class Prueba {
                                         System.out.println("\n¿De que forma desea finalizar el juego?");
                                         System.out.println("1. Ambos jugadores se quedan sin jugadas.");
                                         System.out.println("2. Primero en ocupar el centro.");
-                                        System.out.print("  -> Elija una opcion: ");
+                                        System.out.print("  -> Elija una opción: ");
 
                                         while (!bandera) {
                                             textVar = scr.nextLine();
@@ -227,24 +229,24 @@ public class Prueba {
                                                     System.out.println("\nSe configuró la partida exitosamente!");
                                                     bandera = true;//Termino el bucle, y vuelvo al menú
                                                 } else {
-                                                    System.out.print("Opcion incorrecta, elija otra: ");
+                                                    System.out.print("Opción incorrecta, elija otra: ");
                                                 }
                                             } else {
-                                                System.out.print("Solo numeros son permitidos: ");
+                                                System.out.print("Solo números son permitidos: ");
                                             }
                                         }
                                     } else {
-                                        System.out.print("Error, solo numeros entre 1 y 3: ");
+                                        System.out.print("Opción incorrecta, elija otra: ");
                                     }
                                 } else {
-                                    System.out.print("Solo numeros son permitidos: ");
+                                    System.out.print("Solo números son permitidos: ");
                                 }
                             }
                         } else {
-                            System.out.print("Error, solo numeros entre 1 y 4: ");
+                            System.out.print("Opción incorrecta, elija otra: ");
                         }
                     } else {
-                        System.out.print("Solo numeros son permitidos: ");
+                        System.out.print("Solo números son permitidos: ");
                     }
                 }
             }
@@ -301,17 +303,17 @@ public class Prueba {
                                 bandera = true;
                                 resultado = bandera;
                             } else {
-                                System.out.print("Jugador invalido, elija un jugador de la lista: ");
+                                System.out.print("Jugador no existe, elija un jugador de la lista: ");
                             }
                         } else {
-                            System.out.print("Solo numeros son permitidos: ");
+                            System.out.print("Solo números son permitidos: ");
                         }
                     }
                 } else {
-                    System.out.print("Jugador invalido, elija un jugador de la lista: ");
+                    System.out.print("Jugador no existe, elija un jugador de la lista: ");
                 }
             } else {
-                System.out.print("Solo numeros son permitidos: ");
+                System.out.print("Solo números son permitidos: ");
             }
         }
 
