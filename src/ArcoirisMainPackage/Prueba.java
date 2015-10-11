@@ -3,6 +3,7 @@ package ArcoirisMainPackage;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.Timer;
 import java.util.regex.Pattern;
 
 public class Prueba {
@@ -23,7 +24,7 @@ public class Prueba {
 
         //Creo una instancia de Juego con el cual voy a manejar el sistema.
         Juego miJuego = new Juego();
-
+        
         //*******//
         Jugador j1 = new Jugador("Pepe", "nikPepe", 13);
         Jugador j2 = new Jugador("Juan", "cccccc", 15);
@@ -39,6 +40,38 @@ public class Prueba {
         miJuego.agregarJugador(j3);
         miJuego.agregarJugador(j4);
         miJuego.agregarJugador(j5);
+        
+        
+        Partida part1 = new Partida();
+        part1.agregarJugadorA(j5);
+        part1.agregarJugadorB(j1);
+        part1.setCantidadMovimientos(10);
+        part1.setDistribucionInicialFichas(1);//1.2.3
+        part1.setMarcoInicio(1);//1.2.3.4
+        part1.setTipoFinPartida(1);//1.2
+        
+        Partida part2 = new Partida();
+        part2.agregarJugadorA(j2);
+        part2.agregarJugadorB(j3);
+        part2.setCantidadMovimientos(10);
+        part2.setDistribucionInicialFichas(2);//1.2.3
+        part2.setMarcoInicio(3);//1.2.3.4
+        part2.setTipoFinPartida(2);//1.2
+        
+        Partida part3 = new Partida();
+        part3.agregarJugadorA(j1);
+        part3.agregarJugadorB(j4);
+        part3.setCantidadMovimientos(10);
+        part3.setDistribucionInicialFichas(3);//1.2.3
+        part3.setMarcoInicio(4);//1.2.3.4
+        part3.setTipoFinPartida(1);//1.2
+        
+
+        
+        miJuego.agregarPartida(part1);
+        miJuego.agregarPartida(part2);
+        miJuego.agregarPartida(part3);
+        
         //*****//
 
         int opcion = -1;
@@ -86,14 +119,44 @@ public class Prueba {
         }//Fin while
     }
 
-    
     //*************************************************************************//
     //*************************************************************************//
     //******************  JUGAR  ********************************************//
-    public static void Jugar(Scanner scr, Juego unJuego){
-        
-    }    
-    
+    public static void Jugar(Scanner scr, Juego unJuego) {
+        try {
+            if (unJuego.getListaDePartidas().size() > 0) { 
+                System.out.println("\n~~~~~~~~~~•~~~~~~~~~~•~~~~~~~~~~~");
+                System.out.println("(◣_◢) INICIO DE LA PARTIDA (◣_◢)");
+                
+                //Obtengo la ultima partida configurada
+                ArrayList<Partida> listaDePartidas = unJuego.ordenarPartidasDesc();
+                Partida partidaActual = listaDePartidas.get(0);
+                
+                System.out.println("\n       " + partidaActual.getJugadorA().getAlias() + " vs " + partidaActual.getJugadorB().getAlias());
+                
+                System.out.println("\n-> Objetivo: " + partidaActual.obtenerTipoFinDePartida());
+                
+                boolean bandera = false;
+                while(!bandera){
+                    bandera = true;
+                }
+                        
+                
+                
+
+                        
+                
+            } else {
+                System.out.println("No existe ninguna partida configurada.");
+            }
+        } catch (Exception ex) {
+            System.out.println("Ocurrió un error catastrófico: " + ex.getMessage());
+        }
+    }
+
+    //*************************************************************************//
+    //*************************************************************************//
+    //******************  METODOS DEL MENÚ  ***********************************//
     public static void mostrarMenuPrincipal() {
         System.out.println("~~~~~~~• MENÚ PRINCIPAL •~~~~~~~");
         System.out.println("• [1]Registrar jugador");
@@ -314,7 +377,7 @@ public class Prueba {
                     + " | Perdidas: " + j.getPerdidas());
         }
     }
-    
+
     //*************************************************************************//
     //*************************************************************************//
     //******************   MOSTRAR TABLERO  ************************************//
@@ -394,7 +457,7 @@ public class Prueba {
             System.out.println("  +-+-+-+-+-+-+-+-+-+-+-+-+-+");
 
         } catch (Exception ex) {
-            System.out.println("Error catastrófico: " + ex.getMessage());
+            System.out.println("Ocurrió un error catastrófico: " + ex.getMessage());
         }
 
         return unTablero;
@@ -463,9 +526,8 @@ public class Prueba {
         }
 
         return bandera;
-    }   
-    
-    
+    }
+
     //*************************************************************************//
     //*************************************************************************//
     //******************   METODOS EXTRA  *************************************//    
