@@ -92,12 +92,28 @@ public class Partida implements Comparable<Partida> {
     }
     
     
+    
+    
     public void agregarJugadorA(Jugador unJugador){
         this.setJugadorA(unJugador);
     }
     
     public void agregarJugadorB(Jugador unJugador){
         this.setJugadorB(unJugador);
+    }
+    
+    public void generarTableroInicial(int tipoDistribucionFichas, int marcoInicial){
+        Tablero tableroInicio = new Tablero();
+        
+        if(tipoDistribucionFichas == 1){
+            
+        } else if (tipoDistribucionFichas == 2){
+            
+        } else if(tipoDistribucionFichas == 3){
+            tableroInicio.setMatriz(tableroInicio.generarMatrizEnL(marcoInicial));
+        }
+        
+        this.getListaDeTableros().add(tableroInicio);
     }
     
     public String obtenerTipoFinDePartida(){

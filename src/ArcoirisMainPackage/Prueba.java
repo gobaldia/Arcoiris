@@ -135,9 +135,18 @@ public class Prueba {
                 System.out.println("\n       " + partidaActual.getJugadorA().getAlias() + " vs " + partidaActual.getJugadorB().getAlias());
                 
                 System.out.println("\n-> Objetivo: " + partidaActual.obtenerTipoFinDePartida());
+                System.out.println();
+                mostrarTablero(partidaActual.getListaDeTableros().get(0).getMatriz());
+                
+                
+
+                
                 
                 boolean bandera = false;
                 while(!bandera){
+                    
+                    
+                    
                     bandera = true;
                 }
                         
@@ -259,6 +268,7 @@ public class Prueba {
 
                                     if (opcionElegida > 0 && opcionElegida <= 3) {
                                         unaPartida.setDistribucionInicialFichas(opcionElegida);
+                                        unaPartida.generarTableroInicial(opcionElegida, unaPartida.getMarcoInicio());
 
                                         System.out.println("\n¿De que forma desea finalizar el juego?");
                                         System.out.println("1. Ambos jugadores se quedan sin jugadas.");
@@ -383,13 +393,6 @@ public class Prueba {
     //******************   MOSTRAR TABLERO  ************************************//
     public static char[][] mostrarTablero(char[][] unTablero) {
         try {
-            //char[][] tablero = new char[13][13];
-            for (int i = 0; i < unTablero.length; i++) {
-                for (int j = 0; j < unTablero[0].length; j++) {
-                    unTablero[i][j] = 'O';
-                }
-            }
-
             int filas = unTablero.length;
             int cols = unTablero[0].length;
             char[] letras = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'};
@@ -412,37 +415,37 @@ public class Prueba {
                 for (int j = 0; j < cols; j++) {
                     if (medirDistanciaMarco(i, j, 1)) {
                         if (unTablero[i][j] == 'B' || unTablero[i][j] == 'N') {
-
+                            System.out.print("|" + unTablero[i][j]);
                         } else {
                             System.out.print("|" + ANSI_RED + unTablero[i][j] + ANSI_RESET);
                         }
                     } else if (medirDistanciaMarco(i, j, 2)) {
                         if (unTablero[i][j] == 'B' || unTablero[i][j] == 'N') {
-
+                            System.out.print("|" + unTablero[i][j]);
                         } else {
                             System.out.print("|" + ANSI_PURPLE + unTablero[i][j] + ANSI_RESET);
                         }
                     } else if (medirDistanciaMarco(i, j, 3)) {
                         if (unTablero[i][j] == 'B' || unTablero[i][j] == 'N') {
-
+                            System.out.print("|" + unTablero[i][j]);
                         } else {
                             System.out.print("|" + ANSI_YELLOW + unTablero[i][j] + ANSI_RESET);
                         }
                     } else if (medirDistanciaMarco(i, j, 4)) {
                         if (unTablero[i][j] == 'B' || unTablero[i][j] == 'N') {
-
+                            System.out.print("|" + unTablero[i][j]);
                         } else {
                             System.out.print("|" + ANSI_GREEN + unTablero[i][j] + ANSI_RESET);
                         }
                     } else if (medirDistanciaMarco(i, j, 5)) {
                         if (unTablero[i][j] == 'B' || unTablero[i][j] == 'N') {
-
+                            System.out.print("|" + unTablero[i][j]);
                         } else {
                             System.out.print("|" + ANSI_CYAN + unTablero[i][j] + ANSI_RESET);
                         }
                     } else if (medirDistanciaMarco(i, j, 6)) {
                         if (unTablero[i][j] == 'B' || unTablero[i][j] == 'N') {
-
+                            System.out.print("|" + unTablero[i][j]);
                         } else {
                             System.out.print("|" + ANSI_BLUE + unTablero[i][j] + ANSI_RESET);
                         }
