@@ -18,13 +18,13 @@ public class Prueba {
     
 
     public static void main(String[] args) {
-        System.out.println("*-*-*-*-*- ARCOIRIS -*-*-*-*-*\n");
+//        System.out.println("*-*-*-*-*- ARCOIRIS -*-*-*-*-*\n");
         System.out.println(ANSI_RED + "     _                            _          _       \n" + ANSI_PURPLE +
 "    / \\     _ __    ___    ___   (_)  _ __  (_)  ___ \n" + ANSI_GREEN +
 "   / _ \\   | '__|  / __|  / _ \\  | | | '__| | | / __|\n" + ANSI_YELLOW +
 "  / ___ \\  | |    | (__  | (_) | | | | |    | | \\__ \\\n" + ANSI_CYAN +
 " /_/   \\_\\ |_|     \\___|  \\___/  |_| |_|    |_| |___/\n" +
-"                                                     ");
+"                                                     " + ANSI_RESET);
 
 //        System.out.println("            ¡¡GANADOR!!");
 //        System.out.println("                AAA");
@@ -149,7 +149,7 @@ public class Prueba {
                 }
             } catch (InputMismatchException ex) {
                 input.nextLine();
-                System.out.println(ANSI_RED + "\n¡Error!, sólo números son permitidos...  ¯\\_(ツ)_/¯");
+                System.out.println(ANSI_RED + "\n¡Error!, sólo números son permitidos...  ¯\\_(ツ)_/¯" + ANSI_RESET);
             }
         }//Fin while
     }
@@ -199,7 +199,7 @@ public class Prueba {
     }
 
     public static void MostrarMenuPrincipal() {
-        System.out.println(ANSI_GREEN + "~~~~~~~• MENÚ PRINCIPAL •~~~~~~~");
+        System.out.println("~~~~~~~• MENÚ PRINCIPAL •~~~~~~~");
         System.out.println("• [1]Registrar jugador");
         System.out.println("• [2]Configurar partida");
         System.out.println("• [3]JUGAR");
