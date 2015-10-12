@@ -14,35 +14,42 @@ public class Prueba {
     public static final String ANSI_BLUE = "\u001B[34m";
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_RESET = "\u001B[0m";
+    
 
     public static void main(String[] args) {
         System.out.println("*-*-*-*-*- ARCOIRIS -*-*-*-*-*\n");
+        System.out.println(ANSI_RED + "     _                            _          _       \n" + ANSI_PURPLE +
+"    / \\     _ __    ___    ___   (_)  _ __  (_)  ___ \n" + ANSI_GREEN +
+"   / _ \\   | '__|  / __|  / _ \\  | | | '__| | | / __|\n" + ANSI_YELLOW +
+"  / ___ \\  | |    | (__  | (_) | | | | |    | | \\__ \\\n" + ANSI_CYAN +
+" /_/   \\_\\ |_|     \\___|  \\___/  |_| |_|    |_| |___/\n" +
+"                                                     ");
 
-        System.out.println("            ¡¡GANADOR!!");
-        System.out.println("                AAA");
-        System.out.println("••••••••••••••••••••••••••••••••");
-        System.out.println("•••••___•••••••••••••••••___•••••");
-        System.out.println("••••_____•••••••••••••••_____••••");
-        System.out.println("••••_____•••••••••••••••_____••••");
-        System.out.println("••••_____•••••••••••••••_____••••");
-        System.out.println("••••_____••____•••____••_____•••••");
-        System.out.println("••••_____•______•______•_____•••••");
-        System.out.println("••••_____•______•______•_____•••••");
-        System.out.println("••••_____•____•••••••••••••••••••");
-        System.out.println("••••_____•__••___________••••••••");
-        System.out.println("••••_____•__••_______________••••");
-        System.out.println("••••__________••_____________••••");
-        System.out.println("••••___________••___________•••••");
-        System.out.println("••••_____________•_________••••••");
-        System.out.println("•••••_____________________•••••••");
-        System.out.println("••••••___________________••••••••");
-        System.out.println("••••••$$$$$$$$$$$$$$$$$$$••••••••");
-        System.out.println("••••••$$$$$$$$$$$$$$$$$$$••••••••");
-        System.out.println("••••••$$$$$$$$$$$$$$$$$$$••••••••");
-        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+//        System.out.println("            ¡¡GANADOR!!");
+//        System.out.println("                AAA");
+//        System.out.println("••••••••••••••••••••••••••••••••");
+//        System.out.println("•••••___•••••••••••••••••___•••••");
+//        System.out.println("••••_____•••••••••••••••_____••••");
+//        System.out.println("••••_____•••••••••••••••_____••••");
+//        System.out.println("••••_____•••••••••••••••_____••••");
+//        System.out.println("••••_____••____•••____••_____•••••");
+//        System.out.println("••••_____•______•______•_____•••••");
+//        System.out.println("••••_____•______•______•_____•••••");
+//        System.out.println("••••_____•____•••••••••••••••••••");
+//        System.out.println("••••_____•__••___________••••••••");
+//        System.out.println("••••_____•__••_______________••••");
+//        System.out.println("••••__________••_____________••••");
+//        System.out.println("••••___________••___________•••••");
+//        System.out.println("••••_____________•_________••••••");
+//        System.out.println("•••••_____________________•••••••");
+//        System.out.println("••••••___________________••••••••");
+//        System.out.println("••••••$$$$$$$$$$$$$$$$$$$••••••••");
+//        System.out.println("••••••$$$$$$$$$$$$$$$$$$$••••••••");
+//        System.out.println("••••••$$$$$$$$$$$$$$$$$$$••••••••");
+//        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
+//        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
         
-        //mostrarTablero();
+        mostrarTablero();
 
         //Creo el Scanner para manejar los datos ingresados por el usuario.        
         Scanner input = new Scanner(System.in);
@@ -95,22 +102,24 @@ public class Prueba {
                     case 4: //Ranking
                         miJuego.obtenerRanking();
                         mostrarRanking(miJuego);
+                        System.out.println("\nPresione enter para continuar...");
+                        LeoComando();
                         break;
                     case 5: //Replicar partida
                         break;
                     default:
-                        System.out.println("\n¡Error!, Opción no existe");
+                        System.out.println(ANSI_RED + "\n¡Error!, Opción no existe");
                         break;
                 }
             } catch (InputMismatchException ex) {
                 input.nextLine();
-                System.out.println("\n¡ERROR!, Solo números son permitidos..." + "¯\\_(ツ)_/¯");
+                System.out.println(ANSI_RED + "\n¡Error!, sólo números son permitidos...  ¯\\_(ツ)_/¯");
             }
         }//Fin while
     }
 
     public static void MostrarMenuPrincipal() {
-        System.out.println("~~~~~~~• MENÚ PRINCIPAL •~~~~~~~");
+        System.out.println(ANSI_GREEN + "~~~~~~~• MENÚ PRINCIPAL •~~~~~~~");
         System.out.println("• [1]Registrar jugador");
         System.out.println("• [2]Configurar partida");
         System.out.println("• [3]JUGAR");
@@ -168,7 +177,7 @@ public class Prueba {
                             System.out.print("Por favor ingrese una edad real: ");
                         }
                     } else {
-                        System.out.print("Solo números son permitidos, ingrese otra edad: ");
+                        System.out.print(ANSI_RED + "\n¡Error!, sólo números son permitidos...  ¯\\_(ツ)_/¯\n" + ANSI_RESET + "\nIngrese una edad válida: ");
                     }
                 }
             }
@@ -232,21 +241,21 @@ public class Prueba {
                                                     System.out.print("Opción incorrecta, elija otra: ");
                                                 }
                                             } else {
-                                                System.out.print("Solo números son permitidos: ");
+                                                System.out.print(ANSI_RED + "\n¡Error!, sólo números son permitidos...  ¯\\_(ツ)_/¯\n" + ANSI_RESET + "\nIngrese una opción válida: ");
                                             }
                                         }
                                     } else {
                                         System.out.print("Opción incorrecta, elija otra: ");
                                     }
                                 } else {
-                                    System.out.print("Solo números son permitidos: ");
+                                    System.out.print(ANSI_RED + "\n¡Error!, sólo números son permitidos...  ¯\\_(ツ)_/¯\n" + ANSI_RESET + "\nIngrese una opción válida: ");
                                 }
                             }
                         } else {
                             System.out.print("Opción incorrecta, elija otra: ");
                         }
                     } else {
-                        System.out.print("Solo números son permitidos: ");
+                        System.out.print(ANSI_RED + "\n¡Error!, sólo números son permitidos...  ¯\\_(ツ)_/¯\n" + ANSI_RESET + "\nIngrese una opción válida: ");
                     }
                 }
             }
@@ -306,14 +315,14 @@ public class Prueba {
                                 System.out.print("Jugador no existe, elija un jugador de la lista: ");
                             }
                         } else {
-                            System.out.print("Solo números son permitidos: ");
+                            System.out.print(ANSI_RED + "\n¡Error!, sólo números son permitidos...  ¯\\_(ツ)_/¯\n" + ANSI_RESET + "\nIngrese una opción válida: ");
                         }
                     }
                 } else {
                     System.out.print("Jugador no existe, elija un jugador de la lista: ");
                 }
             } else {
-                System.out.print("Solo números son permitidos: ");
+                System.out.print(ANSI_RED + "\n¡Error!, sólo números son permitidos...  ¯\\_(ツ)_/¯\n" + ANSI_RESET + "\nIngrese una opción válida: ");
             }
         }
 
@@ -325,7 +334,7 @@ public class Prueba {
         try {
             System.in.read();
         } catch (Exception e) {
-            System.out.println("¡Error inesperado!, " + e.toString());
+            System.out.println(ANSI_RED + "¡Error inesperado!, " + e.toString());
         }
     }
 
