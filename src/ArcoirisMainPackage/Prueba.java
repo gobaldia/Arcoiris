@@ -18,7 +18,6 @@ public class Prueba {
     
 
     public static void main(String[] args) {
-//        System.out.println("*-*-*-*-*- ARCOIRIS -*-*-*-*-*\n");
         System.out.println(ANSI_RED + "     _                            _          _       \n" + ANSI_PURPLE +
 "    / \\     _ __    ___    ___   (_)  _ __  (_)  ___ \n" + ANSI_GREEN +
 "   / _ \\   | '__|  / __|  / _ \\  | | | '__| | | / __|\n" + ANSI_YELLOW +
