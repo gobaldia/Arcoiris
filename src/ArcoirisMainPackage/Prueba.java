@@ -3,6 +3,7 @@ package ArcoirisMainPackage;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.Timer;
 import java.util.regex.Pattern;
 
 public class Prueba {
@@ -49,21 +50,21 @@ public class Prueba {
 //        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
 //        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
         
-        mostrarTablero();
+//        mostrarTablero();
 
         //Creo el Scanner para manejar los datos ingresados por el usuario.        
         Scanner input = new Scanner(System.in);
 
         //Creo una instancia de Juego con el cual voy a manejar el sistema.
         Juego miJuego = new Juego();
-
+        
         //*******//
         Jugador j1 = new Jugador("Pepe", "nikPepe", 13);
         Jugador j2 = new Jugador("Juan", "cccccc", 15);
         Jugador j3 = new Jugador("Eliana", "bbbbb", 25);
         Jugador j4 = new Jugador("Lorena", "aaaaaa", 23);
         Jugador j5 = new Jugador("Hector", "adsads", 59);
-        
+
         j4.setGanadas(10);
         j2.setGanadas(5);
 
@@ -72,6 +73,38 @@ public class Prueba {
         miJuego.agregarJugador(j3);
         miJuego.agregarJugador(j4);
         miJuego.agregarJugador(j5);
+        
+        
+        Partida part1 = new Partida();
+        part1.agregarJugadorA(j5);
+        part1.agregarJugadorB(j1);
+        part1.setCantidadMovimientos(10);
+        part1.setDistribucionInicialFichas(1);//1.2.3
+        part1.setMarcoInicio(1);//1.2.3.4
+        part1.setTipoFinPartida(1);//1.2
+        
+        Partida part2 = new Partida();
+        part2.agregarJugadorA(j2);
+        part2.agregarJugadorB(j3);
+        part2.setCantidadMovimientos(10);
+        part2.setDistribucionInicialFichas(2);//1.2.3
+        part2.setMarcoInicio(3);//1.2.3.4
+        part2.setTipoFinPartida(2);//1.2
+        
+        Partida part3 = new Partida();
+        part3.agregarJugadorA(j1);
+        part3.agregarJugadorB(j4);
+        part3.setCantidadMovimientos(10);
+        part3.setDistribucionInicialFichas(3);//1.2.3
+        part3.setMarcoInicio(4);//1.2.3.4
+        part3.setTipoFinPartida(1);//1.2
+        
+
+        
+        miJuego.agregarPartida(part1);
+        miJuego.agregarPartida(part2);
+        miJuego.agregarPartida(part3);
+        
         //*****//
 
         int opcion = -1;
@@ -88,16 +121,19 @@ public class Prueba {
                         System.out.println("Saliendo del juego...");
                         break;
                     case 1:// Registrar Jugador
-                        CrearJugador(input, miJuego);
+                        crearJugador(input, miJuego);
                         System.out.println("\nPresione enter para continuar...");
-                        LeoComando();
+                        leoComando();
                         break;
                     case 2: // Configurar partida
-                        ConfigurarPartida(input, miJuego);
+                        configurarPartida(input, miJuego);
                         System.out.println("\nPresione enter para continuar...");
-                        LeoComando();
+                        leoComando();
                         break;
-                    case 3: //Jugar
+                    case 3: //Jugar                        
+                        Jugar(input, miJuego);
+                        System.out.println("\nPresione enter para continuar...");
+                        leoComando();
                         break;
                     case 4: //Ranking
                         miJuego.obtenerRanking();
@@ -117,6 +153,50 @@ public class Prueba {
             }
         }//Fin while
     }
+    
+      //*************************************************************************//
+    //*************************************************************************//
+    //******************  JUGAR  ********************************************//
+    public static void Jugar(Scanner scr, Juego unJuego) {
+        try {
+            if (unJuego.getListaDePartidas().size() > 0) { 
+                System.out.println("\n~~~~~~~~~~•~~~~~~~~~~•~~~~~~~~~~~");
+                System.out.println("(◣_◢) INICIO DE LA PARTIDA (◣_◢)");
+                
+                //Obtengo la ultima partida configurada
+                ArrayList<Partida> listaDePartidas = unJuego.ordenarPartidasDesc();
+                Partida partidaActual = listaDePartidas.get(0);
+                
+                System.out.println("\n       " + partidaActual.getJugadorA().getAlias() + " vs " + partidaActual.getJugadorB().getAlias());
+                
+                System.out.println("\n-> Objetivo: " + partidaActual.obtenerTipoFinDePartida());
+                System.out.println();
+                mostrarTablero(partidaActual.getListaDeTableros().get(0).getMatriz());
+                
+                
+
+                
+                
+                boolean bandera = false;
+                while(!bandera){
+                    
+                    
+                    
+                    bandera = true;
+                }
+                        
+                
+                
+
+                        
+                
+            } else {
+                System.out.println("No existe ninguna partida configurada.");
+            }
+        } catch (Exception ex) {
+            System.out.println("Ocurrió un error catastrófico: " + ex.getMessage());
+        }
+    }
 
     public static void MostrarMenuPrincipal() {
         System.out.println(ANSI_GREEN + "~~~~~~~• MENÚ PRINCIPAL •~~~~~~~");
@@ -130,7 +210,7 @@ public class Prueba {
         System.out.print("      -> Ingrese opción: ");
     }
 
-    public static void CrearJugador(Scanner scr, Juego unJuego) {
+    public static void crearJugador(Scanner scr, Juego unJuego) {
         System.out.println("\n~~~~~~~~~~•~~~~~~~~~~•~~~~~~~~~~~");
         System.out.println("(⌐■_■) Registro de nuevo jugador");
 
@@ -184,14 +264,14 @@ public class Prueba {
         }
     }
 
-    public static void ConfigurarPartida(Scanner scr, Juego unJuego) {
+    public static void configurarPartida(Scanner scr, Juego unJuego) {
         System.out.println("\n~~~~~~~~~~•~~~~~~~~~~•~~~~~~~~~~");
         System.out.println("(⌐■_■) Configurar partida");
 
         if (unJuego.getListaDeJugadores().size() >= 2) {
             Partida unaPartida = new Partida();
 
-            if (AgregarJugadoresaPartida(scr, unJuego, unaPartida)) {
+            if (agregarJugadoresaPartida(scr, unJuego, unaPartida)) {
                 String textVar;
                 int opcionElegida;
                 boolean bandera = false;
@@ -220,6 +300,7 @@ public class Prueba {
 
                                     if (opcionElegida > 0 && opcionElegida <= 3) {
                                         unaPartida.setDistribucionInicialFichas(opcionElegida);
+                                        unaPartida.generarTableroInicial(opcionElegida, unaPartida.getMarcoInicio());
 
                                         System.out.println("\n¿De que forma desea finalizar el juego?");
                                         System.out.println("1. Ambos jugadores se quedan sin jugadas.");
@@ -228,7 +309,7 @@ public class Prueba {
 
                                         while (!bandera) {
                                             textVar = scr.nextLine();
-                                            
+
                                             if (Pattern.matches("[0-9]+", textVar)) {
                                                 opcionElegida = Integer.parseInt(textVar);
 
@@ -264,7 +345,7 @@ public class Prueba {
         }
     }
 
-    public static boolean AgregarJugadoresaPartida(Scanner scr, Juego unJuego, Partida unaPartida) {
+    public static boolean agregarJugadoresaPartida(Scanner scr, Juego unJuego, Partida unaPartida) {
         boolean resultado = false;
 
         ArrayList<Jugador> listaJugadores = unJuego.getListaDeJugadores();
@@ -328,6 +409,16 @@ public class Prueba {
 
         return resultado;
     }
+    
+        private static void mostrarRanking(Juego unJuego) {
+        System.out.println("*** Ranking de Jugadores ***");
+        for (int i = 0; i < unJuego.getListaDeJugadores().size(); i++) {
+            Jugador j = unJuego.getListaDeJugadores().get(i);
+            System.out.println(j.toString() + " || " + "Ganadas: " + j.getGanadas()
+                    + " | Empatadas: " + j.getEmpates()
+                    + " | Perdidas: " + j.getPerdidas());
+        }
+        }
 
     //Este método se utiliza para esperar que el usuario presione la tecla Enter para continuar
     private static void LeoComando() {
@@ -338,86 +429,82 @@ public class Prueba {
         }
     }
 
-    //**********************************************
-    //**********************************************
-    //***********************************************/
-    //ToDo: Debo pasale una matriz por parametro
-    public static char[][] mostrarTablero() {
-        char[][] tablero = new char[13][13];
+    //*************************************************************************//
+    //*************************************************************************//
+    //******************   MOSTRAR TABLERO  ************************************//
+    public static char[][] mostrarTablero(char[][] unTablero) {
+        try {
+            int filas = unTablero.length;
+            int cols = unTablero[0].length;
+            char[] letras = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'};
+            char[] numeros = {' ', '1', '2', '3', '4', '5', '6', '7', '8', '9', '1', '1', '1', '1'};
+            char[] numeros2 = {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '0', '1', '2', '3'};
 
-        for (int i = 0; i < tablero.length; i++) {
-            for (int j = 0; j < tablero[0].length; j++) {
-                tablero[i][j] = 'O';
+            for (int i = 0; i < numeros.length; i++) {
+                System.out.print(" " + numeros[i]);
             }
-        }
-
-        int filas = tablero.length;
-        int cols = tablero[0].length;
-        char[] letras = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'};
-        char[] numeros = {' ', '1', '2', '3', '4', '5', '6', '7', '8', '9', '1', '1', '1', '1'};
-        char[] numeros2 = {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '0', '1', '2', '3'};
-
-        for (int i = 0; i < numeros.length; i++) {
-            System.out.print(" " + numeros[i]);
-        }
-        System.out.println();
-        for (int i = 0; i < numeros2.length; i++) {
-            System.out.print(" " + numeros2[i]);
-        }
-        System.out.println();
-
-        for (int i = 0; i < filas; i++) {
-            System.out.println("  +-+-+-+-+-+-+-+-+-+-+-+-+-+");
-            System.out.print(letras[i] + " ");
-
-            for (int j = 0; j < cols; j++) {
-                if (medirDistanciaMarco(i, j, 1)) {
-                    if (tablero[i][j] == 'B' || tablero[i][j] == 'N') {
-
-                    } else {
-                        System.out.print("|" + ANSI_RED + tablero[i][j] + ANSI_RESET);
-                    }
-                } else if (medirDistanciaMarco(i, j, 2)) {
-                    if (tablero[i][j] == 'B' || tablero[i][j] == 'N') {
-
-                    } else {
-                        System.out.print("|" + ANSI_PURPLE + tablero[i][j] + ANSI_RESET);
-                    }
-                } else if (medirDistanciaMarco(i, j, 3)) {
-                    if (tablero[i][j] == 'B' || tablero[i][j] == 'N') {
-
-                    } else {
-                        System.out.print("|" + ANSI_YELLOW + tablero[i][j] + ANSI_RESET);
-                    }
-                } else if (medirDistanciaMarco(i, j, 4)) {
-                    if (tablero[i][j] == 'B' || tablero[i][j] == 'N') {
-
-                    } else {
-                        System.out.print("|" + ANSI_GREEN + tablero[i][j] + ANSI_RESET);
-                    }
-                } else if (medirDistanciaMarco(i, j, 5)) {
-                    if (tablero[i][j] == 'B' || tablero[i][j] == 'N') {
-
-                    } else {
-                        System.out.print("|" + ANSI_CYAN + tablero[i][j] + ANSI_RESET);
-                    }
-                } else if (medirDistanciaMarco(i, j, 6)) {
-                    if (tablero[i][j] == 'B' || tablero[i][j] == 'N') {
-
-                    } else {
-                        System.out.print("|" + ANSI_BLUE + tablero[i][j] + ANSI_RESET);
-                    }
-                } else {
-                    System.out.print("|" + tablero[i][j]);
-                }
-            }
-
-            System.out.print("|");
             System.out.println();
-        }
-        System.out.println("  +-+-+-+-+-+-+-+-+-+-+-+-+-+");
+            for (int i = 0; i < numeros2.length; i++) {
+                System.out.print(" " + numeros2[i]);
+            }
+            System.out.println();
 
-        return tablero;
+            for (int i = 0; i < filas; i++) {
+                System.out.println("  +-+-+-+-+-+-+-+-+-+-+-+-+-+");
+                System.out.print(letras[i] + " ");
+
+                for (int j = 0; j < cols; j++) {
+                    if (medirDistanciaMarco(i, j, 1)) {
+                        if (unTablero[i][j] == 'B' || unTablero[i][j] == 'N') {
+                            System.out.print("|" + unTablero[i][j]);
+                        } else {
+                            System.out.print("|" + ANSI_RED + unTablero[i][j] + ANSI_RESET);
+                        }
+                    } else if (medirDistanciaMarco(i, j, 2)) {
+                        if (unTablero[i][j] == 'B' || unTablero[i][j] == 'N') {
+                            System.out.print("|" + unTablero[i][j]);
+                        } else {
+                            System.out.print("|" + ANSI_PURPLE + unTablero[i][j] + ANSI_RESET);
+                        }
+                    } else if (medirDistanciaMarco(i, j, 3)) {
+                        if (unTablero[i][j] == 'B' || unTablero[i][j] == 'N') {
+                            System.out.print("|" + unTablero[i][j]);
+                        } else {
+                            System.out.print("|" + ANSI_YELLOW + unTablero[i][j] + ANSI_RESET);
+                        }
+                    } else if (medirDistanciaMarco(i, j, 4)) {
+                        if (unTablero[i][j] == 'B' || unTablero[i][j] == 'N') {
+                            System.out.print("|" + unTablero[i][j]);
+                        } else {
+                            System.out.print("|" + ANSI_GREEN + unTablero[i][j] + ANSI_RESET);
+                        }
+                    } else if (medirDistanciaMarco(i, j, 5)) {
+                        if (unTablero[i][j] == 'B' || unTablero[i][j] == 'N') {
+                            System.out.print("|" + unTablero[i][j]);
+                        } else {
+                            System.out.print("|" + ANSI_CYAN + unTablero[i][j] + ANSI_RESET);
+                        }
+                    } else if (medirDistanciaMarco(i, j, 6)) {
+                        if (unTablero[i][j] == 'B' || unTablero[i][j] == 'N') {
+                            System.out.print("|" + unTablero[i][j]);
+                        } else {
+                            System.out.print("|" + ANSI_BLUE + unTablero[i][j] + ANSI_RESET);
+                        }
+                    } else {
+                        System.out.print("|" + unTablero[i][j]);
+                    }
+                }
+
+                System.out.print("|");
+                System.out.println();
+            }
+            System.out.println("  +-+-+-+-+-+-+-+-+-+-+-+-+-+");
+
+        } catch (Exception ex) {
+            System.out.println("Ocurrió un error catastrófico: " + ex.getMessage());
+        }
+
+        return unTablero;
     }
 
     public static boolean medirDistanciaMarco(int fila, int columna, int marcoAPintar) {
@@ -485,13 +572,15 @@ public class Prueba {
         return bandera;
     }
 
-    private static void mostrarRanking(Juego unJuego) {
-        System.out.println("*** Ranking de Jugadores ***");
-        for (int i = 0; i < unJuego.getListaDeJugadores().size(); i++) {
-            Jugador j = unJuego.getListaDeJugadores().get(i);
-            System.out.println(j.toString() + " || " + "Ganadas: " + j.getGanadas() + 
-                                                   " | Empatadas: " + j.getEmpates() + 
-                                                   " | Perdidas: " + j.getPerdidas());
+    //*************************************************************************//
+    //*************************************************************************//
+    //******************   METODOS EXTRA  *************************************//    
+    //Este método se utiliza para esperar que el usuario presione la tecla Enter para continuar
+    private static void leoComando() {
+        try {
+            System.in.read();
+        } catch (Exception e) {
+            System.out.println("¡Error inesperado!, " + e.toString());
         }
     }
 }

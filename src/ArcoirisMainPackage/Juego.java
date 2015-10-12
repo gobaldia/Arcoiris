@@ -51,11 +51,17 @@ public class Juego {
 
     public ArrayList<Jugador> obtenerRanking() {
         Collections.sort(this.listaDeJugadores, new Comparator<Jugador>() {
+            @Override
             public int compare(Jugador j2, Jugador j1) {
                 return j1.getGanadas() - j2.getGanadas();
             }
         });
         return this.listaDeJugadores;
+    }
+    
+    public ArrayList<Partida> ordenarPartidasDesc(){
+        Collections.sort(this.getListaDePartidas());
+        return this.getListaDePartidas();
     }
     
     public void agregarPartida(Partida unaPartida){
