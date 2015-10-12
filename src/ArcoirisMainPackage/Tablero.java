@@ -95,7 +95,7 @@ public class Tablero {
         return haciaAdentro && (esDiagonal || esRecto) && estaVacio;
     }
     
-    public char[][] generarMatrizEnL(int marcoInicio) {
+    public char[][] generarMatrizConFichasEnL(int marcoInicio) {
         char[][] unaMatriz = new char[13][13];
         
         for (int i = 0; i < unaMatriz.length; i++) {
@@ -139,6 +139,49 @@ public class Tablero {
             
             contador = 0;
             bandera = true;
+        }
+
+        return unaMatriz;
+    }
+    
+    public char[][] generarMatrizConFichasAlAzar(int marcoInicio) {
+        char[][] unaMatriz = new char[13][13];
+        
+        for (int i = 0; i < unaMatriz.length; i++) {
+            for (int j = 0; j < unaMatriz[i].length; j++) {
+                unaMatriz[i][j] = 'O';
+            }
+        }
+        
+        int fichas = 0;
+        
+        switch(marcoInicio){
+            case 1:
+                fichas = 48;
+                break;
+            case 2:
+                fichas = 20;
+                break;
+            case 3:
+                fichas = 16;
+                break;
+            case 4:
+                fichas = 12;
+                break;
+        }
+
+        for (int i = 0; i < unaMatriz.length; i++) {
+            for (int j = 0; j < unaMatriz[0].length; j++) {
+                
+                if (medirDistanciaMarco(i, j, marcoInicio)) {
+                    if((Math.random() * 2) < 1 && fichas > 0){
+                        fichas--;
+                        unaMatriz[i][j] = 'B';
+                    } else {
+                        unaMatriz[i][j] = 'N';
+                    }
+                }
+            }
         }
 
         return unaMatriz;

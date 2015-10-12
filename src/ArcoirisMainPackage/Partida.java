@@ -106,11 +106,11 @@ public class Partida implements Comparable<Partida> {
         Tablero tableroInicio = new Tablero();
         
         if(tipoDistribucionFichas == 1){
-            
+            tableroInicio.setMatriz(tableroInicio.generarMatrizConFichasAlAzar(marcoInicial));
         } else if (tipoDistribucionFichas == 2){
             
         } else if(tipoDistribucionFichas == 3){
-            tableroInicio.setMatriz(tableroInicio.generarMatrizEnL(marcoInicial));
+            tableroInicio.setMatriz(tableroInicio.generarMatrizConFichasEnL(marcoInicial));
         }
         
         this.getListaDeTableros().add(tableroInicio);
