@@ -3,7 +3,6 @@ package ArcoirisMainPackage;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
-import java.util.Timer;
 import java.util.regex.Pattern;
 
 public class Prueba {
@@ -15,23 +14,21 @@ public class Prueba {
     public static final String ANSI_BLUE = "\u001B[34m";
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_RESET = "\u001B[0m";
-    
 
     public static void main(String[] args) {
-        System.out.println(ANSI_PURPLE + "	  	        []  ,----.___\n" + ANSI_GREEN +
-"		      __||_/___      '.\n" + ANSI_GREEN +
-"		     / O||    /|       )\n" + ANSI_YELLOW +
-"		    /   \"\"   / /   =._/\n" + ANSI_YELLOW +
-"		   /________/ /\n" + ANSI_CYAN +
-"		   |________|/   " + ANSI_RESET);
-        
-        
-        System.out.println(ANSI_PURPLE + "     _                            _          _       \n" + ANSI_PURPLE +
-"    / \\     _ __    ___    ___   (_)  _ __  (_)  ___ \n" + ANSI_GREEN +
-"   / _ \\   | '__|  / __|  / _ \\  | | | '__| | | / __|\n" + ANSI_YELLOW +
-"  / ___ \\  | |    | (__  | (_) | | | | |    | | \\__ \\\n" + ANSI_CYAN +
-" /_/   \\_\\ |_|     \\___|  \\___/  |_| |_|    |_| |___/\n" +
-"                                                     " + ANSI_RESET);
+        System.out.println(ANSI_PURPLE + "	  	        []  ,----.___\n" + ANSI_GREEN
+                + "		      __||_/___      '.\n" + ANSI_GREEN
+                + "		     / O||    /|       )\n" + ANSI_YELLOW
+                + "		    /   \"\"   / /   =._/\n" + ANSI_YELLOW
+                + "		   /________/ /\n" + ANSI_CYAN
+                + "		   |________|/   " + ANSI_RESET);
+
+        System.out.println(ANSI_PURPLE + "     _                            _          _       \n" + ANSI_PURPLE
+                + "    / \\     _ __    ___    ___   (_)  _ __  (_)  ___ \n" + ANSI_GREEN
+                + "   / _ \\   | '__|  / __|  / _ \\  | | | '__| | | / __|\n" + ANSI_YELLOW
+                + "  / ___ \\  | |    | (__  | (_) | | | | |    | | \\__ \\\n" + ANSI_CYAN
+                + " /_/   \\_\\ |_|     \\___|  \\___/  |_| |_|    |_| |___/\n"
+                + "                                                     " + ANSI_RESET);
 
 //        System.out.println("            ¡¡GANADOR!!");
 //        System.out.println("                AAA");
@@ -56,15 +53,13 @@ public class Prueba {
 //        System.out.println("••••••$$$$$$$$$$$$$$$$$$$••••••••");
 //        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
 //        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-        
 //        mostrarTablero();
-
         //Creo el Scanner para manejar los datos ingresados por el usuario.        
         Scanner input = new Scanner(System.in);
 
         //Creo una instancia de Juego con el cual voy a manejar el sistema.
         Juego miJuego = new Juego();
-        
+
         //*******//
         Jugador j1 = new Jugador("Pepe", "nikPepe", 13);
         Jugador j2 = new Jugador("Juan", "cccccc", 15);
@@ -80,8 +75,7 @@ public class Prueba {
         miJuego.agregarJugador(j3);
         miJuego.agregarJugador(j4);
         miJuego.agregarJugador(j5);
-        
-        
+
         Partida part1 = new Partida();
         part1.agregarJugadorA(j5);
         part1.agregarJugadorB(j1);
@@ -89,7 +83,7 @@ public class Prueba {
         part1.setDistribucionInicialFichas(1);//1.2.3
         part1.setMarcoInicio(1);//1.2.3.4
         part1.setTipoFinPartida(1);//1.2
-        
+
         Partida part2 = new Partida();
         part2.agregarJugadorA(j2);
         part2.agregarJugadorB(j3);
@@ -97,7 +91,7 @@ public class Prueba {
         part2.setDistribucionInicialFichas(2);//1.2.3
         part2.setMarcoInicio(3);//1.2.3.4
         part2.setTipoFinPartida(2);//1.2
-        
+
         Partida part3 = new Partida();
         part3.agregarJugadorA(j1);
         part3.agregarJugadorB(j4);
@@ -105,22 +99,19 @@ public class Prueba {
         part3.setDistribucionInicialFichas(3);//1.2.3
         part3.setMarcoInicio(4);//1.2.3.4
         part3.setTipoFinPartida(1);//1.2
-        
 
-        
         miJuego.agregarPartida(part1);
         miJuego.agregarPartida(part2);
         miJuego.agregarPartida(part3);
-        
-        //*****//
 
+        //*****//
         int opcion = -1;
 
         //Manejo de menu
         while (opcion != 0) {
             try {
                 System.out.println();
-                MostrarMenuPrincipal();
+                mostrarMenuPrincipal();
 
                 opcion = input.nextInt();
                 switch (opcion) {
@@ -146,7 +137,7 @@ public class Prueba {
                         miJuego.obtenerRanking();
                         mostrarRanking(miJuego);
                         System.out.println("\nPresione enter para continuar...");
-                        LeoComando();
+                        leoComando();
                         break;
                     case 5: //Replicar partida
                         break;
@@ -160,43 +151,32 @@ public class Prueba {
             }
         }//Fin while
     }
-    
-      //*************************************************************************//
+
+    //*************************************************************************//
     //*************************************************************************//
     //******************  JUGAR  ********************************************//
     public static void Jugar(Scanner scr, Juego unJuego) {
         try {
-            if (unJuego.getListaDePartidas().size() > 0) { 
+            if (unJuego.getListaDePartidas().size() > 0) {
                 System.out.println("\n~~~~~~~~~~•~~~~~~~~~~•~~~~~~~~~~~");
                 System.out.println("(◣_◢) INICIO DE LA PARTIDA (◣_◢)");
-                
+
                 //Obtengo la ultima partida configurada
                 ArrayList<Partida> listaDePartidas = unJuego.ordenarPartidasDesc();
                 Partida partidaActual = listaDePartidas.get(0);
-                
+
                 System.out.println("\n       " + partidaActual.getJugadorA().getAlias() + " vs " + partidaActual.getJugadorB().getAlias());
-                
+
                 System.out.println("\n-> Objetivo: " + partidaActual.obtenerTipoFinDePartida());
                 System.out.println();
                 mostrarTablero(partidaActual.getListaDeTableros().get(0).getMatriz());
-                
-                
 
-                
-                
                 boolean bandera = false;
-                while(!bandera){
-                    
-                    
-                    
+                while (!bandera) {
+
                     bandera = true;
                 }
-                        
-                
-                
 
-                        
-                
             } else {
                 System.out.println("No existe ninguna partida configurada.");
             }
@@ -205,7 +185,10 @@ public class Prueba {
         }
     }
 
-    public static void MostrarMenuPrincipal() {
+    //*************************************************************************//
+    //*************************************************************************//
+    //******************  METODOS DEL MENÚ  ***********************************//
+    public static void mostrarMenuPrincipal() {
         System.out.println("~~~~~~~• MENÚ PRINCIPAL •~~~~~~~");
         System.out.println("• [1]Registrar jugador");
         System.out.println("• [2]Configurar partida");
@@ -416,23 +399,14 @@ public class Prueba {
 
         return resultado;
     }
-    
-        private static void mostrarRanking(Juego unJuego) {
+
+    private static void mostrarRanking(Juego unJuego) {
         System.out.println("*** Ranking de Jugadores ***");
         for (int i = 0; i < unJuego.getListaDeJugadores().size(); i++) {
             Jugador j = unJuego.getListaDeJugadores().get(i);
             System.out.println(j.toString() + " || " + "Ganadas: " + j.getGanadas()
                     + " | Empatadas: " + j.getEmpates()
                     + " | Perdidas: " + j.getPerdidas());
-        }
-        }
-
-    //Este método se utiliza para esperar que el usuario presione la tecla Enter para continuar
-    private static void LeoComando() {
-        try {
-            System.in.read();
-        } catch (Exception e) {
-            System.out.println(ANSI_RED + "¡Error inesperado!, " + e.toString());
         }
     }
 
