@@ -144,15 +144,18 @@ public class Prueba {
                 Jugador jugadorA = partidaActual.getJugadorA();
                 Jugador jugadorB = partidaActual.getJugadorB();
                 
-                jugadorA.setTipoFicha(true);
-                jugadorB.setTipoFicha(false);
+                jugadorA.setTipoFicha('N');
+                jugadorB.setTipoFicha('B');
                 
                 System.out.println("\n       " + jugadorA.getAlias() + " vs " + jugadorB.getAlias());
 
                 System.out.println("\n-> Objetivo: " + partidaActual.obtenerTipoFinDePartida());
                 System.out.println();
                 mostrarTablero(partidaActual.getListaDeTableros().get(0).getMatriz());
-
+                partidaActual.setTableroActual(partidaActual.getListaDeTableros().get(0));
+                
+                scr.nextLine();
+                boolean movimientoEsValido = false;
                 boolean turnoJugador = true;
                 boolean bandera = false;
                 String txtVar;
@@ -160,8 +163,8 @@ public class Prueba {
                 while (partidaActual.getCantidadMovimientos() > 0) {
 
                     if (turnoJugador) {//Mueve jugador A
-                        System.out.println("\n->Turno de " + jugadorA.getAlias() + " (Fichas negras)");
-                        System.out.print("Ingrese fila/columna de ficha a mover, por ejemplo : ");
+                        System.out.println("\n• Turno de " + jugadorA.getAlias() + " (Fichas Negras)");
+                        System.out.print("Indique la ficha de origen y el destino hacia quieres moverla ejemplo A1-C1: ");
 
                         while (!bandera) {
                             txtVar = scr.nextLine();
@@ -174,12 +177,27 @@ public class Prueba {
                                     int[] posicionOrigen = partidaActual.convertirColumnaFila(movimientosOrigenDestino[0]);
                                     int[] posicionDestino = partidaActual.convertirColumnaFila(movimientosOrigenDestino[1]);
 
-                                    //partidaActual.getTableroActual().movimientoValido(filaO, colO, filaD, colD, mat)
+                                    Tablero tableroClon = (Tablero)partidaActual.getTableroActual().clone();
                                     
-                                    
-                                    
+                                    movimientoEsValido = tableroClon.movimientoValido(posicionOrigen[0], posicionOrigen[1], posicionDestino[0], posicionDestino[1], tableroClon.getMatriz(), jugadorA);
+                                    if(movimientoEsValido){
+                                        //Cambio la ficha al lugar que me movi
+                                        tableroClon.getMatriz()[posicionDestino[0]][posicionDestino[1]] = jugadorA.getTipoFicha();
+                                        tableroClon.getMatriz()[posicionOrigen[0]][posicionOrigen[1]] = 'O';
+                                        
+                                        //Verifico si puedo comer fichas..
+                                        tableroClon.comerFichas(posicionDestino[0], posicionDestino[1], tableroClon.getMatriz());
+                                        
+                                        //Verifico si formo un marco
+                                        tableroClon.formaMarco(posicionDestino[0], posicionDestino[1], tableroClon.getMatriz());
+                                        
+                                        mostrarTablero(tableroClon.getMatriz());
+                                        
+                                    } else {
+                                        System.out.print("\nError!, movimiento no valido.\nIngrese otros valores: ");
+                                    }
                                 } else {
-                                    System.out.println("Error!, Movimiento no valido. Debe ingresar por ejemplo 'FilaColumnaOrigen-FilaColumnaDestino'. \nIngrese otros valores: ");
+                                    System.out.print("Error!, Movimiento no valido. Debe ingresar por ejemplo 'FilaColumnaOrigen-FilaColumnaDestino'. \nIngrese otros valores: ");
                                 }
                             } else {
                                 partidaActual.setCantidadMovimientos(1);
@@ -199,7 +217,7 @@ public class Prueba {
                 System.out.println("No existe ninguna partida configurada.");
             }
         } catch (Exception ex) {
-            System.out.println("Ocurrió un error catastrófico: " + ex.getMessage());
+            System.out.println("Ocurrió un error catastrófico: " + ex);
         }
     }
 

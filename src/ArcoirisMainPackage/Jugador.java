@@ -7,7 +7,7 @@ public class Jugador implements Comparable<Jugador> {
     private int ganadas;
     private int perdidas;
     private int empates;
-    private boolean tipoFicha;//True = Blancas, False = Negras
+    private char tipoFicha;//B = Blancas, N = Negras
     
     public void setNombre(String nombre) {
         this.nombre = nombre;
@@ -17,11 +17,11 @@ public class Jugador implements Comparable<Jugador> {
         return nombre;
     }
 
-    public boolean getTipoFicha(){
+    public char getTipoFicha(){
         return this.tipoFicha;
     }
     
-    public void setTipoFicha(boolean unTipoFicha){
+    public void setTipoFicha(char unTipoFicha){
         this.tipoFicha = unTipoFicha;
     }
     
