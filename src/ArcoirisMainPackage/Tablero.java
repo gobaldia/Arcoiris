@@ -252,28 +252,47 @@ public class Tablero {
         return bandera;
     }
     
-    public static void comerFichas(int fila, int col, char[][] mat){
-        int[] movsX = {-1, 0, 1, 0, -1, 1, 1, -1};
-        int[] movsY = {0, 1, 0, -1, 1, 1, -1, -1};
-        
-        for (int i = 0; i < 8; i++) {
-            int nuevaX = fila + movsX[i];
-            int nuevaY = col + movsY[i];
-            boolean bandera = false;
-            
-            while (!bandera) {
-                if (mat[nuevaX][nuevaY] == 'o' || mat[nuevaX][nuevaY] == mat[fila][col] || nuevaX == 0 || nuevaY == 0) {
-                    bandera = true;
-                }
-                nuevaX = nuevaX + movsX[i];
-                nuevaY = nuevaY + movsY[i];
-            }
-            
-            if (nuevaX != fila || nuevaY != col) {
-                while (mat[nuevaX][nuevaY] != mat[fila][col]) {                    
-                    mat[nuevaX][nuevaY] = mat[fila][col];
-                }
-            }
-        }
-    }
+public static char[][] comerFichas(int fila, int col, char[][] mat){
+
+	// defino mis vectores de movimientos
+	int[] movsX = {-1, 0, 1, 0, -1, 1, 1, -1};
+	int[] movsY = {0, 1, 0, -1, 1, 1, -1, -1};
+
+    // defino las nuevas coordenadas
+	int nuevaFila = fila;
+	int nuevaColumna = col;
+
+    // creo las banderas que harían llegar al final para esa dirección
+	boolean meEncuentro = false;
+	boolean encuentroO = false;
+	boolean borde = false;
+
+	for (int i = 0; i < movsX.length; i++) {
+		while (!(meEncuentro || encuentroO || borde)) {
+			nuevaFila = nuevaFila + movsX[i];
+			nuevaColumna = nuevaColumna + movsY[i];
+				if (nuevaFila == 0 || nuevaColumna == 0 || nuevaFila == mat.length || nuevaColumna == mat[0].length) {
+					borde = true;
+				} else if (mat[nuevaFila][nuevaColumna] == 'O') {
+					encuentroO = true;
+				} else if (mat[nuevaFila][nuevaColumna] == mat[fila][col]) {
+					meEncuentro = true;
+				}
+		}
+		if (meEncuentro) {
+			while (nuevaFila != fila || nuevaColumna != col) {
+				mat[nuevaFila][nuevaColumna] = mat[fila][col];
+				nuevaFila = nuevaFila - movsX[i];
+				nuevaColumna = nuevaColumna - movsY[i];
+			}
+		}
+		meEncuentro = false;
+		encuentroO = false;
+		borde = false;
+		nuevaFila = fila;
+		nuevaColumna = col;
+	}
+
+	return mat;
+}
 }
