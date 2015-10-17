@@ -30,30 +30,7 @@ public class Prueba {
                 + " /_/   \\_\\ |_|     \\___|  \\___/  |_| |_|    |_| |___/\n"
                 + "                                                     " + ANSI_RESET);
 
-//        System.out.println("            ¡¡GANADOR!!");
-//        System.out.println("                AAA");
-//        System.out.println("••••••••••••••••••••••••••••••••");
-//        System.out.println("•••••___•••••••••••••••••___•••••");
-//        System.out.println("••••_____•••••••••••••••_____••••");
-//        System.out.println("••••_____•••••••••••••••_____••••");
-//        System.out.println("••••_____•••••••••••••••_____••••");
-//        System.out.println("••••_____••____•••____••_____•••••");
-//        System.out.println("••••_____•______•______•_____•••••");
-//        System.out.println("••••_____•______•______•_____•••••");
-//        System.out.println("••••_____•____•••••••••••••••••••");
-//        System.out.println("••••_____•__••___________••••••••");
-//        System.out.println("••••_____•__••_______________••••");
-//        System.out.println("••••__________••_____________••••");
-//        System.out.println("••••___________••___________•••••");
-//        System.out.println("••••_____________•_________••••••");
-//        System.out.println("•••••_____________________•••••••");
-//        System.out.println("••••••___________________••••••••");
-//        System.out.println("••••••$$$$$$$$$$$$$$$$$$$••••••••");
-//        System.out.println("••••••$$$$$$$$$$$$$$$$$$$••••••••");
-//        System.out.println("••••••$$$$$$$$$$$$$$$$$$$••••••••");
-//        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-//        System.out.println("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
-//        mostrarTablero();
+        //mostrarTablero();
         //Creo el Scanner para manejar los datos ingresados por el usuario.        
         Scanner input = new Scanner(System.in);
 
@@ -164,17 +141,58 @@ public class Prueba {
                 //Obtengo la ultima partida configurada
                 ArrayList<Partida> listaDePartidas = unJuego.ordenarPartidasDesc();
                 Partida partidaActual = listaDePartidas.get(0);
-
-                System.out.println("\n       " + partidaActual.getJugadorA().getAlias() + " vs " + partidaActual.getJugadorB().getAlias());
+                Jugador jugadorA = partidaActual.getJugadorA();
+                Jugador jugadorB = partidaActual.getJugadorB();
+                
+                jugadorA.setTipoFicha(true);
+                jugadorB.setTipoFicha(false);
+                
+                System.out.println("\n       " + jugadorA.getAlias() + " vs " + jugadorB.getAlias());
 
                 System.out.println("\n-> Objetivo: " + partidaActual.obtenerTipoFinDePartida());
                 System.out.println();
                 mostrarTablero(partidaActual.getListaDeTableros().get(0).getMatriz());
 
+                boolean turnoJugador = true;
                 boolean bandera = false;
-                while (!bandera) {
+                String txtVar;
 
-                    bandera = true;
+                while (partidaActual.getCantidadMovimientos() > 0) {
+
+                    if (turnoJugador) {//Mueve jugador A
+                        System.out.println("\n->Turno de " + jugadorA.getAlias() + " (Fichas negras)");
+                        System.out.print("Ingrese fila/columna de ficha a mover, por ejemplo : ");
+
+                        while (!bandera) {
+                            txtVar = scr.nextLine();
+
+                            if (!(txtVar.toUpperCase().equals("X"))) {
+                                String[] movimientosOrigenDestino = partidaActual.ValidarPosicionesExisten(txtVar);
+
+                                if (!(movimientosOrigenDestino[0].isEmpty())) {
+                                    //Si el origen y destino ingresado por el usuario es coherente con la matriz lo convierto de a numeros
+                                    int[] posicionOrigen = partidaActual.convertirColumnaFila(movimientosOrigenDestino[0]);
+                                    int[] posicionDestino = partidaActual.convertirColumnaFila(movimientosOrigenDestino[1]);
+
+                                    //partidaActual.getTableroActual().movimientoValido(filaO, colO, filaD, colD, mat)
+                                    
+                                    
+                                    
+                                } else {
+                                    System.out.println("Error!, Movimiento no valido. Debe ingresar por ejemplo 'FilaColumnaOrigen-FilaColumnaDestino'. \nIngrese otros valores: ");
+                                }
+                            } else {
+                                partidaActual.setCantidadMovimientos(1);
+                                jugadorA.setPerdidas(jugadorA.getPerdidas() + 1);
+                                partidaActual.setGanador(jugadorB);
+                                bandera = true;
+                            } 
+                        }
+                    } else {//Mueve jugador B
+                        System.out.println("\n-> Turno de " + jugadorB.getAlias() + " (Fichas blancas)");
+                    }
+
+                    partidaActual.setCantidadMovimientos(partidaActual.getCantidadMovimientos() - 1);
                 }
 
             } else {
@@ -183,6 +201,10 @@ public class Prueba {
         } catch (Exception ex) {
             System.out.println("Ocurrió un error catastrófico: " + ex.getMessage());
         }
+    }
+
+    public static void JugarConConfiguracionA() {
+
     }
 
     //*************************************************************************//
@@ -359,7 +381,7 @@ public class Prueba {
 
                 if (jugadorElejido > 0 && jugadorElejido <= listaJugadores.size()) {
                     unaPartida.agregarJugadorA(listaJugadores.get(jugadorElejido - 1));
-
+                    
                     ArrayList<Jugador> listaSinJugadorSeleccionado = new ArrayList<Jugador>();
                     for (int i = 0; i < listaJugadores.size(); i++) {
                         if (i != (jugadorElejido - 1)) {

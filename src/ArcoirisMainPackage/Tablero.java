@@ -71,7 +71,7 @@ public class Tablero {
         if (esDiagonal) {
             int inc = 1;
             while (inc <= filaD) {                
-                if (mat[filaO + inc][colO + inc] != 'o') {
+                if (mat[filaO + inc][colO + inc] != 'O') {
                     estaVacio = false;
                 }
                 inc++;
@@ -80,13 +80,13 @@ public class Tablero {
             int inc = 1;
             if (filaO == filaD) {
                 while (inc <= colD) {                    
-                    if (mat[filaO][colD + inc] != 'o') {
+                    if (mat[filaO][colD + inc] != 'O') {
                         estaVacio = false;
                     }
                 }
             } else {
                 while (inc <= filaD) {                    
-                    if (mat[filaD + inc][colD] != 'o') {
+                    if (mat[filaD + inc][colD] != 'O') {
                         estaVacio = false;
                     }
                 }
