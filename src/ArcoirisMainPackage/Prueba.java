@@ -18,7 +18,15 @@ public class Prueba {
     
 
     public static void main(String[] args) {
-        System.out.println(ANSI_RED + "     _                            _          _       \n" + ANSI_PURPLE +
+        System.out.println(ANSI_PURPLE + "	  	        []  ,----.___\n" + ANSI_GREEN +
+"		      __||_/___      '.\n" + ANSI_GREEN +
+"		     / O||    /|       )\n" + ANSI_YELLOW +
+"		    /   \"\"   / /   =._/\n" + ANSI_YELLOW +
+"		   /________/ /\n" + ANSI_CYAN +
+"		   |________|/   " + ANSI_RESET);
+        
+        
+        System.out.println(ANSI_PURPLE + "     _                            _          _       \n" + ANSI_PURPLE +
 "    / \\     _ __    ___    ___   (_)  _ __  (_)  ___ \n" + ANSI_GREEN +
 "   / _ \\   | '__|  / __|  / _ \\  | | | '__| | | / __|\n" + ANSI_YELLOW +
 "  / ___ \\  | |    | (__  | (_) | | | | |    | | \\__ \\\n" + ANSI_CYAN +
