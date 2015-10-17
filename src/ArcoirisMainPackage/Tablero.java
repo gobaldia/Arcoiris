@@ -187,6 +187,44 @@ public class Tablero {
         return unaMatriz;
     }
     
+    public char[][] generarMatrizConFichasEnI(int marcoInicio) {
+        char[][] unaMatriz = new char[13][13];
+        
+        for (int i = 0; i < unaMatriz.length; i++) {
+            for (int j = 0; j < unaMatriz[i].length; j++) {
+                unaMatriz[i][j] = 'O';
+            }
+        }
+        
+        boolean bandera = true;
+        int contador = 0;
+
+        for (int i = 0; i < unaMatriz.length; i++) {
+            for (int j = 0; j < unaMatriz[0].length; j++) {
+                
+                if (medirDistanciaMarco(i, j, marcoInicio)) {
+                    //Manejo las fichas dentro del marco que se pasa por parametro
+                    if (i == marcoInicio - 1 && j == marcoInicio - 1) {
+                        unaMatriz[i][j] = 'B';
+                    } else if (i == marcoInicio - 1 && j != marcoInicio - 1) {
+                        unaMatriz[i][j] = 'N';
+                    } else if (i == unaMatriz.length - marcoInicio && j != unaMatriz.length - marcoInicio) {
+                        unaMatriz[i][j] = 'N';
+                    } else if (i == unaMatriz.length - marcoInicio && j == unaMatriz.length - marcoInicio) {
+                        unaMatriz[i][j] = 'B';
+                    } else {
+                        unaMatriz[i][j] = 'B';
+                    }
+                }
+            }
+            
+            contador = 0;
+            bandera = true;
+        }
+
+        return unaMatriz;
+    }
+    
     private boolean medirDistanciaMarco(int fila, int columna, int marcoAPintar) {
         boolean bandera = false;
 
