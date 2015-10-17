@@ -251,4 +251,29 @@ public class Tablero {
 
         return bandera;
     }
+    
+    public static void comerFichas(int fila, int col, char[][] mat){
+        int[] movsX = {-1, 0, 1, 0, -1, 1, 1, -1};
+        int[] movsY = {0, 1, 0, -1, 1, 1, -1, -1};
+        
+        for (int i = 0; i < 8; i++) {
+            int nuevaX = fila + movsX[i];
+            int nuevaY = col + movsY[i];
+            boolean bandera = false;
+            
+            while (!bandera) {
+                if (mat[nuevaX][nuevaY] == 'o' || mat[nuevaX][nuevaY] == mat[fila][col] || nuevaX == 0 || nuevaY == 0) {
+                    bandera = true;
+                }
+                nuevaX = nuevaX + movsX[i];
+                nuevaY = nuevaY + movsY[i];
+            }
+            
+            if (nuevaX != fila || nuevaY != col) {
+                while (mat[nuevaX][nuevaY] != mat[fila][col]) {                    
+                    mat[nuevaX][nuevaY] = mat[fila][col];
+                }
+            }
+        }
+    }
 }
