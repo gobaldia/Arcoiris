@@ -115,7 +115,7 @@ public class Partida implements Comparable<Partida> {
         if(tipoDistribucionFichas == 1){
             tableroInicio.setMatriz(tableroInicio.generarMatrizConFichasAlAzar(marcoInicial));
         } else if (tipoDistribucionFichas == 2){
-            
+            tableroInicio.setMatriz(tableroInicio.generarMatrizConFichasEnI(marcoInicial));
         } else if(tipoDistribucionFichas == 3){
             tableroInicio.setMatriz(tableroInicio.generarMatrizConFichasEnL(marcoInicial));
         }

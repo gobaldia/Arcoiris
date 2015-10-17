@@ -187,6 +187,44 @@ public class Tablero {
         return unaMatriz;
     }
     
+    public char[][] generarMatrizConFichasEnI(int marcoInicio) {
+        char[][] unaMatriz = new char[13][13];
+        
+        for (int i = 0; i < unaMatriz.length; i++) {
+            for (int j = 0; j < unaMatriz[i].length; j++) {
+                unaMatriz[i][j] = 'O';
+            }
+        }
+        
+        boolean bandera = true;
+        int contador = 0;
+
+        for (int i = 0; i < unaMatriz.length; i++) {
+            for (int j = 0; j < unaMatriz[0].length; j++) {
+                
+                if (medirDistanciaMarco(i, j, marcoInicio)) {
+                    //Manejo las fichas dentro del marco que se pasa por parametro
+                    if (i == marcoInicio - 1 && j == marcoInicio - 1) {
+                        unaMatriz[i][j] = 'B';
+                    } else if (i == marcoInicio - 1 && j != marcoInicio - 1) {
+                        unaMatriz[i][j] = 'N';
+                    } else if (i == unaMatriz.length - marcoInicio && j != unaMatriz.length - marcoInicio) {
+                        unaMatriz[i][j] = 'N';
+                    } else if (i == unaMatriz.length - marcoInicio && j == unaMatriz.length - marcoInicio) {
+                        unaMatriz[i][j] = 'B';
+                    } else {
+                        unaMatriz[i][j] = 'B';
+                    }
+                }
+            }
+            
+            contador = 0;
+            bandera = true;
+        }
+
+        return unaMatriz;
+    }
+    
     private boolean medirDistanciaMarco(int fila, int columna, int marcoAPintar) {
         boolean bandera = false;
 
@@ -252,28 +290,47 @@ public class Tablero {
         return bandera;
     }
     
-    public static void comerFichas(int fila, int col, char[][] mat){
-        int[] movsX = {-1, 0, 1, 0, -1, 1, 1, -1};
-        int[] movsY = {0, 1, 0, -1, 1, 1, -1, -1};
-        
-        for (int i = 0; i < 8; i++) {
-            int nuevaX = fila + movsX[i];
-            int nuevaY = col + movsY[i];
-            boolean bandera = false;
-            
-            while (!bandera) {
-                if (mat[nuevaX][nuevaY] == 'o' || mat[nuevaX][nuevaY] == mat[fila][col] || nuevaX == 0 || nuevaY == 0) {
-                    bandera = true;
-                }
-                nuevaX = nuevaX + movsX[i];
-                nuevaY = nuevaY + movsY[i];
-            }
-            
-            if (nuevaX != fila || nuevaY != col) {
-                while (mat[nuevaX][nuevaY] != mat[fila][col]) {                    
-                    mat[nuevaX][nuevaY] = mat[fila][col];
-                }
-            }
-        }
-    }
+public static char[][] comerFichas(int fila, int col, char[][] mat){
+
+	// defino mis vectores de movimientos
+	int[] movsX = {-1, 0, 1, 0, -1, 1, 1, -1};
+	int[] movsY = {0, 1, 0, -1, 1, 1, -1, -1};
+
+    // defino las nuevas coordenadas
+	int nuevaFila = fila;
+	int nuevaColumna = col;
+
+    // creo las banderas que harían llegar al final para esa dirección
+	boolean meEncuentro = false;
+	boolean encuentroO = false;
+	boolean borde = false;
+
+	for (int i = 0; i < movsX.length; i++) {
+		while (!(meEncuentro || encuentroO || borde)) {
+			nuevaFila = nuevaFila + movsX[i];
+			nuevaColumna = nuevaColumna + movsY[i];
+				if (nuevaFila == 0 || nuevaColumna == 0 || nuevaFila == mat.length || nuevaColumna == mat[0].length) {
+					borde = true;
+				} else if (mat[nuevaFila][nuevaColumna] == 'O') {
+					encuentroO = true;
+				} else if (mat[nuevaFila][nuevaColumna] == mat[fila][col]) {
+					meEncuentro = true;
+				}
+		}
+		if (meEncuentro) {
+			while (nuevaFila != fila || nuevaColumna != col) {
+				mat[nuevaFila][nuevaColumna] = mat[fila][col];
+				nuevaFila = nuevaFila - movsX[i];
+				nuevaColumna = nuevaColumna - movsY[i];
+			}
+		}
+		meEncuentro = false;
+		encuentroO = false;
+		borde = false;
+		nuevaFila = fila;
+		nuevaColumna = col;
+	}
+
+	return mat;
+}
 }
