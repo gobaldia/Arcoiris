@@ -224,20 +224,20 @@ public class Prueba {
                                     if (!resultadoComida.isEmpty() && formaMarco) {
                                         tableroClon.setResultadoAccion("Desplazamiento con captura y ocupación del centro: " + movimientosOrigenDestino[0] + "-" + movimientosOrigenDestino[1] + " " + resultadoComida + "*");
                                         conquistoCentro = true;
-                                        
-                                        System.out.print("~~~~~~~~~• FIN DEL JUEGO •~~~~~~~~~ FIN DEL JUEGO\nGanador: " + jugadorA.getAlias());
+
+                                        System.out.print("~~~~~~~~~• FIN DEL JUEGO •~~~~~~~~~ FIN DEL JUEGO\nResultado: " + jugadorA.getAlias() + " es el ganador!");
                                         jugadorA.setGanadas(jugadorA.getGanadas() + 1);
                                         jugadorB.setPerdidas(jugadorB.getPerdidas() + 1);
-                                        
+
                                     } else if (!resultadoComida.isEmpty()) {
                                         tableroClon.setResultadoAccion("Desplazamiento con captura: " + movimientosOrigenDestino[0] + "-" + movimientosOrigenDestino[1] + " " + resultadoComida);
                                     } else if (formaMarco) {
                                         tableroClon.setResultadoAccion("Desplazamiento con ocupación del centro: " + movimientosOrigenDestino[0] + "-" + movimientosOrigenDestino[1] + " *");
                                         conquistoCentro = true;
-                                        System.out.print("~~~~~~~~~• FIN DEL JUEGO •~~~~~~~~~ FIN DEL JUEGO\nGanador: " + jugadorA.getAlias());
+                                        System.out.print("~~~~~~~~~• FIN DEL JUEGO •~~~~~~~~~ FIN DEL JUEGO\nResultado: " + jugadorA.getAlias() + " es el ganador!");
                                         jugadorA.setGanadas(jugadorA.getGanadas() + 1);
                                         jugadorB.setPerdidas(jugadorB.getPerdidas() + 1);
-                                        
+
                                     } else {
                                         tableroClon.setResultadoAccion("Desplazamiento simple: " + movimientosOrigenDestino[0] + "-" + movimientosOrigenDestino[1]);
                                     }
@@ -303,22 +303,22 @@ public class Prueba {
                                     tableroClon.setResultadoAccion("");
                                     if (!resultadoComida.isEmpty() && formaMarco) {
                                         tableroClon.setResultadoAccion("Desplazamiento con captura y ocupación del centro: " + movimientosOrigenDestino[0] + "-" + movimientosOrigenDestino[1] + " " + resultadoComida + "*");
-                                        
-                                        System.out.print("~~~~~~~~~• FIN DEL JUEGO •~~~~~~~~~ FIN DEL JUEGO\nGanador: " + jugadorB.getAlias());
+
+                                        System.out.print("~~~~~~~~~• FIN DEL JUEGO •~~~~~~~~~ FIN DEL JUEGO\nResultado: " + jugadorB.getAlias() + " es el ganador!");
                                         jugadorB.setGanadas(jugadorB.getGanadas() + 1);
                                         jugadorA.setPerdidas(jugadorA.getPerdidas() + 1);
                                         conquistoCentro = true;
-                                        
+
                                     } else if (!resultadoComida.isEmpty()) {
                                         tableroClon.setResultadoAccion("Desplazamiento con captura: " + movimientosOrigenDestino[0] + "-" + movimientosOrigenDestino[1] + " " + resultadoComida);
                                     } else if (formaMarco) {
                                         tableroClon.setResultadoAccion("Desplazamiento con ocupación del centro: " + movimientosOrigenDestino[0] + "-" + movimientosOrigenDestino[1] + " *");
-                                        
-                                        System.out.print("~~~~~~~~~• FIN DEL JUEGO •~~~~~~~~~ FIN DEL JUEGO\nGanador: " + jugadorB.getAlias());
+
+                                        System.out.print("~~~~~~~~~• FIN DEL JUEGO •~~~~~~~~~ FIN DEL JUEGO\nResultado: " + jugadorB.getAlias() + " es el ganador!");
                                         jugadorB.setGanadas(jugadorB.getGanadas() + 1);
                                         jugadorA.setPerdidas(jugadorA.getPerdidas() + 1);
                                         conquistoCentro = true;
-                                        
+
                                     } else {
                                         tableroClon.setResultadoAccion("Desplazamiento simple: " + movimientosOrigenDestino[0] + "-" + movimientosOrigenDestino[1]);
                                     }
@@ -505,10 +505,24 @@ public class Prueba {
 
                 unaPartida.setCantidadMovimientos(unaPartida.getCantidadMovimientos() - 1);
             }
-            
-//            if(unaPartida.getTableroActual()){
-//                
-//            }
+
+            if (unaPartida.getTableroActual().getMatriz()[6][6] == 'B') {
+                System.out.print("~~~~~~~~~• FIN DEL JUEGO •~~~~~~~~~ \nResultado: " + jugadorB.getAlias() + " es el ganador!");
+                
+                jugadorB.setGanadas(jugadorB.getGanadas() + 1);
+                jugadorA.setPerdidas(jugadorA.getPerdidas() + 1);
+            } else if (unaPartida.getTableroActual().getMatriz()[6][6] == 'N') {
+                System.out.print("~~~~~~~~~• FIN DEL JUEGO •~~~~~~~~~ \nResultado: " + jugadorA.getAlias() + " es el ganador!");
+                
+                jugadorA.setGanadas(jugadorA.getGanadas() + 1);
+                jugadorB.setPerdidas(jugadorB.getPerdidas() + 1);
+            } else {
+                System.out.print("~~~~~~~~~• FIN DEL JUEGO •~~~~~~~~~ \nResultado: Empate");
+                
+                jugadorA.setEmpates(jugadorA.getEmpates() + 1);
+                jugadorB.setEmpates(jugadorB.getEmpates() + 1);
+            }
+
         } catch (Exception ex) {
             System.out.println("Ocurrió un error catastrófico: " + ex);
         }
