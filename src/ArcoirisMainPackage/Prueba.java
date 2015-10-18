@@ -117,6 +117,9 @@ public class Prueba {
                         leoComando();
                         break;
                     case 5: //Replicar partida
+                        replicarPartida(input, miJuego);
+                        System.out.println("\nPresione enter para continuar...");
+                        leoComando();
                         break;
                     default:
                         System.out.println(ANSI_RED + "\n¡Error!, Opción no existe");
@@ -141,25 +144,29 @@ public class Prueba {
                 //Obtengo la ultima partida configurada
                 ArrayList<Partida> listaDePartidas = unJuego.ordenarPartidasDesc();
                 Partida partidaActual = listaDePartidas.get(0);
-                Jugador jugadorA = partidaActual.getJugadorA();
-                Jugador jugadorB = partidaActual.getJugadorB();
 
-                jugadorA.setTipoFicha('N');
-                jugadorB.setTipoFicha('B');
+                if (partidaActual.getCantidadMovimientos() == 10) {
+                    Jugador jugadorA = partidaActual.getJugadorA();
+                    Jugador jugadorB = partidaActual.getJugadorB();
 
-                System.out.println("\n       " + jugadorA.getAlias() + " vs " + jugadorB.getAlias());
+                    jugadorA.setTipoFicha('N');
+                    jugadorB.setTipoFicha('B');
 
-                System.out.println("\n-> Objetivo: " + partidaActual.obtenerTipoFinDePartida());
-                System.out.println();
-                mostrarTablero(partidaActual.getListaDeTableros().get(0).getMatriz());
-                partidaActual.setTableroActual(partidaActual.getListaDeTableros().get(0));
+                    System.out.println("\n       " + jugadorA.getAlias() + " vs " + jugadorB.getAlias());
 
-                if (partidaActual.getTipoFinPartida() == 1) { //Hasta que no hayan mas movimientos
-                    jugarPorCantidadDeMovimientos(scr, partidaActual, jugadorA, jugadorB);
-                } else { //Primero en conquistar el centro gana
-                    jugarConquistaElCentro(scr, partidaActual, jugadorA, jugadorB);
+                    System.out.println("\n-> Objetivo: " + partidaActual.obtenerTipoFinDePartida());
+                    System.out.println();
+                    mostrarTablero(partidaActual.getListaDeTableros().get(0).getMatriz());
+                    partidaActual.setTableroActual(partidaActual.getListaDeTableros().get(0));
+
+                    if (partidaActual.getTipoFinPartida() == 1) { //Hasta que no hayan mas movimientos
+                        jugarPorCantidadDeMovimientos(scr, partidaActual, jugadorA, jugadorB);
+                    } else { //Primero en conquistar el centro gana
+                        jugarConquistaElCentro(scr, partidaActual, jugadorA, jugadorB);
+                    }
+                } else {
+                    System.out.println("No existen partidas nuevas, vuelva al menú y configure otra.");
                 }
-
             } else {
                 System.out.println("No existe ninguna partida configurada.");
             }
@@ -174,6 +181,7 @@ public class Prueba {
             boolean movimientoEsValido = false;
             boolean turnoJugador = true;
             boolean bandera = false;
+            boolean formaMarco = false;
             boolean conquistoCentro = false;
             String txtVar;
 
@@ -203,12 +211,39 @@ public class Prueba {
                                     tableroClon.getMatriz()[posicionOrigen[0]][posicionOrigen[1]] = 'O';
 
                                     //Verifico si puedo comer fichas..
-                                    tableroClon.comerFichas(posicionDestino[0], posicionDestino[1]);
+                                    String resultadoComida = tableroClon.comerFichas(posicionDestino[0], posicionDestino[1]);
 
                                     //Verifico si formo un marco
-                                    tableroClon.formaMarco(posicionDestino[0], posicionDestino[1]);
+                                    formaMarco = tableroClon.formaMarco(posicionDestino[0], posicionDestino[1], jugadorA);
 
                                     mostrarTablero(tableroClon.getMatriz());
+
+                                    //Debo de formatear los numeros para mostrar un mensaje acorde de lo sucedido en la comida
+                                    //Limpio la accion del clon anterior
+                                    tableroClon.setResultadoAccion("");
+                                    if (!resultadoComida.isEmpty() && formaMarco) {
+                                        tableroClon.setResultadoAccion("Desplazamiento con captura y ocupación del centro: " + movimientosOrigenDestino[0] + "-" + movimientosOrigenDestino[1] + " " + resultadoComida + "*");
+                                        conquistoCentro = true;
+
+                                        System.out.print("~~~~~~~~~• FIN DEL JUEGO •~~~~~~~~~ FIN DEL JUEGO\nResultado: " + jugadorA.getAlias() + " es el ganador!");
+                                        jugadorA.setGanadas(jugadorA.getGanadas() + 1);
+                                        jugadorB.setPerdidas(jugadorB.getPerdidas() + 1);
+
+                                    } else if (!resultadoComida.isEmpty()) {
+                                        tableroClon.setResultadoAccion("Desplazamiento con captura: " + movimientosOrigenDestino[0] + "-" + movimientosOrigenDestino[1] + " " + resultadoComida);
+                                    } else if (formaMarco) {
+                                        tableroClon.setResultadoAccion("Desplazamiento con ocupación del centro: " + movimientosOrigenDestino[0] + "-" + movimientosOrigenDestino[1] + " *");
+                                        conquistoCentro = true;
+                                        System.out.print("~~~~~~~~~• FIN DEL JUEGO •~~~~~~~~~ FIN DEL JUEGO\nResultado: " + jugadorA.getAlias() + " es el ganador!");
+                                        jugadorA.setGanadas(jugadorA.getGanadas() + 1);
+                                        jugadorB.setPerdidas(jugadorB.getPerdidas() + 1);
+
+                                    } else {
+                                        tableroClon.setResultadoAccion("Desplazamiento simple: " + movimientosOrigenDestino[0] + "-" + movimientosOrigenDestino[1]);
+                                    }
+
+                                    System.out.println("\n• Resultado de la accion anterior: " + tableroClon.getResultadoAccion());
+                                    unaPartida.getListaDeTableros().add(tableroClon);
                                     bandera = true;
 
                                 } else {
@@ -228,6 +263,8 @@ public class Prueba {
 
                     bandera = false;
                     turnoJugador = !turnoJugador;
+                    movimientoEsValido = false;
+                    formaMarco = false;
 
                 } else {//Mueve jugador B
                     System.out.println("\n• Turno de " + jugadorB.getAlias() + " (Fichas blancas)");
@@ -247,18 +284,49 @@ public class Prueba {
                                 Tablero tableroClon = (Tablero) unaPartida.getTableroActual().clone();
 
                                 movimientoEsValido = tableroClon.movimientoValido(posicionOrigen[0], posicionOrigen[1], posicionDestino[0], posicionDestino[1], tableroClon.getMatriz(), jugadorA);
+
                                 if (movimientoEsValido) {
                                     //Cambio la ficha al lugar que me movi
-                                    tableroClon.getMatriz()[posicionDestino[0]][posicionDestino[1]] = jugadorA.getTipoFicha();
+                                    tableroClon.getMatriz()[posicionDestino[0]][posicionDestino[1]] = jugadorB.getTipoFicha();
                                     tableroClon.getMatriz()[posicionOrigen[0]][posicionOrigen[1]] = 'O';
 
                                     //Verifico si puedo comer fichas..
-                                    tableroClon.comerFichas(posicionDestino[0], posicionDestino[1]);
+                                    String resultadoComida = tableroClon.comerFichas(posicionDestino[0], posicionDestino[1]);
 
                                     //Verifico si formo un marco
-                                    tableroClon.formaMarco(posicionDestino[0], posicionDestino[1]);
+                                    formaMarco = tableroClon.formaMarco(posicionDestino[0], posicionDestino[1], jugadorB);
 
                                     mostrarTablero(tableroClon.getMatriz());
+
+                                    //Debo de formatear los numeros para mostrar un mensaje acorde de lo sucedido en la comida
+                                    //Limpio la accion del clon anterior
+                                    tableroClon.setResultadoAccion("");
+                                    if (!resultadoComida.isEmpty() && formaMarco) {
+                                        tableroClon.setResultadoAccion("Desplazamiento con captura y ocupación del centro: " + movimientosOrigenDestino[0] + "-" + movimientosOrigenDestino[1] + " " + resultadoComida + "*");
+
+                                        System.out.print("~~~~~~~~~• FIN DEL JUEGO •~~~~~~~~~ FIN DEL JUEGO\nResultado: " + jugadorB.getAlias() + " es el ganador!");
+                                        jugadorB.setGanadas(jugadorB.getGanadas() + 1);
+                                        jugadorA.setPerdidas(jugadorA.getPerdidas() + 1);
+                                        conquistoCentro = true;
+
+                                    } else if (!resultadoComida.isEmpty()) {
+                                        tableroClon.setResultadoAccion("Desplazamiento con captura: " + movimientosOrigenDestino[0] + "-" + movimientosOrigenDestino[1] + " " + resultadoComida);
+                                    } else if (formaMarco) {
+                                        tableroClon.setResultadoAccion("Desplazamiento con ocupación del centro: " + movimientosOrigenDestino[0] + "-" + movimientosOrigenDestino[1] + " *");
+
+                                        System.out.print("~~~~~~~~~• FIN DEL JUEGO •~~~~~~~~~ FIN DEL JUEGO\nResultado: " + jugadorB.getAlias() + " es el ganador!");
+                                        jugadorB.setGanadas(jugadorB.getGanadas() + 1);
+                                        jugadorA.setPerdidas(jugadorA.getPerdidas() + 1);
+                                        conquistoCentro = true;
+
+                                    } else {
+                                        tableroClon.setResultadoAccion("Desplazamiento simple: " + movimientosOrigenDestino[0] + "-" + movimientosOrigenDestino[1]);
+                                    }
+
+                                    System.out.println("\n• Resultado de la accion anterior: " + tableroClon.getResultadoAccion());
+
+                                    unaPartida.getListaDeTableros().add(tableroClon);
+                                    bandera = true;
 
                                 } else {
                                     System.out.print("\nError!, movimiento no valido.\nIngrese otros valores: ");
@@ -272,12 +340,13 @@ public class Prueba {
                             unaPartida.setGanador(jugadorB);
                             bandera = true;
                             System.out.println("\n(ノಠ益ಠ)ノ彡┻━┻ FIN DEL JUEGO! \nGanador: " + ANSI_GREEN + jugadorB.getAlias() + ANSI_RESET);
-
                         }
                     }
 
                     bandera = false;
                     turnoJugador = !turnoJugador;
+                    movimientoEsValido = false;
+                    formaMarco = false;
                 }
 
                 unaPartida.setCantidadMovimientos(unaPartida.getCantidadMovimientos() - 1);
@@ -300,7 +369,7 @@ public class Prueba {
 
                 if (turnoJugador) {//Mueve jugador A
                     System.out.println("\n• Turno de " + jugadorA.getAlias() + " (Fichas Negras)");
-                    System.out.print("Indique la ficha de origen y el destino hacia donde mover ficha.\nEjemplo 'A1-C3'\nIngrese opción: ");
+                    System.out.print("Indique origen y el destino hacia donde mover ficha.\nEjemplo 'A1-C3'\nIngrese opción: ");
 
                     while (!bandera) {
                         txtVar = scr.nextLine();
@@ -325,7 +394,9 @@ public class Prueba {
                                     String resultadoComida = tableroClon.comerFichas(posicionDestino[0], posicionDestino[1]);
 
                                     //Verifico si formo un marco
-                                    formaMarco = tableroClon.formaMarco(posicionDestino[0], posicionDestino[1]);
+                                    formaMarco = tableroClon.formaMarco(posicionDestino[0], posicionDestino[1], jugadorA);
+
+                                    mostrarTablero(tableroClon.getMatriz());
 
                                     //Debo de formatear los numeros para mostrar un mensaje acorde de lo sucedido en la comida
                                     //Limpio la accion del clon anterior
@@ -336,11 +407,12 @@ public class Prueba {
                                         tableroClon.setResultadoAccion("Desplazamiento con captura: " + movimientosOrigenDestino[0] + "-" + movimientosOrigenDestino[1] + " " + resultadoComida);
                                     } else if (formaMarco) {
                                         tableroClon.setResultadoAccion("Desplazamiento con ocupación del centro: " + movimientosOrigenDestino[0] + "-" + movimientosOrigenDestino[1] + " *");
+                                    } else {
+                                        tableroClon.setResultadoAccion("Desplazamiento simple: " + movimientosOrigenDestino[0] + "-" + movimientosOrigenDestino[1]);
                                     }
 
-                                    mostrarTablero(tableroClon.getMatriz());
-
-                                    //String algo = ""
+                                    System.out.println("\n• Resultado de la accion anterior: " + tableroClon.getResultadoAccion());
+                                    unaPartida.getListaDeTableros().add(tableroClon);
                                     bandera = true;
 
                                 } else {
@@ -382,16 +454,32 @@ public class Prueba {
                                 movimientoEsValido = tableroClon.movimientoValido(posicionOrigen[0], posicionOrigen[1], posicionDestino[0], posicionDestino[1], tableroClon.getMatriz(), jugadorB);
                                 if (movimientoEsValido) {
                                     //Cambio la ficha al lugar que me movi
-                                    tableroClon.getMatriz()[posicionDestino[0]][posicionDestino[1]] = jugadorB.getTipoFicha();
+                                    tableroClon.getMatriz()[posicionDestino[0]][posicionDestino[1]] = jugadorA.getTipoFicha();
                                     tableroClon.getMatriz()[posicionOrigen[0]][posicionOrigen[1]] = 'O';
 
                                     //Verifico si puedo comer fichas..
-                                    tableroClon.comerFichas(posicionDestino[0], posicionDestino[1]);
+                                    String resultadoComida = tableroClon.comerFichas(posicionDestino[0], posicionDestino[1]);
 
                                     //Verifico si formo un marco
-                                    tableroClon.formaMarco(posicionDestino[0], posicionDestino[1]);
+                                    formaMarco = tableroClon.formaMarco(posicionDestino[0], posicionDestino[1], jugadorA);
 
                                     mostrarTablero(tableroClon.getMatriz());
+
+                                    //Debo de formatear los numeros para mostrar un mensaje acorde de lo sucedido en la comida
+                                    //Limpio la accion del clon anterior
+                                    tableroClon.setResultadoAccion("");
+                                    if (!resultadoComida.isEmpty() && formaMarco) {
+                                        tableroClon.setResultadoAccion("Desplazamiento con captura y ocupación del centro: " + movimientosOrigenDestino[0] + "-" + movimientosOrigenDestino[1] + " " + resultadoComida + "*");
+                                    } else if (!resultadoComida.isEmpty()) {
+                                        tableroClon.setResultadoAccion("Desplazamiento con captura: " + movimientosOrigenDestino[0] + "-" + movimientosOrigenDestino[1] + " " + resultadoComida);
+                                    } else if (formaMarco) {
+                                        tableroClon.setResultadoAccion("Desplazamiento con ocupación del centro: " + movimientosOrigenDestino[0] + "-" + movimientosOrigenDestino[1] + " *");
+                                    } else {
+                                        tableroClon.setResultadoAccion("Desplazamiento simple: " + movimientosOrigenDestino[0] + "-" + movimientosOrigenDestino[1]);
+                                    }
+
+                                    System.out.println("\n• Resultado de la accion anterior: " + tableroClon.getResultadoAccion());
+                                    unaPartida.getListaDeTableros().add(tableroClon);
                                     bandera = true;
 
                                 } else {
@@ -417,6 +505,24 @@ public class Prueba {
 
                 unaPartida.setCantidadMovimientos(unaPartida.getCantidadMovimientos() - 1);
             }
+
+            if (unaPartida.getTableroActual().getMatriz()[6][6] == 'B') {
+                System.out.print("~~~~~~~~~• FIN DEL JUEGO •~~~~~~~~~ \nResultado: " + jugadorB.getAlias() + " es el ganador!");
+                
+                jugadorB.setGanadas(jugadorB.getGanadas() + 1);
+                jugadorA.setPerdidas(jugadorA.getPerdidas() + 1);
+            } else if (unaPartida.getTableroActual().getMatriz()[6][6] == 'N') {
+                System.out.print("~~~~~~~~~• FIN DEL JUEGO •~~~~~~~~~ \nResultado: " + jugadorA.getAlias() + " es el ganador!");
+                
+                jugadorA.setGanadas(jugadorA.getGanadas() + 1);
+                jugadorB.setPerdidas(jugadorB.getPerdidas() + 1);
+            } else {
+                System.out.print("~~~~~~~~~• FIN DEL JUEGO •~~~~~~~~~ \nResultado: Empate");
+                
+                jugadorA.setEmpates(jugadorA.getEmpates() + 1);
+                jugadorB.setEmpates(jugadorB.getEmpates() + 1);
+            }
+
         } catch (Exception ex) {
             System.out.println("Ocurrió un error catastrófico: " + ex);
         }
@@ -638,12 +744,77 @@ public class Prueba {
     }
 
     private static void mostrarRanking(Juego unJuego) {
-        System.out.println("*** Ranking de Jugadores ***");
+
+        System.out.println("\n~~~~~~~~~~•~~~~~~~~~~•~~~~~~~~~~~");
+        System.out.println("ᕦ(ò_óˇ)ᕤ Ranking de Jugadores");
         for (int i = 0; i < unJuego.getListaDeJugadores().size(); i++) {
             Jugador j = unJuego.getListaDeJugadores().get(i);
             System.out.println(j.toString() + " || " + "Ganadas: " + j.getGanadas()
                     + " | Empatadas: " + j.getEmpates()
                     + " | Perdidas: " + j.getPerdidas());
+        }
+    }
+
+    private static void replicarPartida(Scanner scr, Juego unJuego) {
+        System.out.println("\n~~~~~~~~~~•~~~~~~~~~~•~~~~~~~~~~");
+        System.out.println("(⌐■_■) Replicar partida");
+
+        if (unJuego.getListaDePartidas().size() > 0) {
+            ArrayList<Partida> miListadePartidas = unJuego.getListaDePartidas();
+            ArrayList<Partida> nuevaListaPartidas = new ArrayList<Partida>();
+
+            for (int i = 0; i < miListadePartidas.size(); i++) {
+                if (miListadePartidas.get(i).getCantidadMovimientos() < 10) {
+                    //Obtengo solo las partidas en las cuales se hayan realizado al menos un movimiento
+                    nuevaListaPartidas.add(miListadePartidas.get(i));
+                }
+            }
+
+            if (nuevaListaPartidas.size() > 0) {
+                System.out.println("\n****Lista de partidas****\n");
+                for (int i = 0; i < nuevaListaPartidas.size(); i++) {
+
+                    System.out.println(i + 1 + ". " + nuevaListaPartidas.get(i).getJugadorA().getAlias() + " vs " + nuevaListaPartidas.get(i).getJugadorB().getAlias());
+                }
+
+                Partida partidaAReplicar;
+                ArrayList<Tablero> tablerosPartida;
+                String textVar;
+                int partidaElejida;
+                scr.nextLine();
+                boolean bandera = false;
+
+                System.out.print("  -> Elija una partida: ");
+
+                while (!bandera) {
+                    textVar = scr.nextLine();
+
+                    if (Pattern.matches("[0-9]+", textVar)) {
+                        partidaElejida = Integer.parseInt(textVar);
+
+                        if (partidaElejida > 0 && partidaElejida <= nuevaListaPartidas.size()) {
+                            partidaAReplicar = nuevaListaPartidas.get(partidaElejida - 1);
+                            tablerosPartida = partidaAReplicar.getListaDeTableros();
+
+                            for (int i = 0; i < tablerosPartida.size(); i++) {
+                                mostrarTablero(tablerosPartida.get(i).getMatriz());
+                                System.out.println("Movimiento realizado por: " + tablerosPartida.get(i).getAutorMovimiento().getAlias());
+                                System.out.println(tablerosPartida.get(i).getResultadoAccion());
+                            }
+
+                            bandera = true;
+                        } else {
+                            System.out.print("Partida no existe, elija una partida de la lista: ");
+                        }
+                    } else {
+                        System.out.print(ANSI_RED + "\n¡Error!, sólo números son permitidos...  ¯\\_(ツ)_/¯\n" + ANSI_RESET + "\nIngrese una opción válida: ");
+                    }
+                }
+            } else {
+                System.out.println("\nNo existen partidas finalizadas.");
+            }
+        } else {
+            System.out.println("\nNo existen registros de partidas.");
         }
     }
 
