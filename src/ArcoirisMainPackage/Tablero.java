@@ -44,8 +44,8 @@ public class Tablero {
         return AutorMovimiento;
     }
 
-    public void setAutorMovimiento(Jugador AutorMovimiento) {
-        this.AutorMovimiento = AutorMovimiento;
+    public void setAutorMovimiento(Jugador autorMovimiento) {
+        this.AutorMovimiento = autorMovimiento;
     }
     
     public boolean formaMarco(int fila, int col, char[][] mat){
@@ -290,7 +290,7 @@ public class Tablero {
         return bandera;
     }
     
-public static char[][] comerFichas(int fila, int col, char[][] mat){
+    public static char[][] comerFichas(int fila, int col, char[][] mat){
 
 	// defino mis vectores de movimientos
 	int[] movsX = {-1, 0, 1, 0, -1, 1, 1, -1};
