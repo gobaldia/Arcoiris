@@ -44,8 +44,8 @@ public class Tablero implements Cloneable {
         return AutorMovimiento;
     }
 
-    public void setAutorMovimiento(Jugador AutorMovimiento) {
-        this.AutorMovimiento = AutorMovimiento;
+    public void setAutorMovimiento(Jugador autorMovimiento) {
+        this.AutorMovimiento = autorMovimiento;
     }
 
     public boolean formaMarco(int fila, int col, Jugador unJugador) {
@@ -89,7 +89,7 @@ public class Tablero implements Cloneable {
         boolean resultado;
         
         if (mat[filaO][colO] == autorMovimiento.getTipoFicha()) {
-            haciaAdentro = filaD >= 12 - colO && filaD >= colO && colD >= colO && colD >= 12 - colO;
+            haciaAdentro = Math.abs(6-filaO) > Math.abs(6-filaD) || Math.abs(6-colO) > Math.abs(6-colD);
             esDiagonal = filaD - filaO == colD - colO;
             esRecto = filaD == filaO || colD == colO;
 
@@ -322,7 +322,7 @@ public class Tablero implements Cloneable {
 
         return bandera;
     }
-
+    
     public String comerFichas(int fila, int col) {
 
         char[][] mat = this.getMatriz();
