@@ -127,7 +127,7 @@ public class Partida implements Comparable<Partida> {
         String retorno;
         
         if(this.getTipoFinPartida() == 1){
-            retorno = "Cuando se terminen los " + this.getCantidadMovimientos() + " movimientos el jugador que este ocupando el centro en ese momento ganara. \nEn caso de que ninguno haya ocupado el centro la partida terminara en empate.";
+            retorno = "Cuando se terminen los " + this.getCantidadMovimientos() + " movimientos, el jugador que este ocupando el centro en ese momento ganará. \nEn caso de que ninguno haya ocupado el centro, la partida terminará en empate.";
         } else {
             retorno = "El primer jugador en ocupar el centro gana.";
         }
