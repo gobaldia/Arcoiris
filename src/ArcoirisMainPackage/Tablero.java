@@ -50,7 +50,7 @@ public class Tablero implements Cloneable {
 
     public boolean formaMarco(int fila, int col) {
         char[][] mat = this.getMatriz();
-        
+
         boolean res;
         if (mat[fila][col] != mat[12 - fila][12 - col]) {
             res = false;
@@ -61,63 +61,107 @@ public class Tablero implements Cloneable {
         }
         return res;
     }
-    
-    private String convertirPosicionesComida(String datoAConvertir){
+
+    private String convertirPosicionesComida(String datoAConvertir) {
         String result = "x";
         String[] comidas = datoAConvertir.split("-");
         char[] letras = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'};
-        
-        for(int i = 0; i < comidas.length; i+=2){
-            result += letras[Integer.parseInt(comidas[i])] + comidas[i+1];
+
+        for (int i = 0; i < comidas.length; i += 2) {
+            result += letras[Integer.parseInt(comidas[i])] + comidas[i + 1];
         }
-        
+
         return result;
     }
-    
+
     public boolean movimientoValido(int filaO, int colO, int filaD, int colD, char[][] mat, Jugador autorMovimiento) {
         boolean haciaAdentro;
         boolean esDiagonal;
         boolean esRecto;
         boolean estaVacio = true;
         boolean resultado;
-        
+
         if (mat[filaO][colO] == autorMovimiento.getTipoFicha()) {
-            haciaAdentro = Math.abs(6-filaO) > Math.abs(6-filaD) || Math.abs(6-colO) > Math.abs(6-colD);
-            esDiagonal = filaD - filaO == colD - colO;
+            haciaAdentro = Math.abs(6 - filaO) > Math.abs(6 - filaD) || Math.abs(6 - colO) > Math.abs(6 - colD);;
+            esDiagonal = Math.abs(filaD - filaO) == Math.abs(colD - colO);
             esRecto = filaD == filaO || colD == colO;
 
             if (esDiagonal) {
                 int inc = 1;
-                while (inc <= filaD) {
-                    if (mat[filaO + inc][colO + inc] != 'O') {
-                        estaVacio = false;
+                if (filaD > filaO && colD > colO) {
+                    while (filaO + inc <= filaD) {
+                        if (mat[filaO + inc][colO + inc] != 'O') {
+                            estaVacio = false;
+                        }
+                        inc++;
                     }
-                    inc++;
+                } else if (filaD < filaO && colD < colO) {
+                    while (filaO - inc >= filaD) {
+                        if (mat[filaO - inc][colO - inc] != 'O') {
+                            estaVacio = false;
+                        }
+                        inc++;
+                    }
+                } else if (filaD > filaO && colD < colO) {
+                    while (filaO + inc <= filaD) {
+                        if (mat[filaO + inc][colO - inc] != 'O') {
+                            estaVacio = false;
+                        }
+                        inc++;
+                    }
+                } else if (filaD < filaO && colD > colO) {
+                    while (filaO - inc <= filaD) {
+                        if (mat[filaO - inc][colO + inc] != 'O') {
+                            estaVacio = false;
+                        }
+                        inc++;
+                    }
                 }
+
             } else if (esRecto) {
                 int inc = 1;
                 if (filaO == filaD) {
-                    while (inc <= colD) {
-                        if (mat[filaO][colD + inc] != 'O') {
-                            estaVacio = false;
+                    if (colO < colD) {
+                        while (colO + inc <= colD) {
+                            if (mat[filaO][colO + inc] != 'O') {
+                                estaVacio = false;
+                            }
+                            inc++;
                         }
-                        inc++;
+                    } else {
+                        while (colO + inc <= colD) {
+                            if (mat[filaO][colO - inc] != 'O') {
+                                estaVacio = false;
+                            }
+                            inc++;
+                        }
                     }
+
                 } else {
-                    while (inc <= filaD) {
-                        if (mat[filaD + inc][colD] != 'O') {
-                            estaVacio = false;
+                    if (filaO < filaD) {
+                        while (inc <= filaD) {
+                            if (mat[filaD + inc][colD] != 'O') {
+                                estaVacio = false;
+                            }
+                            inc++;
                         }
-                        inc++;
+                    } else {
+                        while (inc <= filaD) {
+                            if (mat[filaD - inc][colD] != 'O') {
+                                estaVacio = false;
+                            }
+                            inc++;
+                        }
                     }
+
                 }
             }
-            
+
             resultado = haciaAdentro && (esDiagonal || esRecto) && estaVacio;
         } else {
             resultado = false;
         }
-        
+
         return resultado;
     }
 
@@ -315,12 +359,12 @@ public class Tablero implements Cloneable {
 
         return bandera;
     }
-    
+
     public String comerFichas(int fila, int col) {
 
         char[][] mat = this.getMatriz();
         String resultadoComida = "";
-        
+
         // defino mis vectores de movimientos
         int[] movsX = {-1, 0, 1, 0, -1, 1, 1, -1};
         int[] movsY = {0, 1, 0, -1, 1, 1, -1, -1};
@@ -361,10 +405,10 @@ public class Tablero implements Cloneable {
             nuevaColumna = col;
         }
 
-        if(!resultadoComida.isEmpty()){
+        if (!resultadoComida.isEmpty()) {
             resultadoComida = convertirPosicionesComida(resultadoComida);
         }
-        
+
         return resultadoComida;
     }
 
