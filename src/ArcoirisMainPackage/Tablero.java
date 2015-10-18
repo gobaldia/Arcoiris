@@ -1,6 +1,6 @@
 package ArcoirisMainPackage;
 
-public class Tablero implements Cloneable {
+public class Tablero {
 
     private char[][] matriz;
     private String posicionOrigen;
@@ -464,16 +464,5 @@ public class Tablero implements Cloneable {
         }
 
         return resultadoComida;
-    }
-
-    @Override
-    public Object clone() {
-        Object o = null;
-        try {
-            o = super.clone();
-        } catch (CloneNotSupportedException e) {
-            System.out.println("Ocurrio un error al clonear la tabla");
-        }
-        return o;
     }
 }
