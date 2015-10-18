@@ -79,7 +79,20 @@ public class Tablero implements Cloneable {
         return result;
     }
     
-    
+    public boolean existenMovimientos(Jugador autorMovimiento){
+        boolean resultado = false;
+        char[][] mat = this.getMatriz();
+        
+        for(int fila = 0; fila > mat.length; fila++){
+            for (int col = 0; col > mat[0].length; col++){
+            
+            }
+        }
+        
+        
+        
+        return resultado;
+    }
     
     public boolean movimientoValido(int filaO, int colO, int filaD, int colD, char[][] mat, Jugador autorMovimiento) {
         boolean haciaAdentro;
