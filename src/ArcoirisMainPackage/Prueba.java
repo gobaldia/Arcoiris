@@ -204,7 +204,7 @@ public class Prueba {
 
                                 Tablero tableroClon = (Tablero) unaPartida.getTableroActual().clone();
 
-                                movimientoEsValido = tableroClon.movimientoValido(posicionOrigen[0], posicionOrigen[1], posicionDestino[0], posicionDestino[1], tableroClon.getMatriz(), jugadorA);
+                                movimientoEsValido = tableroClon.movimientoValido(posicionOrigen[0], posicionOrigen[1], posicionDestino[0], posicionDestino[1], jugadorA);
                                 if (movimientoEsValido) {
                                     //Cambio la ficha al lugar que me movi
                                     tableroClon.getMatriz()[posicionDestino[0]][posicionDestino[1]] = jugadorA.getTipoFicha();
@@ -283,7 +283,7 @@ public class Prueba {
 
                                 Tablero tableroClon = (Tablero) unaPartida.getTableroActual().clone();
 
-                                movimientoEsValido = tableroClon.movimientoValido(posicionOrigen[0], posicionOrigen[1], posicionDestino[0], posicionDestino[1], tableroClon.getMatriz(), jugadorA);
+                                movimientoEsValido = tableroClon.movimientoValido(posicionOrigen[0], posicionOrigen[1], posicionDestino[0], posicionDestino[1], jugadorA);
 
                                 if (movimientoEsValido) {
                                     //Cambio la ficha al lugar que me movi
@@ -384,7 +384,7 @@ public class Prueba {
 
                                 Tablero tableroClon = (Tablero) unaPartida.getTableroActual().clone();
 
-                                movimientoEsValido = tableroClon.movimientoValido(posicionOrigen[0], posicionOrigen[1], posicionDestino[0], posicionDestino[1], tableroClon.getMatriz(), jugadorA);
+                                movimientoEsValido = tableroClon.movimientoValido(posicionOrigen[0], posicionOrigen[1], posicionDestino[0], posicionDestino[1], jugadorA);
                                 if (movimientoEsValido) {
                                     //Cambio la ficha al lugar que me movi
                                     tableroClon.getMatriz()[posicionDestino[0]][posicionDestino[1]] = jugadorA.getTipoFicha();
@@ -451,7 +451,7 @@ public class Prueba {
 
                                 Tablero tableroClon = (Tablero) unaPartida.getTableroActual().clone();
 
-                                movimientoEsValido = tableroClon.movimientoValido(posicionOrigen[0], posicionOrigen[1], posicionDestino[0], posicionDestino[1], tableroClon.getMatriz(), jugadorB);
+                                movimientoEsValido = tableroClon.movimientoValido(posicionOrigen[0], posicionOrigen[1], posicionDestino[0], posicionDestino[1], jugadorB);
                                 if (movimientoEsValido) {
                                     //Cambio la ficha al lugar que me movi
                                     tableroClon.getMatriz()[posicionDestino[0]][posicionDestino[1]] = jugadorA.getTipoFicha();

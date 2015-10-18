@@ -50,7 +50,7 @@ public class Tablero implements Cloneable {
 
     public boolean formaMarco(int fila, int col, Jugador unJugador) {
         char[][] mat = this.getMatriz();
-        
+
         boolean res;
         if (mat[fila][col] != mat[12 - fila][12 - col]) {
             res = false;
@@ -58,51 +58,76 @@ public class Tablero implements Cloneable {
             res = false;
         } else {
             res = mat[fila][col] == mat[12 - col][fila];
-        }        
-        
-        if(res){
+        }
+
+        if (res) {
             mat[6][6] = unJugador.getTipoFicha();
         }
-        
+
         return res;
     }
-    
-    private String convertirPosicionesComida(String datoAConvertir){
+
+    private String convertirPosicionesComida(String datoAConvertir) {
         String result = "x";
         String[] comidas = datoAConvertir.split("-");
         char[] letras = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'};
-        
-        for(int i = 0; i < comidas.length; i+=2){
-            result += letras[Integer.parseInt(comidas[i])] + comidas[i+1];
+
+        for (int i = 0; i < comidas.length; i += 2) {
+            result += letras[Integer.parseInt(comidas[i])] + comidas[i + 1];
         }
-        
+
         return result;
     }
-    
-    public boolean existenMovimientos(Jugador autorMovimiento){
+
+    public boolean existenMovimientos(Jugador autorMovimiento) {
         boolean resultado = false;
         char[][] mat = this.getMatriz();
+
+        int[] movsX = {-1, 0, 1, 0, -1, 1, 1, -1};
+        int[] movsY = {0, 1, 0, -1, 1, 1, -1, -1};
         
-        for(int fila = 0; fila > mat.length; fila++){
-            for (int col = 0; col > mat[0].length; col++){
-            
+        int nuevaFila = 0;
+        int nuevaColumna = 0;
+        int contador = 0;
+        
+        for (int fila = 0; fila > mat.length; fila++) {
+            for (int col = 0; col > mat[0].length; col++) {
+                if (mat[fila][col] == autorMovimiento.getTipoFicha()) {
+
+                    if (!resultado) {
+
+                        do {
+                            nuevaFila = fila + movsX[contador];
+                            nuevaColumna = col + movsY[contador];                            
+                            contador++;
+                            
+                            if(movimientoValido(fila, col, nuevaFila, nuevaColumna, autorMovimiento)){
+                                resultado = true;//Si encuentro almenos 1 movimiento valido no sigo verificando la matriz
+                            }
+                        } while (contador < movsX.length);
+                        
+                        contador = 0;
+                        nuevaFila = 0;
+                        nuevaColumna = 0;
+                    }
+
+                }
             }
         }
-        
-        
-        
+
         return resultado;
     }
-    
-    public boolean movimientoValido(int filaO, int colO, int filaD, int colD, char[][] mat, Jugador autorMovimiento) {
+
+    public boolean movimientoValido(int filaO, int colO, int filaD, int colD, Jugador autorMovimiento) {
         boolean haciaAdentro;
         boolean esDiagonal;
         boolean esRecto;
         boolean estaVacio = true;
         boolean resultado;
-        
+        char[][] mat = this.getMatriz();
+
         if (mat[filaO][colO] == autorMovimiento.getTipoFicha()) {
-            haciaAdentro = Math.abs(6-filaO) > Math.abs(6-filaD) || Math.abs(6-colO) > Math.abs(6-colD);
+            haciaAdentro = Math.abs(6 - filaO) > Math.abs(6 - filaD) || Math.abs(6 - colO) > Math.abs(6 - colD);
             esDiagonal = filaD - filaO == colD - colO;
             esRecto = filaD == filaO || colD == colO;
 
@@ -132,12 +157,12 @@ public class Tablero implements Cloneable {
                     }
                 }
             }
-            
+
             resultado = haciaAdentro && (esDiagonal || esRecto) && estaVacio;
         } else {
             resultado = false;
         }
-        
+
         return resultado;
     }
 
@@ -335,12 +360,12 @@ public class Tablero implements Cloneable {
 
         return bandera;
     }
-    
+
     public String comerFichas(int fila, int col) {
 
         char[][] mat = this.getMatriz();
         String resultadoComida = "";
-        
+
         // defino mis vectores de movimientos
         int[] movsX = {-1, 0, 1, 0, -1, 1, 1, -1};
         int[] movsY = {0, 1, 0, -1, 1, 1, -1, -1};
@@ -381,10 +406,10 @@ public class Tablero implements Cloneable {
             nuevaColumna = col;
         }
 
-        if(!resultadoComida.isEmpty()){
+        if (!resultadoComida.isEmpty()) {
             resultadoComida = convertirPosicionesComida(resultadoComida);
         }
-        
+
         return resultadoComida;
     }
 
