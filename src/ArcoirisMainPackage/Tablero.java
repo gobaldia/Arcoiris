@@ -124,37 +124,80 @@ public class Tablero implements Cloneable {
         boolean esRecto;
         boolean estaVacio = true;
         boolean resultado;
-        char[][] mat = this.getMatriz();
 
         if (mat[filaO][colO] == autorMovimiento.getTipoFicha()) {
-            haciaAdentro = Math.abs(6 - filaO) > Math.abs(6 - filaD) || Math.abs(6 - colO) > Math.abs(6 - colD);
-            esDiagonal = filaD - filaO == colD - colO;
+            haciaAdentro = Math.abs(6 - filaO) > Math.abs(6 - filaD) || Math.abs(6 - colO) > Math.abs(6 - colD);;
+            esDiagonal = Math.abs(filaD - filaO) == Math.abs(colD - colO);
             esRecto = filaD == filaO || colD == colO;
 
             if (esDiagonal) {
                 int inc = 1;
-                while (inc <= filaD) {
-                    if (mat[filaO + inc][colO + inc] != 'O') {
-                        estaVacio = false;
+                if (filaD > filaO && colD > colO) {
+                    while (filaO + inc <= filaD) {
+                        if (mat[filaO + inc][colO + inc] != 'O') {
+                            estaVacio = false;
+                        }
+                        inc++;
                     }
-                    inc++;
+                } else if (filaD < filaO && colD < colO) {
+                    while (filaO - inc >= filaD) {
+                        if (mat[filaO - inc][colO - inc] != 'O') {
+                            estaVacio = false;
+                        }
+                        inc++;
+                    }
+                } else if (filaD > filaO && colD < colO) {
+                    while (filaO + inc <= filaD) {
+                        if (mat[filaO + inc][colO - inc] != 'O') {
+                            estaVacio = false;
+                        }
+                        inc++;
+                    }
+                } else if (filaD < filaO && colD > colO) {
+                    while (filaO - inc <= filaD) {
+                        if (mat[filaO - inc][colO + inc] != 'O') {
+                            estaVacio = false;
+                        }
+                        inc++;
+                    }
                 }
+
             } else if (esRecto) {
                 int inc = 1;
                 if (filaO == filaD) {
-                    while (inc <= colD) {
-                        if (mat[filaO][colD + inc] != 'O') {
-                            estaVacio = false;
+                    if (colO < colD) {
+                        while (colO + inc <= colD) {
+                            if (mat[filaO][colO + inc] != 'O') {
+                                estaVacio = false;
+                            }
+                            inc++;
                         }
-                        inc++;
+                    } else {
+                        while (colO + inc <= colD) {
+                            if (mat[filaO][colO - inc] != 'O') {
+                                estaVacio = false;
+                            }
+                            inc++;
+                        }
                     }
+
                 } else {
-                    while (inc <= filaD) {
-                        if (mat[filaD + inc][colD] != 'O') {
-                            estaVacio = false;
+                    if (filaO < filaD) {
+                        while (inc <= filaD) {
+                            if (mat[filaD + inc][colD] != 'O') {
+                                estaVacio = false;
+                            }
+                            inc++;
                         }
-                        inc++;
+                    } else {
+                        while (inc <= filaD) {
+                            if (mat[filaD - inc][colD] != 'O') {
+                                estaVacio = false;
+                            }
+                            inc++;
+                        }
                     }
+
                 }
             }
 

@@ -454,7 +454,7 @@ public class Prueba {
                                 movimientoEsValido = tableroClon.movimientoValido(posicionOrigen[0], posicionOrigen[1], posicionDestino[0], posicionDestino[1], jugadorB);
                                 if (movimientoEsValido) {
                                     //Cambio la ficha al lugar que me movi
-                                    tableroClon.getMatriz()[posicionDestino[0]][posicionDestino[1]] = jugadorA.getTipoFicha();
+                                    tableroClon.getMatriz()[posicionDestino[0]][posicionDestino[1]] = jugadorB.getTipoFicha();
                                     tableroClon.getMatriz()[posicionOrigen[0]][posicionOrigen[1]] = 'O';
 
                                     //Verifico si puedo comer fichas..
