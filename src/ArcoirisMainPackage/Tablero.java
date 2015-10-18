@@ -124,6 +124,8 @@ public class Tablero implements Cloneable {
         boolean esRecto;
         boolean estaVacio = true;
         boolean resultado;
+        
+        char[][] mat = this.getMatriz();
 
         if (mat[filaO][colO] == autorMovimiento.getTipoFicha()) {
             haciaAdentro = Math.abs(6 - filaO) > Math.abs(6 - filaD) || Math.abs(6 - colO) > Math.abs(6 - colD);;

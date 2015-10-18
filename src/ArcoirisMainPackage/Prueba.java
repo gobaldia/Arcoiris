@@ -283,7 +283,7 @@ public class Prueba {
 
                                 Tablero tableroClon = (Tablero) unaPartida.getTableroActual().clone();
 
-                                movimientoEsValido = tableroClon.movimientoValido(posicionOrigen[0], posicionOrigen[1], posicionDestino[0], posicionDestino[1], jugadorA);
+                                movimientoEsValido = tableroClon.movimientoValido(posicionOrigen[0], posicionOrigen[1], posicionDestino[0], posicionDestino[1], jugadorB);
 
                                 if (movimientoEsValido) {
                                     //Cambio la ficha al lugar que me movi
@@ -332,7 +332,7 @@ public class Prueba {
                                     System.out.print("\nError!, movimiento no valido.\nIngrese otros valores: ");
                                 }
                             } else {
-                                System.out.print("Error!, Movimiento no valido. Debe ingresar por ejemplo 'FilaColumnaOrigen-FilaColumnaDestino'. \nIngrese otros valores: ");
+                                System.out.print("Error!, Movimiento no valido. \nDebe ingresar por ejemplo 'FilaColumnaOrigen-FilaColumnaDestino'. \nIngrese otros valores: ");
                             }
                         } else {
                             conquistoCentro = true;
