@@ -145,28 +145,35 @@ public class Prueba {
                 ArrayList<Partida> listaDePartidas = unJuego.ordenarPartidasDesc();
                 Partida partidaActual = listaDePartidas.get(0);
 
-                if (partidaActual.getCantidadMovimientos() == 10) {
-                    Jugador jugadorA = partidaActual.getJugadorA();
-                    Jugador jugadorB = partidaActual.getJugadorB();
+                //Genero una nueva partida en caso de quere volver a jugar antes de configurar una nueva.
+                Partida proximaPartida = new Partida();
+                proximaPartida.setJugadorA(partidaActual.getJugadorA());
+                proximaPartida.setJugadorB(partidaActual.getJugadorB());
+                proximaPartida.setMarcoInicio(partidaActual.getMarcoInicio());
+                proximaPartida.setDistribucionInicialFichas(partidaActual.getDistribucionInicialFichas());
+                proximaPartida.setTipoFinPartida(partidaActual.getTipoFinPartida());
+                proximaPartida.generarTableroInicial(partidaActual.getDistribucionInicialFichas(), partidaActual.getMarcoInicio());
 
-                    jugadorA.setTipoFicha('N');
-                    jugadorB.setTipoFicha('B');
+                Jugador jugadorA = partidaActual.getJugadorA();
+                Jugador jugadorB = partidaActual.getJugadorB();
 
-                    System.out.println("\n       " + jugadorA.getAlias() + " vs " + jugadorB.getAlias());
+                jugadorA.setTipoFicha('N');
+                jugadorB.setTipoFicha('B');
 
-                    System.out.println("\n-> Objetivo: " + partidaActual.obtenerTipoFinDePartida());
-                    System.out.println();
-                    mostrarTablero(partidaActual.getListaDeTableros().get(0).getMatriz());
-                    partidaActual.setTableroActual(partidaActual.getListaDeTableros().get(0));
+                System.out.println("\n       " + jugadorA.getAlias() + " vs " + jugadorB.getAlias());
 
-                    if (partidaActual.getTipoFinPartida() == 1) { //Hasta que no hayan mas movimientos
-                        jugarPorCantidadDeMovimientos(scr, partidaActual, jugadorA, jugadorB);
-                    } else { //Primero en conquistar el centro gana
-                        jugarConquistaElCentro(scr, partidaActual, jugadorA, jugadorB);
-                    }
-                } else {
-                    System.out.println("No existen partidas nuevas, vuelva al menú y configure otra.");
+                System.out.println("\n-> Objetivo: " + partidaActual.obtenerTipoFinDePartida());
+                System.out.println();
+                mostrarTablero(partidaActual.getListaDeTableros().get(0).getMatriz());
+                partidaActual.setTableroActual(partidaActual.getListaDeTableros().get(0));
+
+                if (partidaActual.getTipoFinPartida() == 1) { //Hasta que no hayan mas movimientos
+                    jugarPorCantidadDeMovimientos(scr, partidaActual, jugadorA, jugadorB);
+                } else { //Primero en conquistar el centro gana
+                    jugarConquistaElCentro(scr, partidaActual, jugadorA, jugadorB);
                 }
+
+                unJuego.getListaDePartidas().add(proximaPartida);
             } else {
                 System.out.println("No existe ninguna partida configurada.");
             }
@@ -202,7 +209,15 @@ public class Prueba {
                                 int[] posicionOrigen = unaPartida.convertirColumnaFila(movimientosOrigenDestino[0]);
                                 int[] posicionDestino = unaPartida.convertirColumnaFila(movimientosOrigenDestino[1]);
 
-                                Tablero tableroClon = (Tablero) unaPartida.getTableroActual().clone();
+                                char[][] matrizClon = new char[13][13];                                
+                                for(int i = 0; i < matrizClon.length; i++){
+                                    for(int j = 0; j < matrizClon[0].length; j++){
+                                        matrizClon[i][j] = unaPartida.getTableroActual().getMatriz()[i][j];
+                                    }
+                                }
+                                
+                                Tablero tableroClon = new Tablero();
+                                tableroClon.setMatriz(matrizClon);
 
                                 movimientoEsValido = tableroClon.movimientoValido(posicionOrigen[0], posicionOrigen[1], posicionDestino[0], posicionDestino[1], jugadorA);
                                 if (movimientoEsValido) {
@@ -217,6 +232,7 @@ public class Prueba {
                                     formaMarco = tableroClon.formaMarco(posicionDestino[0], posicionDestino[1], jugadorA);
 
                                     mostrarTablero(tableroClon.getMatriz());
+                                    tableroClon.setAutorMovimiento(jugadorA);
 
                                     //Debo de formatear los numeros para mostrar un mensaje acorde de lo sucedido en la comida
                                     //Limpio la accion del clon anterior
@@ -242,6 +258,7 @@ public class Prueba {
                                         tableroClon.setResultadoAccion("Desplazamiento simple: " + movimientosOrigenDestino[0] + "-" + movimientosOrigenDestino[1]);
                                     }
 
+                                    unaPartida.setTableroActual(tableroClon);
                                     System.out.println("\n• Resultado de la accion anterior: " + tableroClon.getResultadoAccion());
                                     unaPartida.getListaDeTableros().add(tableroClon);
                                     bandera = true;
@@ -255,6 +272,7 @@ public class Prueba {
                         } else {
                             conquistoCentro = true;
                             jugadorA.setPerdidas(jugadorA.getPerdidas() + 1);
+                            jugadorB.setGanadas(jugadorB.getGanadas() + 1);
                             unaPartida.setGanador(jugadorB);
                             bandera = true;
                             System.out.println("\n(ノಠ益ಠ)ノ彡┻━┻ FIN DEL JUEGO! \nGanador: " + ANSI_GREEN + jugadorB.getAlias() + ANSI_RESET);
@@ -281,7 +299,15 @@ public class Prueba {
                                 int[] posicionOrigen = unaPartida.convertirColumnaFila(movimientosOrigenDestino[0]);
                                 int[] posicionDestino = unaPartida.convertirColumnaFila(movimientosOrigenDestino[1]);
 
-                                Tablero tableroClon = (Tablero) unaPartida.getTableroActual().clone();
+                                char[][] matrizClon = new char[13][13];                                
+                                for(int i = 0; i < matrizClon.length; i++){
+                                    for(int j = 0; j < matrizClon[0].length; j++){
+                                        matrizClon[i][j] = unaPartida.getTableroActual().getMatriz()[i][j];
+                                    }
+                                }
+                                
+                                Tablero tableroClon = new Tablero();
+                                tableroClon.setMatriz(matrizClon);
 
                                 movimientoEsValido = tableroClon.movimientoValido(posicionOrigen[0], posicionOrigen[1], posicionDestino[0], posicionDestino[1], jugadorB);
 
@@ -296,6 +322,7 @@ public class Prueba {
                                     //Verifico si formo un marco
                                     formaMarco = tableroClon.formaMarco(posicionDestino[0], posicionDestino[1], jugadorB);
 
+                                    tableroClon.setAutorMovimiento(jugadorB);
                                     mostrarTablero(tableroClon.getMatriz());
 
                                     //Debo de formatear los numeros para mostrar un mensaje acorde de lo sucedido en la comida
@@ -325,6 +352,7 @@ public class Prueba {
 
                                     System.out.println("\n• Resultado de la accion anterior: " + tableroClon.getResultadoAccion());
 
+                                    unaPartida.setTableroActual(tableroClon);
                                     unaPartida.getListaDeTableros().add(tableroClon);
                                     bandera = true;
 
@@ -336,10 +364,11 @@ public class Prueba {
                             }
                         } else {
                             conquistoCentro = true;
-                            jugadorA.setPerdidas(jugadorA.getPerdidas() + 1);
-                            unaPartida.setGanador(jugadorB);
+                            jugadorA.setGanadas(jugadorA.getGanadas() + 1);
+                            jugadorB.setPerdidas(jugadorB.getPerdidas() + 1);
+                            unaPartida.setGanador(jugadorA);
                             bandera = true;
-                            System.out.println("\n(ノಠ益ಠ)ノ彡┻━┻ FIN DEL JUEGO! \nGanador: " + ANSI_GREEN + jugadorB.getAlias() + ANSI_RESET);
+                            System.out.println("\n(ノಠ益ಠ)ノ彡┻━┻ FIN DEL JUEGO! \nGanador: " + ANSI_GREEN + jugadorA.getAlias() + ANSI_RESET);
                         }
                     }
 
@@ -363,6 +392,7 @@ public class Prueba {
             boolean formaMarco = false;
             boolean turnoJugador = true;
             boolean bandera = false;
+            boolean dioenX = false;
             String txtVar;
 
             while (unaPartida.getCantidadMovimientos() > 0) {
@@ -382,7 +412,15 @@ public class Prueba {
                                 int[] posicionOrigen = unaPartida.convertirColumnaFila(movimientosOrigenDestino[0]);
                                 int[] posicionDestino = unaPartida.convertirColumnaFila(movimientosOrigenDestino[1]);
 
-                                Tablero tableroClon = (Tablero) unaPartida.getTableroActual().clone();
+                                char[][] matrizClon = new char[13][13];                                
+                                for(int i = 0; i < matrizClon.length; i++){
+                                    for(int j = 0; j < matrizClon[0].length; j++){
+                                        matrizClon[i][j] = unaPartida.getTableroActual().getMatriz()[i][j];
+                                    }
+                                }
+                                
+                                Tablero tableroClon = new Tablero();
+                                tableroClon.setMatriz(matrizClon);
 
                                 movimientoEsValido = tableroClon.movimientoValido(posicionOrigen[0], posicionOrigen[1], posicionDestino[0], posicionDestino[1], jugadorA);
                                 if (movimientoEsValido) {
@@ -424,8 +462,10 @@ public class Prueba {
                         } else {
                             unaPartida.setCantidadMovimientos(1);
                             jugadorA.setPerdidas(jugadorA.getPerdidas() + 1);
+                            jugadorB.setGanadas(jugadorB.getGanadas() + 1);
                             unaPartida.setGanador(jugadorB);
                             bandera = true;
+                            dioenX = true;
                             System.out.println("\n(ノಠ益ಠ)ノ彡┻━┻ FIN DEL JUEGO! \nGanador: " + ANSI_GREEN + jugadorB.getAlias() + ANSI_RESET);
                         }
                     }
@@ -449,7 +489,15 @@ public class Prueba {
                                 int[] posicionOrigen = unaPartida.convertirColumnaFila(movimientosOrigenDestino[0]);
                                 int[] posicionDestino = unaPartida.convertirColumnaFila(movimientosOrigenDestino[1]);
 
-                                Tablero tableroClon = (Tablero) unaPartida.getTableroActual().clone();
+                                char[][] matrizClon = new char[13][13];                                
+                                for(int i = 0; i < matrizClon.length; i++){
+                                    for(int j = 0; j < matrizClon[0].length; j++){
+                                        matrizClon[i][j] = unaPartida.getTableroActual().getMatriz()[i][j];
+                                    }
+                                }
+                                
+                                Tablero tableroClon = new Tablero();
+                                tableroClon.setMatriz(matrizClon);
 
                                 movimientoEsValido = tableroClon.movimientoValido(posicionOrigen[0], posicionOrigen[1], posicionDestino[0], posicionDestino[1], jugadorB);
                                 if (movimientoEsValido) {
@@ -491,8 +539,10 @@ public class Prueba {
                         } else {
                             unaPartida.setCantidadMovimientos(1);
                             jugadorB.setPerdidas(jugadorB.getPerdidas() + 1);
+                            jugadorA.setGanadas(jugadorA.getGanadas() + 1);
                             unaPartida.setGanador(jugadorA);
                             bandera = true;
+                            dioenX = true;
                             System.out.println("\n(ノಠ益ಠ)ノ彡┻━┻ FIN DEL JUEGO! \nGanador: " + ANSI_GREEN + jugadorA.getAlias() + ANSI_RESET);
                         }
                     }
@@ -506,21 +556,23 @@ public class Prueba {
                 unaPartida.setCantidadMovimientos(unaPartida.getCantidadMovimientos() - 1);
             }
 
-            if (unaPartida.getTableroActual().getMatriz()[6][6] == 'B') {
-                System.out.print("~~~~~~~~~• FIN DEL JUEGO •~~~~~~~~~ \nResultado: " + jugadorB.getAlias() + " es el ganador!");
-                
-                jugadorB.setGanadas(jugadorB.getGanadas() + 1);
-                jugadorA.setPerdidas(jugadorA.getPerdidas() + 1);
-            } else if (unaPartida.getTableroActual().getMatriz()[6][6] == 'N') {
-                System.out.print("~~~~~~~~~• FIN DEL JUEGO •~~~~~~~~~ \nResultado: " + jugadorA.getAlias() + " es el ganador!");
-                
-                jugadorA.setGanadas(jugadorA.getGanadas() + 1);
-                jugadorB.setPerdidas(jugadorB.getPerdidas() + 1);
-            } else {
-                System.out.print("~~~~~~~~~• FIN DEL JUEGO •~~~~~~~~~ \nResultado: Empate");
-                
-                jugadorA.setEmpates(jugadorA.getEmpates() + 1);
-                jugadorB.setEmpates(jugadorB.getEmpates() + 1);
+            if (!dioenX) {//Si alguno de los jugadores quitea, no hago esta parte porque ya se seteo el ganador y perdedor
+                if (unaPartida.getTableroActual().getMatriz()[6][6] == 'B') {
+                    System.out.print("~~~~~~~~~• FIN DEL JUEGO •~~~~~~~~~ \nResultado: " + jugadorB.getAlias() + " es el ganador!");
+
+                    jugadorB.setGanadas(jugadorB.getGanadas() + 1);
+                    jugadorA.setPerdidas(jugadorA.getPerdidas() + 1);
+                } else if (unaPartida.getTableroActual().getMatriz()[6][6] == 'N') {
+                    System.out.print("~~~~~~~~~• FIN DEL JUEGO •~~~~~~~~~ \nResultado: " + jugadorA.getAlias() + " es el ganador!");
+
+                    jugadorA.setGanadas(jugadorA.getGanadas() + 1);
+                    jugadorB.setPerdidas(jugadorB.getPerdidas() + 1);
+                } else {
+                    System.out.print("~~~~~~~~~• FIN DEL JUEGO •~~~~~~~~~ \nResultado: Empate");
+
+                    jugadorA.setEmpates(jugadorA.getEmpates() + 1);
+                    jugadorB.setEmpates(jugadorB.getEmpates() + 1);
+                }
             }
 
         } catch (Exception ex) {
@@ -796,12 +848,28 @@ public class Prueba {
                             partidaAReplicar = nuevaListaPartidas.get(partidaElejida - 1);
                             tablerosPartida = partidaAReplicar.getListaDeTableros();
 
+                            System.out.println("\n ->Se detalla el paso a paso de la partida seleccionada: ");
                             for (int i = 0; i < tablerosPartida.size(); i++) {
                                 mostrarTablero(tablerosPartida.get(i).getMatriz());
-                                System.out.println("Movimiento realizado por: " + tablerosPartida.get(i).getAutorMovimiento().getAlias());
+                                
+                                if(tablerosPartida.get(i).getAutorMovimiento() != null){
+                                    System.out.println("• Movimiento realizado por: " + tablerosPartida.get(i).getAutorMovimiento().getAlias());
+                                } else {
+                                    System.out.println("• Configuración inicial de la partida");
+                                }
+                                
                                 System.out.println(tablerosPartida.get(i).getResultadoAccion());
+                                
+                                System.out.println("\nPresione enter para seguir viendo paso a paso las jugadas...");
+                                leoComando();
                             }
 
+                            if(partidaAReplicar.getGanador() != null){
+                                System.out.println("• El ganador fue: " + partidaAReplicar.getGanador()); 
+                            } else {
+                                System.out.println("• La partida termino en empate.");
+                            }
+                            
                             bandera = true;
                         } else {
                             System.out.print("Partida no existe, elija una partida de la lista: ");
@@ -810,6 +878,9 @@ public class Prueba {
                         System.out.print(ANSI_RED + "\n¡Error!, sólo números son permitidos...  ¯\\_(ツ)_/¯\n" + ANSI_RESET + "\nIngrese una opción válida: ");
                     }
                 }
+                
+                
+                
             } else {
                 System.out.println("\nNo existen partidas finalizadas.");
             }

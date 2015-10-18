@@ -250,7 +250,6 @@ public class Partida implements Comparable<Partida> {
         return auxArray;
     }
     
-    
     public int[] convertirColumnaFila(String unaPosicion){
         int[] resultArray = new int[2];
         

@@ -53,8 +53,8 @@ public class Jugador implements Comparable<Jugador> {
         return this.empates;
     }
 
-    public void setGanadas(int ganadas) {
-        this.ganadas = ganadas;
+    public void setGanadas(int valorGanadas) {
+        this.ganadas = valorGanadas;
     }
 
     public void setPerdidas(int perdidas) {
