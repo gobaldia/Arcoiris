@@ -128,7 +128,7 @@ public class Tablero implements Cloneable {
         char[][] mat = this.getMatriz();
 
         if (mat[filaO][colO] == autorMovimiento.getTipoFicha()) {
-            haciaAdentro = Math.abs(6 - filaO) > Math.abs(6 - filaD) || Math.abs(6 - colO) > Math.abs(6 - colD);;
+            haciaAdentro = Math.abs(6 - filaO) > Math.abs(6 - filaD) || Math.abs(6 - colO) > Math.abs(6 - colD);
             esDiagonal = Math.abs(filaD - filaO) == Math.abs(colD - colO);
             esRecto = filaD == filaO || colD == colO;
 
@@ -193,7 +193,7 @@ public class Tablero implements Cloneable {
                         }
                     } else {
                         while (filaO - inc >= filaD) {
-                            if (mat[filaD - inc][colD] != 'O') {
+                            if (mat[filaO - inc][colO] != 'O') {
                                 estaVacio = false;
                             }
                             inc++;

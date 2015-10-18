@@ -122,12 +122,12 @@ public class Prueba {
                         leoComando();
                         break;
                     default:
-                        System.out.println(ANSI_RED + "\n¡Error!, Opción no existe");
+                        System.out.println("\n¡Error!, Opción no existe");
                         break;
                 }
             } catch (InputMismatchException ex) {
                 input.nextLine();
-                System.out.println(ANSI_RED + "\n¡Error!, sólo números son permitidos...  ¯\\_(ツ)_/¯" + ANSI_RESET);
+                System.out.println("\n¡Error!, sólo números son permitidos...  ¯\\_(ツ)_/¯");
             }
         }//Fin while
     }
@@ -259,7 +259,7 @@ public class Prueba {
                                     }
 
                                     unaPartida.setTableroActual(tableroClon);
-                                    System.out.println("\n• Resultado de la accion anterior: " + tableroClon.getResultadoAccion());
+                                    System.out.println("\n• Resultado de la acción anterior: " + tableroClon.getResultadoAccion());
                                     unaPartida.getListaDeTableros().add(tableroClon);
                                     bandera = true;
 
@@ -331,7 +331,7 @@ public class Prueba {
                                     if (!resultadoComida.isEmpty() && formaMarco) {
                                         tableroClon.setResultadoAccion("Desplazamiento con captura y ocupación del centro: " + movimientosOrigenDestino[0] + "-" + movimientosOrigenDestino[1] + " " + resultadoComida + "*");
 
-                                        System.out.print("~~~~~~~~~• FIN DEL JUEGO •~~~~~~~~~ FIN DEL JUEGO\nResultado: " + jugadorB.getAlias() + " es el ganador!");
+                                        System.out.print("~~~~~~~~~• FIN DEL JUEGO •~~~~~~~~~ \nResultado: " + jugadorB.getAlias() + " es el ganador!");
                                         jugadorB.setGanadas(jugadorB.getGanadas() + 1);
                                         jugadorA.setPerdidas(jugadorA.getPerdidas() + 1);
                                         conquistoCentro = true;
@@ -646,7 +646,7 @@ public class Prueba {
                             System.out.print("Por favor ingrese una edad real: ");
                         }
                     } else {
-                        System.out.print(ANSI_RED + "\n¡Error!, sólo números son permitidos...  ¯\\_(ツ)_/¯\n" + ANSI_RESET + "\nIngrese una edad válida: ");
+                        System.out.print("\n¡Error!, sólo números son permitidos...  ¯\\_(ツ)_/¯ \nIngrese una edad válida: ");
                     }
                 }
             }
@@ -711,21 +711,21 @@ public class Prueba {
                                                     System.out.print("Opción incorrecta, elija otra: ");
                                                 }
                                             } else {
-                                                System.out.print(ANSI_RED + "\n¡Error!, sólo números son permitidos...  ¯\\_(ツ)_/¯\n" + ANSI_RESET + "\nIngrese una opción válida: ");
+                                                System.out.print("\n¡Error!, sólo números son permitidos...  ¯\\_(ツ)_/¯ \nIngrese una opción válida: ");
                                             }
                                         }
                                     } else {
                                         System.out.print("Opción incorrecta, elija otra: ");
                                     }
                                 } else {
-                                    System.out.print(ANSI_RED + "\n¡Error!, sólo números son permitidos...  ¯\\_(ツ)_/¯\n" + ANSI_RESET + "\nIngrese una opción válida: ");
+                                    System.out.print("\n¡Error!, sólo números son permitidos...  ¯\\_(ツ)_/¯ \n Ingrese una opción válida: ");
                                 }
                             }
                         } else {
                             System.out.print("Opción incorrecta, elija otra: ");
                         }
                     } else {
-                        System.out.print(ANSI_RED + "\n¡Error!, sólo números son permitidos...  ¯\\_(ツ)_/¯\n" + ANSI_RESET + "\nIngrese una opción válida: ");
+                        System.out.print("\n¡Error!, sólo números son permitidos...  ¯\\_(ツ)_/¯ \n Ingrese una opción válida: ");
                     }
                 }
             }
@@ -785,14 +785,14 @@ public class Prueba {
                                 System.out.print("Jugador no existe, elija un jugador de la lista: ");
                             }
                         } else {
-                            System.out.print(ANSI_RED + "\n¡Error!, sólo números son permitidos...  ¯\\_(ツ)_/¯\n" + ANSI_RESET + "\nIngrese una opción válida: ");
+                            System.out.print("\n¡Error!, sólo números son permitidos...  ¯\\_(ツ)_/¯ \n Ingrese una opción válida: ");
                         }
                     }
                 } else {
                     System.out.print("Jugador no existe, elija un jugador de la lista: ");
                 }
             } else {
-                System.out.print(ANSI_RED + "\n¡Error!, sólo números son permitidos...  ¯\\_(ツ)_/¯\n" + ANSI_RESET + "\nIngrese una opción válida: ");
+                System.out.print("\n¡Error!, sólo números son permitidos...  ¯\\_(ツ)_/¯ \n Ingrese una opción válida: ");
             }
         }
 
@@ -878,7 +878,7 @@ public class Prueba {
                             System.out.print("Partida no existe, elija una partida de la lista: ");
                         }
                     } else {
-                        System.out.print(ANSI_RED + "\n¡Error!, sólo números son permitidos...  ¯\\_(ツ)_/¯\n" + ANSI_RESET + "\nIngrese una opción válida: ");
+                        System.out.print("\n¡Error!, sólo números son permitidos...  ¯\\_(ツ)_/¯ \n Ingrese una opción válida: ");
                     }
                 }
                 
