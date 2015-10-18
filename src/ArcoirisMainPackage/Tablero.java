@@ -156,7 +156,7 @@ public class Tablero implements Cloneable {
                         inc++;
                     }
                 } else if (filaD < filaO && colD > colO) {
-                    while (filaO - inc <= filaD) {
+                    while (filaO - inc >= filaD) {
                         if (mat[filaO - inc][colO + inc] != 'O') {
                             estaVacio = false;
                         }
@@ -175,7 +175,7 @@ public class Tablero implements Cloneable {
                             inc++;
                         }
                     } else {
-                        while (colO + inc <= colD) {
+                        while (colO - inc >= colD) {
                             if (mat[filaO][colO - inc] != 'O') {
                                 estaVacio = false;
                             }
@@ -185,14 +185,14 @@ public class Tablero implements Cloneable {
 
                 } else {
                     if (filaO < filaD) {
-                        while (inc <= filaD) {
-                            if (mat[filaD + inc][colD] != 'O') {
+                        while (filaO + inc <= filaD) {
+                            if (mat[filaO + inc][colO] != 'O') {
                                 estaVacio = false;
                             }
                             inc++;
                         }
                     } else {
-                        while (inc <= filaD) {
+                        while (filaO - inc >= filaD) {
                             if (mat[filaD - inc][colD] != 'O') {
                                 estaVacio = false;
                             }
@@ -430,7 +430,7 @@ public class Tablero implements Cloneable {
             while (!(meEncuentro || encuentroO || borde)) {
                 nuevaFila = nuevaFila + movsX[i];
                 nuevaColumna = nuevaColumna + movsY[i];
-                if (nuevaFila == 0 || nuevaColumna == 0 || nuevaFila == mat.length || nuevaColumna == mat[0].length) {
+                if (nuevaFila == 0 || nuevaColumna == 0 || nuevaFila == mat.length-1 || nuevaColumna == mat[0].length-1) {
                     borde = true;
                 } else if (mat[nuevaFila][nuevaColumna] == 'O') {
                     encuentroO = true;
@@ -438,7 +438,7 @@ public class Tablero implements Cloneable {
                     meEncuentro = true;
                 }
             }
-            if (meEncuentro) {
+            if (meEncuentro || (borde && mat[nuevaFila][nuevaColumna] == mat[fila][col])) {
                 while (nuevaFila != fila || nuevaColumna != col) {
                     mat[nuevaFila][nuevaColumna] = mat[fila][col];
                     
