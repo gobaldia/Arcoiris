@@ -434,6 +434,7 @@ public class Prueba {
                                     //Verifico si formo un marco
                                     formaMarco = tableroClon.formaMarco(posicionDestino[0], posicionDestino[1], jugadorA);
 
+                                    tableroClon.setAutorMovimiento(jugadorA);
                                     mostrarTablero(tableroClon.getMatriz());
 
                                     //Debo de formatear los numeros para mostrar un mensaje acorde de lo sucedido en la comida
@@ -450,6 +451,7 @@ public class Prueba {
                                     }
 
                                     System.out.println("\n• Resultado de la accion anterior: " + tableroClon.getResultadoAccion());
+                                    unaPartida.setTableroActual(tableroClon);
                                     unaPartida.getListaDeTableros().add(tableroClon);
                                     bandera = true;
 
@@ -511,6 +513,7 @@ public class Prueba {
                                     //Verifico si formo un marco
                                     formaMarco = tableroClon.formaMarco(posicionDestino[0], posicionDestino[1], jugadorA);
 
+                                    tableroClon.setAutorMovimiento(jugadorB);
                                     mostrarTablero(tableroClon.getMatriz());
 
                                     //Debo de formatear los numeros para mostrar un mensaje acorde de lo sucedido en la comida
@@ -527,6 +530,7 @@ public class Prueba {
                                     }
 
                                     System.out.println("\n• Resultado de la accion anterior: " + tableroClon.getResultadoAccion());
+                                    unaPartida.setTableroActual(tableroClon);
                                     unaPartida.getListaDeTableros().add(tableroClon);
                                     bandera = true;
 
@@ -847,8 +851,7 @@ public class Prueba {
                         if (partidaElejida > 0 && partidaElejida <= nuevaListaPartidas.size()) {
                             partidaAReplicar = nuevaListaPartidas.get(partidaElejida - 1);
                             tablerosPartida = partidaAReplicar.getListaDeTableros();
-
-                            System.out.println("\n ->Se detalla el paso a paso de la partida seleccionada: ");
+                            
                             for (int i = 0; i < tablerosPartida.size(); i++) {
                                 mostrarTablero(tablerosPartida.get(i).getMatriz());
                                 
