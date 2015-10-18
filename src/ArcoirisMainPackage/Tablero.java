@@ -1,13 +1,13 @@
-
 package ArcoirisMainPackage;
 
-public class Tablero {
+public class Tablero implements Cloneable {
+
     private char[][] matriz;
     private String posicionOrigen;
     private String posicionDestino;
     private String resultadoAccion;
     private Jugador AutorMovimiento;
-    
+
     public char[][] getMatriz() {
         return this.matriz;
     }
@@ -33,7 +33,7 @@ public class Tablero {
     }
 
     public String getResultadoAccion() {
-        return resultadoAccion; 
+        return resultadoAccion;
     }
 
     public void setResultadoAccion(String resultadoAccion) {
@@ -47,115 +47,141 @@ public class Tablero {
     public void setAutorMovimiento(Jugador autorMovimiento) {
         this.AutorMovimiento = autorMovimiento;
     }
-    
-    public boolean formaMarco(int fila, int col, char[][] mat){
+
+    public boolean formaMarco(int fila, int col) {
+        char[][] mat = this.getMatriz();
+        
         boolean res;
-        if (mat[fila][col] != mat[12-fila][12-col]) {
+        if (mat[fila][col] != mat[12 - fila][12 - col]) {
             res = false;
-        } else if (mat[fila][col] != mat[col][12-fila]) {
+        } else if (mat[fila][col] != mat[col][12 - fila]) {
             res = false;
-        } else res = mat[fila][col] == mat[12-col][fila];
+        } else {
+            res = mat[fila][col] == mat[12 - col][fila];
+        }
         return res;
     }
     
-    public boolean movimientoValido(int filaO, int colO, int filaD, int colD, char[][] mat){
+    private String convertirPosicionesComida(String datoAConvertir){
+        String result = "x";
+        String[] comidas = datoAConvertir.split("-");
+        char[] letras = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'};
+        
+        for(int i = 0; i < comidas.length; i+=2){
+            result += letras[Integer.parseInt(comidas[i])] + comidas[i+1];
+        }
+        
+        return result;
+    }
+    
+    public boolean movimientoValido(int filaO, int colO, int filaD, int colD, char[][] mat, Jugador autorMovimiento) {
         boolean haciaAdentro;
         boolean esDiagonal;
         boolean esRecto;
         boolean estaVacio = true;
+        boolean resultado;
         
-        haciaAdentro = filaD >= 12-colO && filaD >= colO && colD >= colO && colD >= 12-colO;
-        esDiagonal = filaD - filaO == colD - colO;
-        esRecto = filaD == filaO || colD == colO;
-        
-        if (esDiagonal) {
-            int inc = 1;
-            while (inc <= filaD) {                
-                if (mat[filaO + inc][colO + inc] != 'O') {
-                    estaVacio = false;
-                }
-                inc++;
-            }
-        } else if (esRecto) {
-            int inc = 1;
-            if (filaO == filaD) {
-                while (inc <= colD) {                    
-                    if (mat[filaO][colD + inc] != 'O') {
+        if (mat[filaO][colO] == autorMovimiento.getTipoFicha()) {
+            haciaAdentro = filaD >= 12 - colO && filaD >= colO && colD >= colO && colD >= 12 - colO;
+            esDiagonal = filaD - filaO == colD - colO;
+            esRecto = filaD == filaO || colD == colO;
+
+            if (esDiagonal) {
+                int inc = 1;
+                while (inc <= filaD) {
+                    if (mat[filaO + inc][colO + inc] != 'O') {
                         estaVacio = false;
                     }
+                    inc++;
                 }
-            } else {
-                while (inc <= filaD) {                    
-                    if (mat[filaD + inc][colD] != 'O') {
-                        estaVacio = false;
+            } else if (esRecto) {
+                int inc = 1;
+                if (filaO == filaD) {
+                    while (inc <= colD) {
+                        if (mat[filaO][colD + inc] != 'O') {
+                            estaVacio = false;
+                        }
+                        inc++;
+                    }
+                } else {
+                    while (inc <= filaD) {
+                        if (mat[filaD + inc][colD] != 'O') {
+                            estaVacio = false;
+                        }
+                        inc++;
                     }
                 }
             }
+            
+            resultado = haciaAdentro && (esDiagonal || esRecto) && estaVacio;
+        } else {
+            resultado = false;
         }
-        return haciaAdentro && (esDiagonal || esRecto) && estaVacio;
+        
+        return resultado;
     }
-    
+
     public char[][] generarMatrizConFichasEnL(int marcoInicio) {
         char[][] unaMatriz = new char[13][13];
-        
+
         for (int i = 0; i < unaMatriz.length; i++) {
             for (int j = 0; j < unaMatriz[i].length; j++) {
                 unaMatriz[i][j] = 'O';
             }
         }
-        
+
         boolean bandera = true;
         int contador = 0;
 
         for (int i = 0; i < unaMatriz.length; i++) {
             for (int j = 0; j < unaMatriz[0].length; j++) {
-                
+
                 if (medirDistanciaMarco(i, j, marcoInicio)) {
                     //Manejo las fichas dentro del marco que se pasa por parametro
                     bandera = !bandera;
-                    
-                    if(contador >= 3){
+
+                    if (contador >= 3) {
                         //Este codigo se corre solo para la ultima linea del marco seleccionado
-                        unaMatriz[i][j-2] = 'B';
+                        unaMatriz[i][j - 2] = 'B';
                         unaMatriz[i][j] = 'B';
-                        
-                        if(unaMatriz.length - marcoInicio == j) {
+
+                        if (unaMatriz.length - marcoInicio == j) {
                             unaMatriz[i][j] = 'N';
-                        }                        
+                        }
                     } else {
                         if (bandera) {
-                        unaMatriz[i][j] = 'N';
-                        bandera = false;
+                            unaMatriz[i][j] = 'N';
+                            bandera = false;
                         } else {
                             unaMatriz[i][j] = 'B';
                         }
                     }
-                    
+
                     if (i > 6) {
                         contador++;
                     }
                 }
             }
-            
+
             contador = 0;
             bandera = true;
         }
 
         return unaMatriz;
     }
-    
+
     public char[][] generarMatrizConFichasAlAzar(int marcoInicio) {
         char[][] unaMatriz = new char[13][13];
-        
+
         for (int i = 0; i < unaMatriz.length; i++) {
             for (int j = 0; j < unaMatriz[i].length; j++) {
                 unaMatriz[i][j] = 'O';
             }
         }
-        
+
         int fichas = 0;
-        
-        switch(marcoInicio){
+
+        switch (marcoInicio) {
             case 1:
                 fichas = 48;
                 break;
@@ -172,9 +198,9 @@ public class Tablero {
 
         for (int i = 0; i < unaMatriz.length; i++) {
             for (int j = 0; j < unaMatriz[0].length; j++) {
-                
+
                 if (medirDistanciaMarco(i, j, marcoInicio)) {
-                    if((Math.random() * 2) < 1 && fichas > 0){
+                    if ((Math.random() * 2) < 1 && fichas > 0) {
                         fichas--;
                         unaMatriz[i][j] = 'B';
                     } else {
@@ -186,22 +212,22 @@ public class Tablero {
 
         return unaMatriz;
     }
-    
+
     public char[][] generarMatrizConFichasEnI(int marcoInicio) {
         char[][] unaMatriz = new char[13][13];
-        
+
         for (int i = 0; i < unaMatriz.length; i++) {
             for (int j = 0; j < unaMatriz[i].length; j++) {
                 unaMatriz[i][j] = 'O';
             }
         }
-        
+
         boolean bandera = true;
         int contador = 0;
 
         for (int i = 0; i < unaMatriz.length; i++) {
             for (int j = 0; j < unaMatriz[0].length; j++) {
-                
+
                 if (medirDistanciaMarco(i, j, marcoInicio)) {
                     //Manejo las fichas dentro del marco que se pasa por parametro
                     if (i == marcoInicio - 1 && j == marcoInicio - 1) {
@@ -217,14 +243,14 @@ public class Tablero {
                     }
                 }
             }
-            
+
             contador = 0;
             bandera = true;
         }
 
         return unaMatriz;
     }
-    
+
     private boolean medirDistanciaMarco(int fila, int columna, int marcoAPintar) {
         boolean bandera = false;
 
@@ -292,45 +318,66 @@ public class Tablero {
     
     public static char[][] comerFichas(int fila, int col, char[][] mat){
 
-	// defino mis vectores de movimientos
-	int[] movsX = {-1, 0, 1, 0, -1, 1, 1, -1};
-	int[] movsY = {0, 1, 0, -1, 1, 1, -1, -1};
+    public String comerFichas(int fila, int col) {
 
-    // defino las nuevas coordenadas
-	int nuevaFila = fila;
-	int nuevaColumna = col;
+        char[][] mat = this.getMatriz();
+        String resultadoComida = "";
+        
+        // defino mis vectores de movimientos
+        int[] movsX = {-1, 0, 1, 0, -1, 1, 1, -1};
+        int[] movsY = {0, 1, 0, -1, 1, 1, -1, -1};
 
-    // creo las banderas que harían llegar al final para esa dirección
-	boolean meEncuentro = false;
-	boolean encuentroO = false;
-	boolean borde = false;
+        // defino las nuevas coordenadas
+        int nuevaFila = fila;
+        int nuevaColumna = col;
 
-	for (int i = 0; i < movsX.length; i++) {
-		while (!(meEncuentro || encuentroO || borde)) {
-			nuevaFila = nuevaFila + movsX[i];
-			nuevaColumna = nuevaColumna + movsY[i];
-				if (nuevaFila == 0 || nuevaColumna == 0 || nuevaFila == mat.length || nuevaColumna == mat[0].length) {
-					borde = true;
-				} else if (mat[nuevaFila][nuevaColumna] == 'O') {
-					encuentroO = true;
-				} else if (mat[nuevaFila][nuevaColumna] == mat[fila][col]) {
-					meEncuentro = true;
-				}
-		}
-		if (meEncuentro) {
-			while (nuevaFila != fila || nuevaColumna != col) {
-				mat[nuevaFila][nuevaColumna] = mat[fila][col];
-				nuevaFila = nuevaFila - movsX[i];
-				nuevaColumna = nuevaColumna - movsY[i];
-			}
-		}
-		meEncuentro = false;
-		encuentroO = false;
-		borde = false;
-		nuevaFila = fila;
-		nuevaColumna = col;
-	}
+        // creo las banderas que harían llegar al final para esa dirección
+        boolean meEncuentro = false;
+        boolean encuentroO = false;
+        boolean borde = false;
 
-	return mat;
-}
+        for (int i = 0; i < movsX.length; i++) {
+            while (!(meEncuentro || encuentroO || borde)) {
+                nuevaFila = nuevaFila + movsX[i];
+                nuevaColumna = nuevaColumna + movsY[i];
+                if (nuevaFila == 0 || nuevaColumna == 0 || nuevaFila == mat.length || nuevaColumna == mat[0].length) {
+                    borde = true;
+                } else if (mat[nuevaFila][nuevaColumna] == 'O') {
+                    encuentroO = true;
+                } else if (mat[nuevaFila][nuevaColumna] == mat[fila][col]) {
+                    meEncuentro = true;
+                }
+            }
+            if (meEncuentro) {
+                while (nuevaFila != fila || nuevaColumna != col) {
+                    mat[nuevaFila][nuevaColumna] = mat[fila][col];
+                    resultadoComida += nuevaFila + "-" + nuevaColumna + "-";
+                    nuevaFila = nuevaFila - movsX[i];
+                    nuevaColumna = nuevaColumna - movsY[i];
+                }
+            }
+            meEncuentro = false;
+            encuentroO = false;
+            borde = false;
+            nuevaFila = fila;
+            nuevaColumna = col;
+        }
+
+        if(!resultadoComida.isEmpty()){
+            resultadoComida = convertirPosicionesComida(resultadoComida);
+        }
+        
+        return resultadoComida;
+    }
+
+    @Override
+    public Object clone() {
+        Object o = null;
+        try {
+            o = super.clone();
+        } catch (CloneNotSupportedException e) {
+            System.out.println("Ocurrio un error al clonear la tabla");
+        }
+        return o;
+    }
 }

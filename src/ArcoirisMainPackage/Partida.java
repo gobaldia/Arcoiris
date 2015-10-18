@@ -180,7 +180,7 @@ public class Partida implements Comparable<Partida> {
 
                     if (resultado) {
                         if (auxChars1.length == 3) {
-                            if (auxChars1[1] == '1' && (auxChars1[2] >= '1' && auxChars1[2] <= '3')) {
+                            if (auxChars1[1] == '1' && (auxChars1[2] >= '0' && auxChars1[2] <= '3')) {
                                 resultado = true;
                             } else {
                                 resultado = false;
@@ -214,7 +214,7 @@ public class Partida implements Comparable<Partida> {
 
                         if (resultado) {
                             if (auxChars2.length == 3) {
-                                if (auxChars2[1] == '1' && (auxChars2[2] >= '1' && auxChars2[2] <= '3')) {
+                                if (auxChars2[1] == '1' && (auxChars2[2] >= '0' && auxChars2[2] <= '3')) {
                                     resultado = true;
                                 } else {
                                     resultado = false;
@@ -265,7 +265,7 @@ public class Partida implements Comparable<Partida> {
         }
         
         String aux2 = unaPosicion.substring(1, unaPosicion.length());
-        resultArray[1] = Integer.parseInt(aux2);
+        resultArray[1] = (Integer.parseInt(aux2) - 1);
         
         return resultArray;
     }

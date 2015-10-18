@@ -143,68 +143,283 @@ public class Prueba {
                 Partida partidaActual = listaDePartidas.get(0);
                 Jugador jugadorA = partidaActual.getJugadorA();
                 Jugador jugadorB = partidaActual.getJugadorB();
-                
-                jugadorA.setTipoFicha(true);
-                jugadorB.setTipoFicha(false);
-                
+
+                jugadorA.setTipoFicha('N');
+                jugadorB.setTipoFicha('B');
+
                 System.out.println("\n       " + jugadorA.getAlias() + " vs " + jugadorB.getAlias());
 
                 System.out.println("\n-> Objetivo: " + partidaActual.obtenerTipoFinDePartida());
                 System.out.println();
                 mostrarTablero(partidaActual.getListaDeTableros().get(0).getMatriz());
+                partidaActual.setTableroActual(partidaActual.getListaDeTableros().get(0));
 
-                boolean turnoJugador = true;
-                boolean bandera = false;
-                String txtVar;
-
-                while (partidaActual.getCantidadMovimientos() > 0) {
-
-                    if (turnoJugador) {//Mueve jugador A
-                        System.out.println("\n->Turno de " + jugadorA.getAlias() + " (Fichas negras)");
-                        System.out.print("Ingrese fila/columna de ficha a mover, por ejemplo : ");
-
-                        while (!bandera) {
-                            txtVar = scr.nextLine();
-
-                            if (!(txtVar.toUpperCase().equals("X"))) {
-                                String[] movimientosOrigenDestino = partidaActual.ValidarPosicionesExisten(txtVar);
-
-                                if (!(movimientosOrigenDestino[0].isEmpty())) {
-                                    //Si el origen y destino ingresado por el usuario es coherente con la matriz lo convierto de a numeros
-                                    int[] posicionOrigen = partidaActual.convertirColumnaFila(movimientosOrigenDestino[0]);
-                                    int[] posicionDestino = partidaActual.convertirColumnaFila(movimientosOrigenDestino[1]);
-
-                                    //partidaActual.getTableroActual().movimientoValido(filaO, colO, filaD, colD, mat)
-                                    
-                                    
-                                    
-                                } else {
-                                    System.out.println("Error!, Movimiento no valido. Debe ingresar por ejemplo 'FilaColumnaOrigen-FilaColumnaDestino'. \nIngrese otros valores: ");
-                                }
-                            } else {
-                                partidaActual.setCantidadMovimientos(1);
-                                jugadorA.setPerdidas(jugadorA.getPerdidas() + 1);
-                                partidaActual.setGanador(jugadorB);
-                                bandera = true;
-                            } 
-                        }
-                    } else {//Mueve jugador B
-                        System.out.println("\n-> Turno de " + jugadorB.getAlias() + " (Fichas blancas)");
-                    }
-
-                    partidaActual.setCantidadMovimientos(partidaActual.getCantidadMovimientos() - 1);
+                if (partidaActual.getTipoFinPartida() == 1) { //Hasta que no hayan mas movimientos
+                    jugarPorCantidadDeMovimientos(scr, partidaActual, jugadorA, jugadorB);
+                } else { //Primero en conquistar el centro gana
+                    jugarConquistaElCentro(scr, partidaActual, jugadorA, jugadorB);
                 }
 
             } else {
                 System.out.println("No existe ninguna partida configurada.");
             }
         } catch (Exception ex) {
-            System.out.println("Ocurrió un error catastrófico: " + ex.getMessage());
+            System.out.println("Ocurrió un error catastrófico: " + ex);
         }
     }
 
-    public static void JugarConConfiguracionA() {
+    public static void jugarConquistaElCentro(Scanner scr, Partida unaPartida, Jugador jugadorA, Jugador jugadorB) {
+        try {
+            scr.nextLine();
+            boolean movimientoEsValido = false;
+            boolean turnoJugador = true;
+            boolean bandera = false;
+            boolean conquistoCentro = false;
+            String txtVar;
 
+            while (!conquistoCentro) {
+
+                if (turnoJugador) {//Mueve jugador A
+                    System.out.println("\n• Turno de " + jugadorA.getAlias() + " (Fichas Negras)");
+                    System.out.print("Indique origen y el destino hacia donde mover la ficha.\nEjemplo 'A1-C3'\nIngrese opción: ");
+
+                    while (!bandera) {
+                        txtVar = scr.nextLine();
+
+                        if (!(txtVar.toUpperCase().equals("X"))) {
+                            String[] movimientosOrigenDestino = unaPartida.ValidarPosicionesExisten(txtVar);
+
+                            if (!(movimientosOrigenDestino[0].isEmpty())) {
+                                //Si el origen y destino ingresado por el usuario es coherente con la matriz lo convierto de a numeros
+                                int[] posicionOrigen = unaPartida.convertirColumnaFila(movimientosOrigenDestino[0]);
+                                int[] posicionDestino = unaPartida.convertirColumnaFila(movimientosOrigenDestino[1]);
+
+                                Tablero tableroClon = (Tablero) unaPartida.getTableroActual().clone();
+
+                                movimientoEsValido = tableroClon.movimientoValido(posicionOrigen[0], posicionOrigen[1], posicionDestino[0], posicionDestino[1], tableroClon.getMatriz(), jugadorA);
+                                if (movimientoEsValido) {
+                                    //Cambio la ficha al lugar que me movi
+                                    tableroClon.getMatriz()[posicionDestino[0]][posicionDestino[1]] = jugadorA.getTipoFicha();
+                                    tableroClon.getMatriz()[posicionOrigen[0]][posicionOrigen[1]] = 'O';
+
+                                    //Verifico si puedo comer fichas..
+                                    tableroClon.comerFichas(posicionDestino[0], posicionDestino[1]);
+
+                                    //Verifico si formo un marco
+                                    tableroClon.formaMarco(posicionDestino[0], posicionDestino[1]);
+
+                                    mostrarTablero(tableroClon.getMatriz());
+                                    bandera = true;
+
+                                } else {
+                                    System.out.print("\nError!, movimiento no valido.\nIngrese otros valores: ");
+                                }
+                            } else {
+                                System.out.print("Error!, Movimiento no valido. Debe ingresar por ejemplo 'FilaColumnaOrigen-FilaColumnaDestino'. \nIngrese otros valores: ");
+                            }
+                        } else {
+                            conquistoCentro = true;
+                            jugadorA.setPerdidas(jugadorA.getPerdidas() + 1);
+                            unaPartida.setGanador(jugadorB);
+                            bandera = true;
+                            System.out.println("\n(ノಠ益ಠ)ノ彡┻━┻ FIN DEL JUEGO! \nGanador: " + ANSI_GREEN + jugadorB.getAlias() + ANSI_RESET);
+                        }
+                    }
+
+                    bandera = false;
+                    turnoJugador = !turnoJugador;
+
+                } else {//Mueve jugador B
+                    System.out.println("\n• Turno de " + jugadorB.getAlias() + " (Fichas blancas)");
+                    System.out.print("Indique la ficha de origen y el destino hacia donde mover ficha.\nEjemplo 'A1-C3'\nIngrese opción: ");
+
+                    while (!bandera) {
+                        txtVar = scr.nextLine();
+
+                        if (!(txtVar.toUpperCase().equals("X"))) {
+                            String[] movimientosOrigenDestino = unaPartida.ValidarPosicionesExisten(txtVar);
+
+                            if (!(movimientosOrigenDestino[0].isEmpty())) {
+                                //Si el origen y destino ingresado por el usuario es coherente con la matriz lo convierto de a numeros
+                                int[] posicionOrigen = unaPartida.convertirColumnaFila(movimientosOrigenDestino[0]);
+                                int[] posicionDestino = unaPartida.convertirColumnaFila(movimientosOrigenDestino[1]);
+
+                                Tablero tableroClon = (Tablero) unaPartida.getTableroActual().clone();
+
+                                movimientoEsValido = tableroClon.movimientoValido(posicionOrigen[0], posicionOrigen[1], posicionDestino[0], posicionDestino[1], tableroClon.getMatriz(), jugadorA);
+                                if (movimientoEsValido) {
+                                    //Cambio la ficha al lugar que me movi
+                                    tableroClon.getMatriz()[posicionDestino[0]][posicionDestino[1]] = jugadorA.getTipoFicha();
+                                    tableroClon.getMatriz()[posicionOrigen[0]][posicionOrigen[1]] = 'O';
+
+                                    //Verifico si puedo comer fichas..
+                                    tableroClon.comerFichas(posicionDestino[0], posicionDestino[1]);
+
+                                    //Verifico si formo un marco
+                                    tableroClon.formaMarco(posicionDestino[0], posicionDestino[1]);
+
+                                    mostrarTablero(tableroClon.getMatriz());
+
+                                } else {
+                                    System.out.print("\nError!, movimiento no valido.\nIngrese otros valores: ");
+                                }
+                            } else {
+                                System.out.print("Error!, Movimiento no valido. Debe ingresar por ejemplo 'FilaColumnaOrigen-FilaColumnaDestino'. \nIngrese otros valores: ");
+                            }
+                        } else {
+                            conquistoCentro = true;
+                            jugadorA.setPerdidas(jugadorA.getPerdidas() + 1);
+                            unaPartida.setGanador(jugadorB);
+                            bandera = true;
+                            System.out.println("\n(ノಠ益ಠ)ノ彡┻━┻ FIN DEL JUEGO! \nGanador: " + ANSI_GREEN + jugadorB.getAlias() + ANSI_RESET);
+
+                        }
+                    }
+
+                    bandera = false;
+                    turnoJugador = !turnoJugador;
+                }
+
+                unaPartida.setCantidadMovimientos(unaPartida.getCantidadMovimientos() - 1);
+            }
+        } catch (Exception ex) {
+            System.out.println("Ocurrió un error catastrófico: " + ex);
+        }
+    }
+
+    public static void jugarPorCantidadDeMovimientos(Scanner scr, Partida unaPartida, Jugador jugadorA, Jugador jugadorB) {
+        try {
+            scr.nextLine();
+            boolean movimientoEsValido = false;
+            boolean formaMarco = false;
+            boolean turnoJugador = true;
+            boolean bandera = false;
+            String txtVar;
+
+            while (unaPartida.getCantidadMovimientos() > 0) {
+
+                if (turnoJugador) {//Mueve jugador A
+                    System.out.println("\n• Turno de " + jugadorA.getAlias() + " (Fichas Negras)");
+                    System.out.print("Indique la ficha de origen y el destino hacia donde mover ficha.\nEjemplo 'A1-C3'\nIngrese opción: ");
+
+                    while (!bandera) {
+                        txtVar = scr.nextLine();
+
+                        if (!(txtVar.toUpperCase().equals("X"))) {
+                            String[] movimientosOrigenDestino = unaPartida.ValidarPosicionesExisten(txtVar);
+
+                            if (!(movimientosOrigenDestino[0].isEmpty())) {
+                                //Si el origen y destino ingresado por el usuario es coherente con la matriz lo convierto de a numeros
+                                int[] posicionOrigen = unaPartida.convertirColumnaFila(movimientosOrigenDestino[0]);
+                                int[] posicionDestino = unaPartida.convertirColumnaFila(movimientosOrigenDestino[1]);
+
+                                Tablero tableroClon = (Tablero) unaPartida.getTableroActual().clone();
+
+                                movimientoEsValido = tableroClon.movimientoValido(posicionOrigen[0], posicionOrigen[1], posicionDestino[0], posicionDestino[1], tableroClon.getMatriz(), jugadorA);
+                                if (movimientoEsValido) {
+                                    //Cambio la ficha al lugar que me movi
+                                    tableroClon.getMatriz()[posicionDestino[0]][posicionDestino[1]] = jugadorA.getTipoFicha();
+                                    tableroClon.getMatriz()[posicionOrigen[0]][posicionOrigen[1]] = 'O';
+
+                                    //Verifico si puedo comer fichas..
+                                    String resultadoComida = tableroClon.comerFichas(posicionDestino[0], posicionDestino[1]);
+
+                                    //Verifico si formo un marco
+                                    formaMarco = tableroClon.formaMarco(posicionDestino[0], posicionDestino[1]);
+
+                                    //Debo de formatear los numeros para mostrar un mensaje acorde de lo sucedido en la comida
+                                    //Limpio la accion del clon anterior
+                                    tableroClon.setResultadoAccion("");
+                                    if (!resultadoComida.isEmpty() && formaMarco) {
+                                        tableroClon.setResultadoAccion("Desplazamiento con captura y ocupación del centro: " + movimientosOrigenDestino[0] + "-" + movimientosOrigenDestino[1] + " " + resultadoComida + "*");
+                                    } else if (!resultadoComida.isEmpty()) {
+                                        tableroClon.setResultadoAccion("Desplazamiento con captura: " + movimientosOrigenDestino[0] + "-" + movimientosOrigenDestino[1] + " " + resultadoComida);
+                                    } else if (formaMarco) {
+                                        tableroClon.setResultadoAccion("Desplazamiento con ocupación del centro: " + movimientosOrigenDestino[0] + "-" + movimientosOrigenDestino[1] + " *");
+                                    }
+
+                                    mostrarTablero(tableroClon.getMatriz());
+
+                                    //String algo = ""
+                                    bandera = true;
+
+                                } else {
+                                    System.out.print("\nError!, movimiento no valido.\nIngrese otros valores: ");
+                                }
+                            } else {
+                                System.out.print("Error!, Movimiento no valido. Debe ingresar por ejemplo 'FilaColumnaOrigen-FilaColumnaDestino'. \nIngrese otros valores: ");
+                            }
+                        } else {
+                            unaPartida.setCantidadMovimientos(1);
+                            jugadorA.setPerdidas(jugadorA.getPerdidas() + 1);
+                            unaPartida.setGanador(jugadorB);
+                            bandera = true;
+                            System.out.println("\n(ノಠ益ಠ)ノ彡┻━┻ FIN DEL JUEGO! \nGanador: " + ANSI_GREEN + jugadorB.getAlias() + ANSI_RESET);
+                        }
+                    }
+
+                    bandera = false;
+                    turnoJugador = !turnoJugador;
+                    movimientoEsValido = false;
+                    formaMarco = false;
+                } else {//Mueve jugador B
+                    System.out.println("\n-> Turno de " + jugadorB.getAlias() + " (Fichas blancas)");
+                    System.out.print("Indique la ficha de origen y el destino hacia donde mover ficha.\nEjemplo 'A1-C3'\nIngrese opción: ");
+
+                    while (!bandera) {
+                        txtVar = scr.nextLine();
+
+                        if (!(txtVar.toUpperCase().equals("X"))) {
+                            String[] movimientosOrigenDestino = unaPartida.ValidarPosicionesExisten(txtVar);
+
+                            if (!(movimientosOrigenDestino[0].isEmpty())) {
+                                //Si el origen y destino ingresado por el usuario es coherente con la matriz lo convierto de a numeros
+                                int[] posicionOrigen = unaPartida.convertirColumnaFila(movimientosOrigenDestino[0]);
+                                int[] posicionDestino = unaPartida.convertirColumnaFila(movimientosOrigenDestino[1]);
+
+                                Tablero tableroClon = (Tablero) unaPartida.getTableroActual().clone();
+
+                                movimientoEsValido = tableroClon.movimientoValido(posicionOrigen[0], posicionOrigen[1], posicionDestino[0], posicionDestino[1], tableroClon.getMatriz(), jugadorB);
+                                if (movimientoEsValido) {
+                                    //Cambio la ficha al lugar que me movi
+                                    tableroClon.getMatriz()[posicionDestino[0]][posicionDestino[1]] = jugadorB.getTipoFicha();
+                                    tableroClon.getMatriz()[posicionOrigen[0]][posicionOrigen[1]] = 'O';
+
+                                    //Verifico si puedo comer fichas..
+                                    tableroClon.comerFichas(posicionDestino[0], posicionDestino[1]);
+
+                                    //Verifico si formo un marco
+                                    tableroClon.formaMarco(posicionDestino[0], posicionDestino[1]);
+
+                                    mostrarTablero(tableroClon.getMatriz());
+                                    bandera = true;
+
+                                } else {
+                                    System.out.print("\nError!, movimiento no valido.\nIngrese otros valores: ");
+                                }
+                            } else {
+                                System.out.print("Error!, Movimiento no valido. Debe ingresar por ejemplo 'FilaColumnaOrigen-FilaColumnaDestino'. \nIngrese otros valores: ");
+                            }
+                        } else {
+                            unaPartida.setCantidadMovimientos(1);
+                            jugadorB.setPerdidas(jugadorB.getPerdidas() + 1);
+                            unaPartida.setGanador(jugadorA);
+                            bandera = true;
+                            System.out.println("\n(ノಠ益ಠ)ノ彡┻━┻ FIN DEL JUEGO! \nGanador: " + ANSI_GREEN + jugadorA.getAlias() + ANSI_RESET);
+                        }
+                    }
+
+                    bandera = false;
+                    turnoJugador = !turnoJugador;
+                    movimientoEsValido = false;
+                    formaMarco = false;
+                }
+
+                unaPartida.setCantidadMovimientos(unaPartida.getCantidadMovimientos() - 1);
+            }
+        } catch (Exception ex) {
+            System.out.println("Ocurrió un error catastrófico: " + ex);
+        }
     }
 
     //*************************************************************************//
@@ -381,7 +596,7 @@ public class Prueba {
 
                 if (jugadorElejido > 0 && jugadorElejido <= listaJugadores.size()) {
                     unaPartida.agregarJugadorA(listaJugadores.get(jugadorElejido - 1));
-                    
+
                     ArrayList<Jugador> listaSinJugadorSeleccionado = new ArrayList<Jugador>();
                     for (int i = 0; i < listaJugadores.size(); i++) {
                         if (i != (jugadorElejido - 1)) {
