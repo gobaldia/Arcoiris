@@ -73,7 +73,7 @@ public class Tablero implements Cloneable {
         char[] letras = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'};
 
         for (int i = 0; i < comidas.length; i += 2) {
-            result += letras[Integer.parseInt(comidas[i])] + comidas[i + 1];
+            result += letras[Integer.parseInt(comidas[i])] + "" + (Integer.parseInt(comidas[i + 1]) + 1);
         }
 
         return result;
@@ -418,6 +418,8 @@ public class Tablero implements Cloneable {
         // defino las nuevas coordenadas
         int nuevaFila = fila;
         int nuevaColumna = col;
+        
+        int contador =0;
 
         // creo las banderas que harían llegar al final para esa dirección
         boolean meEncuentro = false;
@@ -439,10 +441,16 @@ public class Tablero implements Cloneable {
             if (meEncuentro) {
                 while (nuevaFila != fila || nuevaColumna != col) {
                     mat[nuevaFila][nuevaColumna] = mat[fila][col];
-                    resultadoComida += nuevaFila + "-" + nuevaColumna + "-";
+                    
+                    if(contador >= 1){//Si el contador es mayor a 1 es porque realize una comida.
+                        resultadoComida += nuevaFila + "-" + nuevaColumna + "-";
+                    }                    
+                    contador++;
+                    
                     nuevaFila = nuevaFila - movsX[i];
                     nuevaColumna = nuevaColumna - movsY[i];
                 }
+                contador = 0;
             }
             meEncuentro = false;
             encuentroO = false;
