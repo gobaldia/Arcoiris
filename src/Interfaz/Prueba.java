@@ -178,7 +178,7 @@ public class Prueba {
                                 Tablero tableroClon = new Tablero();
                                 tableroClon.setMatriz(matrizClon);
 
-                                if (posicionDestino[0] != 6 && posicionDestino[1] != 6) {
+                                if (posicionDestino[0] != 6 || posicionDestino[1] != 6) {
                                     movimientoEsValido = tableroClon.movimientoValido(posicionOrigen[0], posicionOrigen[1], posicionDestino[0], posicionDestino[1], jugadorA);
                                     if (movimientoEsValido) {
                                         //Cambio la ficha al lugar que me movi
@@ -272,7 +272,7 @@ public class Prueba {
                                 Tablero tableroClon = new Tablero();
                                 tableroClon.setMatriz(matrizClon);
 
-                                if (posicionDestino[0] != 6 && posicionDestino[1] != 6) {
+                                if (posicionDestino[0] != 6 || posicionDestino[1] != 6) {
                                     movimientoEsValido = tableroClon.movimientoValido(posicionOrigen[0], posicionOrigen[1], posicionDestino[0], posicionDestino[1], jugadorB);
                                     if (movimientoEsValido) {
                                         //Cambio la ficha al lugar que me movi
@@ -388,7 +388,7 @@ public class Prueba {
                                 Tablero tableroClon = new Tablero();
                                 tableroClon.setMatriz(matrizClon);
 
-                                if (posicionDestino[0] != 6 && posicionDestino[1] != 6) {
+                                if (posicionDestino[0] != 6 || posicionDestino[1] != 6) {
                                     movimientoEsValido = tableroClon.movimientoValido(posicionOrigen[0], posicionOrigen[1], posicionDestino[0], posicionDestino[1], jugadorA);
                                     if (movimientoEsValido) {
                                         //Cambio la ficha al lugar que me movi
@@ -471,7 +471,7 @@ public class Prueba {
                                 Tablero tableroClon = new Tablero();
                                 tableroClon.setMatriz(matrizClon);
 
-                                if (posicionDestino[0] != 6 && posicionDestino[1] != 6) {
+                                if (posicionDestino[0] != 6 || posicionDestino[1] != 6) {
                                     movimientoEsValido = tableroClon.movimientoValido(posicionOrigen[0], posicionOrigen[1], posicionDestino[0], posicionDestino[1], jugadorB);
                                     if (movimientoEsValido) {
                                         //Cambio la ficha al lugar que me movi
