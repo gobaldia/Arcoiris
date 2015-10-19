@@ -134,7 +134,7 @@ public class Prueba {
 
                 unJuego.getListaDePartidas().add(proximaPartida);
             } else {
-                System.out.println("No existe ninguna partida configurada.");
+                System.out.println("\nNo existe ninguna partida configurada.");
             }
         } catch (Exception ex) {
             System.out.println("Ocurrió un error catastrófico: " + ex);
