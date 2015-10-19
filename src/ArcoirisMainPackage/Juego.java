@@ -26,13 +26,21 @@ public class Juego {
         this.listaDePartidas = unaLista;
     }
 
+    //*************************************************************************//
+    //****************** CONSTRUCTOR ***********************************//
     public Juego() {
         this.setListaDeJugadores(new ArrayList<Jugador>());
         this.setListaDePartidas(new ArrayList<Partida>());
     }
-
+    
+    //*************************************************************************//
+    //******************   MOSTRAR JUEGO  ***********************************//
     public void agregarJugador(Jugador unJugador) {
         this.getListaDeJugadores().add(unJugador);
+    }
+
+    public void agregarPartida(Partida unaPartida) {
+        this.getListaDePartidas().add(unaPartida);
     }
 
     public boolean existeJugador(Jugador unJugador) {
@@ -64,7 +72,4 @@ public class Juego {
         return this.getListaDePartidas();
     }
 
-    public void agregarPartida(Partida unaPartida) {
-        this.getListaDePartidas().add(unaPartida);
-    }
 }

@@ -101,6 +101,9 @@ public class Partida implements Comparable<Partida> {
         idPartida = idGeneral++;//Primero lo agrego a idPartida luego lo incremento.
     }
 
+    //*************************************************************************//
+    //****************** METODOS DE PARTIDA  ***********************************//
+    
     public void agregarJugadorA(Jugador unJugador) {
         this.setJugadorA(unJugador);
     }
