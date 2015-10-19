@@ -1,5 +1,9 @@
-package ArcoirisMainPackage;
+package Interfaz;
 
+import ArcoirisMainPackage.Juego;
+import ArcoirisMainPackage.Jugador;
+import ArcoirisMainPackage.Partida;
+import ArcoirisMainPackage.Tablero;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
