@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 public class Partida implements Comparable<Partida> {
+
     private static int idGeneral = 0;
     private int idPartida;
     private ArrayList<Tablero> listaDeTableros;
@@ -16,18 +17,18 @@ public class Partida implements Comparable<Partida> {
     private Tablero tableroActual;
     private Jugador ganador;//Si queda en null es porque fue empate
 
-    public int getId(){
+    public int getId() {
         return this.idPartida;
     }
-    
-    public Jugador getGanador(){
+
+    public Jugador getGanador() {
         return this.ganador;
     }
-    
-    public void setGanador(Jugador unJugador){
+
+    public void setGanador(Jugador unJugador) {
         this.ganador = unJugador;
     }
-    
+
     public ArrayList<Tablero> getListaDeTableros() {
         return this.listaDeTableros;
     }
@@ -36,22 +37,22 @@ public class Partida implements Comparable<Partida> {
         this.listaDeTableros = unaListaTableros;
     }
 
-    public void setDistribucionInicialFichas(int unaDistribucion){
+    public void setDistribucionInicialFichas(int unaDistribucion) {
         this.distribucionInicialFichas = unaDistribucion;
     }
-    
-    public int getDistribucionInicialFichas(){
+
+    public int getDistribucionInicialFichas() {
         return this.distribucionInicialFichas;
     }
-    
-    public void setMarcoInicio(int unMarco){
+
+    public void setMarcoInicio(int unMarco) {
         this.marcoInicio = unMarco;
     }
-    
-    public int getMarcoInicio(){
+
+    public int getMarcoInicio() {
         return this.marcoInicio;
     }
-    
+
     public Jugador getJugadorA() {
         return this.jugadorA;
     }
@@ -83,70 +84,69 @@ public class Partida implements Comparable<Partida> {
     public void setTableroActual(Tablero unTablero) {
         this.tableroActual = unTablero;
     }
-    
-    public int getTipoFinPartida(){
+
+    public int getTipoFinPartida() {
         return this.tipoFinPartida;
     }
-    
-    public void setTipoFinPartida(int unTipoFinPartida){
+
+    public void setTipoFinPartida(int unTipoFinPartida) {
         this.tipoFinPartida = unTipoFinPartida;
     }
-    
-    public Partida(){
+
+    public Partida() {
         this.setListaDeTableros(new ArrayList<Tablero>());
         this.setCantidadMovimientos(10);
-        
-        
+
         //Para poder mantener un orden
         idPartida = idGeneral++;//Primero lo agrego a idPartida luego lo incremento.
     }
-    
-    public void agregarJugadorA(Jugador unJugador){
+
+    public void agregarJugadorA(Jugador unJugador) {
         this.setJugadorA(unJugador);
     }
-    
-    public void agregarJugadorB(Jugador unJugador){
+
+    public void agregarJugadorB(Jugador unJugador) {
         this.setJugadorB(unJugador);
     }
-    
-    public void generarTableroInicial(int tipoDistribucionFichas, int marcoInicial){
+
+    public void generarTableroInicial(int tipoDistribucionFichas, int marcoInicial) {
         Tablero tableroInicio = new Tablero();
-        
-        if(tipoDistribucionFichas == 1){
+
+        if (tipoDistribucionFichas == 1) {
             tableroInicio.setMatriz(tableroInicio.generarMatrizConFichasAlAzar(marcoInicial));
-        } else if (tipoDistribucionFichas == 2){
+        } else if (tipoDistribucionFichas == 2) {
             tableroInicio.setMatriz(tableroInicio.generarMatrizConFichasEnI(marcoInicial));
-        } else if(tipoDistribucionFichas == 3){
+        } else if (tipoDistribucionFichas == 3) {
             tableroInicio.setMatriz(tableroInicio.generarMatrizConFichasEnL(marcoInicial));
         }
-        
+
         this.getListaDeTableros().add(tableroInicio);
     }
-    
-    public String obtenerTipoFinDePartida(){
+
+    public String obtenerTipoFinDePartida() {
         String retorno;
-        
-        if(this.getTipoFinPartida() == 1){
+
+        if (this.getTipoFinPartida() == 1) {
             retorno = "Cuando se terminen los " + this.getCantidadMovimientos() + " movimientos, el jugador que este ocupando el centro en ese momento ganará. \nEn caso de que ninguno haya ocupado el centro, la partida terminará en empate.";
         } else {
             retorno = "El primer jugador en ocupar el centro gana.";
         }
-        
+
         return retorno;
     }
-    
+
     @Override
-    public int compareTo(Partida unaPartida){
+    public int compareTo(Partida unaPartida) {
         int result;
-        if (unaPartida.getId() < this.getId()){
+        if (unaPartida.getId() < this.getId()) {
             result = -1;
-        }else{
+        } else {
             result = 1;
         }
-        
+
         return result;
     }
-    
+
     public String[] ValidarPosicionesExisten(String datoOrigenyDestino) {
         boolean resultado = true;
         String noSpaces;
@@ -186,11 +186,11 @@ public class Partida implements Comparable<Partida> {
                                 resultado = false;
                             }
                         } else if (auxChars1.length == 2) {
-                             if(auxChars1[1] >= '1' && auxChars1[1] <= '9'){
-                                 resultado = true;
-                             } else {
-                                 resultado = false;
-                             }
+                            if (auxChars1[1] >= '1' && auxChars1[1] <= '9') {
+                                resultado = true;
+                            } else {
+                                resultado = false;
+                            }
                         } else {
                             resultado = false;
                         }
@@ -249,24 +249,24 @@ public class Partida implements Comparable<Partida> {
 
         return auxArray;
     }
-    
-    public int[] convertirColumnaFila(String unaPosicion){
+
+    public int[] convertirColumnaFila(String unaPosicion) {
         int[] resultArray = new int[2];
-        
+
         char[] letras = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'};
         int[] numeros = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
-        
+
         String aux = unaPosicion.substring(0, 1);
-        for(int i = 0; i < letras.length; i++){
-            if(letras[i] == aux.toCharArray()[0]){
+        for (int i = 0; i < letras.length; i++) {
+            if (letras[i] == aux.toCharArray()[0]) {
                 resultArray[0] = numeros[i];
             }
         }
-        
+
         String aux2 = unaPosicion.substring(1, unaPosicion.length());
         resultArray[1] = (Integer.parseInt(aux2) - 1);
-        
+
         return resultArray;
     }
-    
+
 }

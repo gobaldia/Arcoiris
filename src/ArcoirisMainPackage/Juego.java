@@ -58,13 +58,13 @@ public class Juego {
         });
         return this.listaDeJugadores;
     }
-    
-    public ArrayList<Partida> ordenarPartidasDesc(){
+
+    public ArrayList<Partida> ordenarPartidasDesc() {
         Collections.sort(this.getListaDePartidas());
         return this.getListaDePartidas();
     }
-    
-    public void agregarPartida(Partida unaPartida){
+
+    public void agregarPartida(Partida unaPartida) {
         this.getListaDePartidas().add(unaPartida);
     }
 }

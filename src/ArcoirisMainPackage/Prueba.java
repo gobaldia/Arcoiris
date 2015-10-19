@@ -209,13 +209,13 @@ public class Prueba {
                                 int[] posicionOrigen = unaPartida.convertirColumnaFila(movimientosOrigenDestino[0]);
                                 int[] posicionDestino = unaPartida.convertirColumnaFila(movimientosOrigenDestino[1]);
 
-                                char[][] matrizClon = new char[13][13];                                
-                                for(int i = 0; i < matrizClon.length; i++){
-                                    for(int j = 0; j < matrizClon[0].length; j++){
+                                char[][] matrizClon = new char[13][13];
+                                for (int i = 0; i < matrizClon.length; i++) {
+                                    for (int j = 0; j < matrizClon[0].length; j++) {
                                         matrizClon[i][j] = unaPartida.getTableroActual().getMatriz()[i][j];
                                     }
                                 }
-                                
+
                                 Tablero tableroClon = new Tablero();
                                 tableroClon.setMatriz(matrizClon);
 
@@ -299,13 +299,13 @@ public class Prueba {
                                 int[] posicionOrigen = unaPartida.convertirColumnaFila(movimientosOrigenDestino[0]);
                                 int[] posicionDestino = unaPartida.convertirColumnaFila(movimientosOrigenDestino[1]);
 
-                                char[][] matrizClon = new char[13][13];                                
-                                for(int i = 0; i < matrizClon.length; i++){
-                                    for(int j = 0; j < matrizClon[0].length; j++){
+                                char[][] matrizClon = new char[13][13];
+                                for (int i = 0; i < matrizClon.length; i++) {
+                                    for (int j = 0; j < matrizClon[0].length; j++) {
                                         matrizClon[i][j] = unaPartida.getTableroActual().getMatriz()[i][j];
                                     }
                                 }
-                                
+
                                 Tablero tableroClon = new Tablero();
                                 tableroClon.setMatriz(matrizClon);
 
@@ -412,13 +412,13 @@ public class Prueba {
                                 int[] posicionOrigen = unaPartida.convertirColumnaFila(movimientosOrigenDestino[0]);
                                 int[] posicionDestino = unaPartida.convertirColumnaFila(movimientosOrigenDestino[1]);
 
-                                char[][] matrizClon = new char[13][13];                                
-                                for(int i = 0; i < matrizClon.length; i++){
-                                    for(int j = 0; j < matrizClon[0].length; j++){
+                                char[][] matrizClon = new char[13][13];
+                                for (int i = 0; i < matrizClon.length; i++) {
+                                    for (int j = 0; j < matrizClon[0].length; j++) {
                                         matrizClon[i][j] = unaPartida.getTableroActual().getMatriz()[i][j];
                                     }
                                 }
-                                
+
                                 Tablero tableroClon = new Tablero();
                                 tableroClon.setMatriz(matrizClon);
 
@@ -491,13 +491,13 @@ public class Prueba {
                                 int[] posicionOrigen = unaPartida.convertirColumnaFila(movimientosOrigenDestino[0]);
                                 int[] posicionDestino = unaPartida.convertirColumnaFila(movimientosOrigenDestino[1]);
 
-                                char[][] matrizClon = new char[13][13];                                
-                                for(int i = 0; i < matrizClon.length; i++){
-                                    for(int j = 0; j < matrizClon[0].length; j++){
+                                char[][] matrizClon = new char[13][13];
+                                for (int i = 0; i < matrizClon.length; i++) {
+                                    for (int j = 0; j < matrizClon[0].length; j++) {
                                         matrizClon[i][j] = unaPartida.getTableroActual().getMatriz()[i][j];
                                     }
                                 }
-                                
+
                                 Tablero tableroClon = new Tablero();
                                 tableroClon.setMatriz(matrizClon);
 
@@ -851,28 +851,28 @@ public class Prueba {
                         if (partidaElejida > 0 && partidaElejida <= nuevaListaPartidas.size()) {
                             partidaAReplicar = nuevaListaPartidas.get(partidaElejida - 1);
                             tablerosPartida = partidaAReplicar.getListaDeTableros();
-                            
+
                             for (int i = 0; i < tablerosPartida.size(); i++) {
                                 mostrarTablero(tablerosPartida.get(i).getMatriz());
-                                
-                                if(tablerosPartida.get(i).getAutorMovimiento() != null){
+
+                                if (tablerosPartida.get(i).getAutorMovimiento() != null) {
                                     System.out.println("• Movimiento realizado por: " + tablerosPartida.get(i).getAutorMovimiento().getAlias());
                                 } else {
                                     System.out.println("• Configuración inicial de la partida");
                                 }
-                                
+
                                 System.out.println(tablerosPartida.get(i).getResultadoAccion());
-                                
+
                                 System.out.println("\nPresione enter para seguir viendo paso a paso las jugadas...");
                                 leoComando();
                             }
 
-                            if(partidaAReplicar.getGanador() != null){
-                                System.out.println("• El ganador fue: " + partidaAReplicar.getGanador()); 
+                            if (partidaAReplicar.getGanador() != null) {
+                                System.out.println("• El ganador fue: " + partidaAReplicar.getGanador());
                             } else {
                                 System.out.println("• La partida termino en empate.");
                             }
-                            
+
                             bandera = true;
                         } else {
                             System.out.print("Partida no existe, elija una partida de la lista: ");
@@ -881,9 +881,7 @@ public class Prueba {
                         System.out.print("\n¡Error!, sólo números son permitidos...  ¯\\_(ツ)_/¯ \n Ingrese una opción válida: ");
                     }
                 }
-                
-                
-                
+
             } else {
                 System.out.println("\nNo existen partidas finalizadas.");
             }

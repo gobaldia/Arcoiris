@@ -1,6 +1,7 @@
 package ArcoirisMainPackage;
 
 public class Jugador implements Comparable<Jugador> {
+
     private String nombre;
     private String alias;
     private int edad;
@@ -8,7 +9,7 @@ public class Jugador implements Comparable<Jugador> {
     private int perdidas;
     private int empates;
     private char tipoFicha;//B = Blancas, N = Negras
-    
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
@@ -17,16 +18,16 @@ public class Jugador implements Comparable<Jugador> {
         return nombre;
     }
 
-    public char getTipoFicha(){
+    public char getTipoFicha() {
         return this.tipoFicha;
     }
-    
-    public void setTipoFicha(char unTipoFicha){
+
+    public void setTipoFicha(char unTipoFicha) {
         this.tipoFicha = unTipoFicha;
     }
-    
+
     public void setAlias(String alias) {
-        this.alias = alias; 
+        this.alias = alias;
     }
 
     public String getAlias() {
@@ -73,8 +74,8 @@ public class Jugador implements Comparable<Jugador> {
         this.setPerdidas(0);
         this.setEmpates(0);
     }
-    
-    public Jugador(){
+
+    public Jugador() {
         this.setNombre("Sin nombre");
         this.setAlias("Sin alias");
         this.setEdad(0);
@@ -82,20 +83,19 @@ public class Jugador implements Comparable<Jugador> {
         this.setPerdidas(0);
         this.setEmpates(0);
     }
-    
-    
+
     @Override
-    public String toString(){
+    public String toString() {
         return "Alias: " + this.getAlias() + " | Nombre: " + this.getNombre() + " | Edad: " + this.getEdad();
     }
-    
+
     @Override
-    public int compareTo(Jugador unJugador){
+    public int compareTo(Jugador unJugador) {
         return this.getAlias().compareTo(unJugador.getAlias());
     }
-    
+
     @Override
-    public boolean equals(Object unObjeto){
-        return (((Jugador)unObjeto).getAlias().toUpperCase().equals(this.getAlias().toUpperCase()));
+    public boolean equals(Object unObjeto) {
+        return (((Jugador) unObjeto).getAlias().toUpperCase().equals(this.getAlias().toUpperCase()));
     }
 }

@@ -85,11 +85,11 @@ public class Tablero {
 
         int[] movsX = {-1, 0, 1, 0, -1, 1, 1, -1};
         int[] movsY = {0, 1, 0, -1, 1, 1, -1, -1};
-        
+
         int nuevaFila = 0;
         int nuevaColumna = 0;
         int contador = 0;
-        
+
         for (int fila = 0; fila > mat.length; fila++) {
             for (int col = 0; col > mat[0].length; col++) {
                 if (mat[fila][col] == autorMovimiento.getTipoFicha()) {
@@ -98,14 +98,14 @@ public class Tablero {
 
                         do {
                             nuevaFila = fila + movsX[contador];
-                            nuevaColumna = col + movsY[contador];                            
+                            nuevaColumna = col + movsY[contador];
                             contador++;
-                            
-                            if(movimientoValido(fila, col, nuevaFila, nuevaColumna, autorMovimiento)){
+
+                            if (movimientoValido(fila, col, nuevaFila, nuevaColumna, autorMovimiento)) {
                                 resultado = true;//Si encuentro almenos 1 movimiento valido no sigo verificando la matriz
                             }
                         } while (contador < movsX.length);
-                        
+
                         contador = 0;
                         nuevaFila = 0;
                         nuevaColumna = 0;
@@ -124,7 +124,7 @@ public class Tablero {
         boolean esRecto;
         boolean estaVacio = true;
         boolean resultado;
-        
+
         char[][] mat = this.getMatriz();
 
         if (mat[filaO][colO] == autorMovimiento.getTipoFicha()) {
@@ -418,8 +418,8 @@ public class Tablero {
         // defino las nuevas coordenadas
         int nuevaFila = fila;
         int nuevaColumna = col;
-        
-        int contador =0;
+
+        int contador = 0;
 
         // creo las banderas que harían llegar al final para esa dirección
         boolean meEncuentro = false;
@@ -430,7 +430,7 @@ public class Tablero {
             while (!(meEncuentro || encuentroO || borde)) {
                 nuevaFila = nuevaFila + movsX[i];
                 nuevaColumna = nuevaColumna + movsY[i];
-                if (nuevaFila == 0 || nuevaColumna == 0 || nuevaFila == mat.length-1 || nuevaColumna == mat[0].length-1) {
+                if (nuevaFila == 0 || nuevaColumna == 0 || nuevaFila == mat.length - 1 || nuevaColumna == mat[0].length - 1) {
                     borde = true;
                 } else if (mat[nuevaFila][nuevaColumna] == 'O') {
                     encuentroO = true;
@@ -441,12 +441,12 @@ public class Tablero {
             if (meEncuentro || (borde && mat[nuevaFila][nuevaColumna] == mat[fila][col])) {
                 while (nuevaFila != fila || nuevaColumna != col) {
                     mat[nuevaFila][nuevaColumna] = mat[fila][col];
-                    
-                    if(contador >= 1){//Si el contador es mayor a 1 es porque realize una comida.
+
+                    if (contador >= 1) {//Si el contador es mayor a 1 es porque realize una comida.
                         resultadoComida += nuevaFila + "-" + nuevaColumna + "-";
-                    }                    
+                    }
                     contador++;
-                    
+
                     nuevaFila = nuevaFila - movsX[i];
                     nuevaColumna = nuevaColumna - movsY[i];
                 }
