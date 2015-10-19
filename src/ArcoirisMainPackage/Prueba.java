@@ -30,56 +30,11 @@ public class Prueba {
                 + " /_/   \\_\\ |_|     \\___|  \\___/  |_| |_|    |_| |___/\n"
                 + "                                                     " + ANSI_RESET);
 
-        //mostrarTablero();
         //Creo el Scanner para manejar los datos ingresados por el usuario.        
         Scanner input = new Scanner(System.in);
 
         //Creo una instancia de Juego con el cual voy a manejar el sistema.
         Juego miJuego = new Juego();
-
-        //*******//
-        Jugador j1 = new Jugador("Pepe", "nikPepe", 13);
-        Jugador j2 = new Jugador("Juan", "cccccc", 15);
-        Jugador j3 = new Jugador("Eliana", "bbbbb", 25);
-        Jugador j4 = new Jugador("Lorena", "aaaaaa", 23);
-        Jugador j5 = new Jugador("Hector", "adsads", 59);
-
-        j4.setGanadas(10);
-        j2.setGanadas(5);
-
-        miJuego.agregarJugador(j1);
-        miJuego.agregarJugador(j2);
-        miJuego.agregarJugador(j3);
-        miJuego.agregarJugador(j4);
-        miJuego.agregarJugador(j5);
-
-        Partida part1 = new Partida();
-        part1.agregarJugadorA(j5);
-        part1.agregarJugadorB(j1);
-        part1.setCantidadMovimientos(10);
-        part1.setDistribucionInicialFichas(1);//1.2.3
-        part1.setMarcoInicio(1);//1.2.3.4
-        part1.setTipoFinPartida(1);//1.2
-
-        Partida part2 = new Partida();
-        part2.agregarJugadorA(j2);
-        part2.agregarJugadorB(j3);
-        part2.setCantidadMovimientos(10);
-        part2.setDistribucionInicialFichas(2);//1.2.3
-        part2.setMarcoInicio(3);//1.2.3.4
-        part2.setTipoFinPartida(2);//1.2
-
-        Partida part3 = new Partida();
-        part3.agregarJugadorA(j1);
-        part3.agregarJugadorB(j4);
-        part3.setCantidadMovimientos(10);
-        part3.setDistribucionInicialFichas(3);//1.2.3
-        part3.setMarcoInicio(4);//1.2.3.4
-        part3.setTipoFinPartida(1);//1.2
-
-        miJuego.agregarPartida(part1);
-        miJuego.agregarPartida(part2);
-        miJuego.agregarPartida(part3);
 
         //*****//
         int opcion = -1;
@@ -803,11 +758,15 @@ public class Prueba {
 
         System.out.println("\n~~~~~~~~~~•~~~~~~~~~~•~~~~~~~~~~~");
         System.out.println("ᕦ(ò_óˇ)ᕤ Ranking de Jugadores");
-        for (int i = 0; i < unJuego.getListaDeJugadores().size(); i++) {
-            Jugador j = unJuego.getListaDeJugadores().get(i);
-            System.out.println(j.toString() + " || " + "Ganadas: " + j.getGanadas()
-                    + " | Empatadas: " + j.getEmpates()
-                    + " | Perdidas: " + j.getPerdidas());
+        if (unJuego.getListaDeJugadores().isEmpty()) {
+            System.out.println("\nNo existen jugadores.");
+        } else {
+            for (int i = 0; i < unJuego.getListaDeJugadores().size(); i++) {
+                Jugador j = unJuego.getListaDeJugadores().get(i);
+                System.out.println(j.toString() + " || " + "Ganadas: " + j.getGanadas()
+                        + " | Empatadas: " + j.getEmpates()
+                        + " | Perdidas: " + j.getPerdidas());
+            }
         }
     }
 
