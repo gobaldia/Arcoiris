@@ -134,7 +134,7 @@ public class Prueba {
 
                 unJuego.getListaDePartidas().add(proximaPartida);
             } else {
-                System.out.println("No existe ninguna partida configurada.");
+                System.out.println("\nNo existe ninguna partida configurada.");
             }
         } catch (Exception ex) {
             System.out.println("Ocurrió un error catastrófico: " + ex);
@@ -200,7 +200,7 @@ public class Prueba {
                                         tableroClon.setResultadoAccion("Desplazamiento con captura y ocupación del centro: " + movimientosOrigenDestino[0] + "-" + movimientosOrigenDestino[1] + " " + resultadoComida + "*");
                                         conquistoCentro = true;
 
-                                        System.out.print("~~~~~~~~~• FIN DEL JUEGO •~~~~~~~~~ FIN DEL JUEGO\nResultado: " + jugadorA.getAlias() + " es el ganador!");
+                                        System.out.print("~~~~~~~~~• FIN DEL JUEGO •~~~~~~~~~\nResultado: " + jugadorA.getAlias() + " es el ganador!");
                                         jugadorA.setGanadas(jugadorA.getGanadas() + 1);
                                         jugadorB.setPerdidas(jugadorB.getPerdidas() + 1);
 
