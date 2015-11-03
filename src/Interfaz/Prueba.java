@@ -4,6 +4,8 @@ import ArcoirisMainPackage.Juego;
 import ArcoirisMainPackage.Jugador;
 import ArcoirisMainPackage.Partida;
 import ArcoirisMainPackage.Tablero;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -11,6 +13,7 @@ import java.util.regex.Pattern;
 
 public class Prueba {
 
+    
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_PURPLE = "\u001B[35m";
     public static final String ANSI_CYAN = "\u001B[36m";
@@ -19,7 +22,10 @@ public class Prueba {
     public static final String ANSI_GREEN = "\u001B[32m";
     public static final String ANSI_RESET = "\u001B[0m";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        
+        System.out.println(new File(".").getCanonicalPath());
+        
         System.out.println(ANSI_PURPLE + "	  	        []  ,----.___\n" + ANSI_GREEN
                 + "		      __||_/___      '.\n" + ANSI_GREEN
                 + "		     / O||    /|       )\n" + ANSI_YELLOW
