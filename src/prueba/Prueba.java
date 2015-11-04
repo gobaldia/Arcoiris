@@ -1,5 +1,6 @@
 package prueba;
 
+import ArcoirisMainPackage.Juego;
 import javax.swing.JOptionPane;
 import Interfaz.VentanaPrincipal;
 import java.io.IOException;
@@ -7,8 +8,13 @@ import java.io.IOException;
 public class Prueba {
 
     public static void main(String[] args) throws IOException {
+        Juego miJuego = new Juego();
+        
+        
+        
+        
         //Se crea el modelo
-        VentanaPrincipal ventanaPrincipal = new VentanaPrincipal();
+        VentanaPrincipal ventanaPrincipal = new VentanaPrincipal(miJuego);
 
         //Se crea la ventana y se le pasa el modelo por el constructor
         //VentanaPrincipal ventana = new VentanaPrincipal();
