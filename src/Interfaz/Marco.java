@@ -15,14 +15,6 @@ import javax.swing.*;
  */
 public class Marco extends javax.swing.JFrame {
 
-    public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_PURPLE = "\u001B[35m";
-    public static final String ANSI_CYAN = "\u001B[36m";
-    public static final String ANSI_YELLOW = "\u001B[33m";
-    public static final String ANSI_BLUE = "\u001B[34m";
-    public static final String ANSI_GREEN = "\u001B[32m";
-    public static final String ANSI_RESET = "\u001B[0m";
-
     private JButton[][] botones;
 
     /**
@@ -50,6 +42,11 @@ public class Marco extends javax.swing.JFrame {
                 jButton.setFont(new Font("Arial", Font.PLAIN, 10));
                 panelJuego.add(jButton);
                 botones[i][j] = jButton;
+                ImageIcon img = new ImageIcon("C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Arcoiris\\imagenes\\negraQ.png");
+                Image imag = img.getImage();
+                Image newimg = imag.getScaledInstance(30, 30,  java.awt.Image.SCALE_SMOOTH);
+                img = new ImageIcon(newimg);
+//                botones[i][j].setIcon(img);
 //                botones[i][j].setText(String.valueOf(i) + "," + String.valueOf(j));
             }
         }

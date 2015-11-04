@@ -1,5 +1,10 @@
 package ArcoirisMainPackage;
 
+import java.io.BufferedOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -28,7 +33,14 @@ public class Juego {
 
     //*************************************************************************//
     //****************** CONSTRUCTOR ***********************************//
-    public Juego() {
+    public Juego() throws FileNotFoundException, IOException {
+        FileOutputStream f = new FileOutputStream("miJuego");
+        BufferedOutputStream b = new BufferedOutputStream(f);
+        ObjectOutputStream s = new ObjectOutputStream(b);
+        s.writeObject(b);
+        s.close();
+        
+        
         this.setListaDeJugadores(new ArrayList<Jugador>());
         this.setListaDePartidas(new ArrayList<Partida>());
     }

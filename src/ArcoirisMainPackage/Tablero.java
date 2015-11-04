@@ -270,6 +270,8 @@ public class Tablero {
         }
 
         int fichas = 0;
+        int blancas = 0;
+        int negras = 0;
 
         switch (marcoInicio) {
             case 1:
