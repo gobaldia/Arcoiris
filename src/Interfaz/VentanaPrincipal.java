@@ -7,14 +7,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     
     public VentanaPrincipal(Juego unJuego) {
         initComponents();
-        
-        setModelo(unJuego);
+        this.setModelo(unJuego);
     }
     
     public Juego getModelo() {
         return modelo;
     }
-
     public void setModelo(Juego unModelo) {
         this.modelo = unModelo;
     }
@@ -140,7 +138,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemVolveraJugarActionPerformed
 
     private void jIMenuItemConfigurarNuevaPartidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jIMenuItemConfigurarNuevaPartidaActionPerformed
-        // TODO add your handling code here:
+        VentanaConfiguracionPartida ventana = new VentanaConfiguracionPartida(this.getModelo());
+        ventana.setVisible(true);
     }//GEN-LAST:event_jIMenuItemConfigurarNuevaPartidaActionPerformed
 
     private void jMenuItemNuevaPartidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemNuevaPartidaActionPerformed
