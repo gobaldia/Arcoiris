@@ -12,13 +12,26 @@ import javax.swing.JOptionPane;
 public class VentanaConfiguracionPartida extends javax.swing.JFrame {
 
     private Juego modelo;
+    private VentanaPrincipal framePrincipal;
 
-    public VentanaConfiguracionPartida(Juego unJuego) {
+    public VentanaConfiguracionPartida(Juego unJuego, VentanaPrincipal ventanaPrincipal) {
         initComponents();
         this.setModelo(unJuego);
+        this.setVentanaPrincipal(ventanaPrincipal);
+        this.setAlwaysOnTop(true);
 
+        //A modo de situar los JFrames centrados en la pantalla utilizo lo siguiente
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width / 4 - this.getSize().width / 4, dim.height / 2 - this.getSize().height / 2);
+
+        //Agrego evento para manejar el hacer click en la X al cerrar el JFrame actual y asi poder volver a habilitar el menu
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                getVentanaPrincipal().UpdateMenu(true);
+                dispose();
+            }
+        });
 
         if (this.getModelo().getListaDeJugadores().size() >= 2) {
             listarJugadores();
@@ -36,6 +49,14 @@ public class VentanaConfiguracionPartida extends javax.swing.JFrame {
 
     private Juego getModelo() {
         return this.modelo;
+    }
+
+    public VentanaPrincipal getVentanaPrincipal() {
+        return framePrincipal;
+    }
+
+    public void setVentanaPrincipal(VentanaPrincipal unaVentana) {
+        this.framePrincipal = unaVentana;
     }
 
     private void deshabilitarPanel() {
@@ -250,26 +271,38 @@ public class VentanaConfiguracionPartida extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jListJugadoresMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListJugadoresMouseClicked
+        //Obtengo el objeto JList
         JList listaDeJugadores = (JList) evt.getSource();
-
-        if (evt.getClickCount() == 2) {
+        
+        //Si la lista esta habilitada y se realizo un doble click sobre ella
+        if (jListJugadores.isEnabled() && evt.getClickCount() == 2) {
+            //Obtengo el lugar de la lista
             int index = listaDeJugadores.locationToIndex(evt.getPoint());
-            //System.out.println("index: " + index);
+
+            if (index >= 0) {   
+                Object o = listaDeJugadores.getModel().getElementAt(index);
+                System.out.println("Double-clicked on: " + o.toString());
+            }
+
+            System.out.println("index: " + index);
         }
+
+
     }//GEN-LAST:event_jListJugadoresMouseClicked
 
     private void jbtnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnCancelarActionPerformed
+        this.getVentanaPrincipal().UpdateMenu(true);
         this.dispose();
     }//GEN-LAST:event_jbtnCancelarActionPerformed
 
     private void listarJugadores() {
         ArrayList<Jugador> auxListaJugadores = this.getModelo().getListaDeJugadores();
-       
+
         DefaultListModel modeloLista = new DefaultListModel();
         for (int i = 0; i < auxListaJugadores.size(); i++) {
-            modeloLista.addElement(i + 1 + ". " + auxListaJugadores.get(i).toString());           
+            modeloLista.addElement(i + 1 + ". " + auxListaJugadores.get(i).toString());
         }
-        
+
         jListJugadores.setModel(modeloLista);
     }
 
@@ -296,5 +329,4 @@ public class VentanaConfiguracionPartida extends javax.swing.JFrame {
     private javax.swing.JRadioButton jrbSinFichas;
     // End of variables declaration//GEN-END:variables
 
-  
 }

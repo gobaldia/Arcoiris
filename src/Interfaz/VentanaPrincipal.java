@@ -138,7 +138,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemVolveraJugarActionPerformed
 
     private void jIMenuItemConfigurarNuevaPartidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jIMenuItemConfigurarNuevaPartidaActionPerformed
-        VentanaConfiguracionPartida ventana = new VentanaConfiguracionPartida(this.getModelo());
+        this.UpdateMenu(false);
+        VentanaConfiguracionPartida ventana = new VentanaConfiguracionPartida(this.getModelo(), this);
         ventana.setVisible(true);
     }//GEN-LAST:event_jIMenuItemConfigurarNuevaPartidaActionPerformed
 
@@ -155,10 +156,17 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemRepetirPartidaActionPerformed
 
     private void jMenuItemRegistroJugadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemRegistroJugadorActionPerformed
-        VentanaRegistroJugador ventana = new VentanaRegistroJugador(this.getModelo());
+        this.UpdateMenu(false);
+        VentanaRegistroJugador ventana = new VentanaRegistroJugador(this.getModelo(), this);
         ventana.setVisible(true);
     }//GEN-LAST:event_jMenuItemRegistroJugadorActionPerformed
 
+    public void UpdateMenu(boolean bandera){
+        this.jMenuConfiguraciones.setEnabled(bandera);
+        this.jMenuJugar.setEnabled(bandera);
+        this.jMenuHistorial.setEnabled(bandera);
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem jIMenuItemConfigurarNuevaPartida;
     private javax.swing.JMenuBar jMenuBar1;

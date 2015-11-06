@@ -2,6 +2,7 @@ package Interfaz;
 
 import ArcoirisMainPackage.Juego;
 import ArcoirisMainPackage.Jugador;
+import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import javax.swing.JOptionPane;
@@ -9,11 +10,14 @@ import javax.swing.JOptionPane;
 public class VentanaRegistroJugador extends javax.swing.JFrame {
 
     private Juego modelo;
+    private VentanaPrincipal framePrincipal;
 
-    public VentanaRegistroJugador(Juego unJuego) {
+    public VentanaRegistroJugador(Juego unJuego, VentanaPrincipal ventanaPrincipal) {
         initComponents();
         this.setModelo(unJuego);
-        
+        this.setVentanaPrincipal(ventanaPrincipal);
+        this.setAlwaysOnTop(true);
+
         for (int i = 3; i <= 90; i++) {
             jcmbEdad.addItem(i + " años");
         }
@@ -21,13 +25,30 @@ public class VentanaRegistroJugador extends javax.swing.JFrame {
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
 
+        //Agrego evento para manejar el hacer click en la X al cerrar el JFrame actual y asi poder volver a habilitar el menu
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                getVentanaPrincipal().UpdateMenu(true);
+                dispose();
+            }
+        });
     }
 
     public Juego getModelo() {
         return modelo;
     }
+
     public void setModelo(Juego unModelo) {
         this.modelo = unModelo;
+    }
+
+    public VentanaPrincipal getVentanaPrincipal() {
+        return framePrincipal;
+    }
+
+    public void setVentanaPrincipal(VentanaPrincipal unaVentana) {
+        this.framePrincipal = unaVentana;
     }
 
     @SuppressWarnings("unchecked")
@@ -154,26 +175,30 @@ public class VentanaRegistroJugador extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbtnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnCancelarActionPerformed
-       this.dispose();
+        this.getVentanaPrincipal().UpdateMenu(true);
+        this.dispose();
+
     }//GEN-LAST:event_jbtnCancelarActionPerformed
 
     private void jbtnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnGuardarActionPerformed
-         if(!jtxtNombre.getText().isEmpty() && !jtxtAlias.getText().isEmpty() && jcmbEdad.getSelectedIndex() > 0){
-            
+        if (!jtxtNombre.getText().isEmpty() && !jtxtAlias.getText().isEmpty() && jcmbEdad.getSelectedIndex() > 0) {
+
             Jugador unJugador = new Jugador();
             unJugador.setNombre(jtxtNombre.getText());
-            
+
             /*El Index 0 es "Seleccione una opcion..." por lo que 
-              el 1 va ser "3 años", y para no tener que hacer splits
-              ni parseos le sumo 2 al seleccionado y se soluciona el problema.*/
-            unJugador.setEdad(jcmbEdad.getSelectedIndex() + 2); 
+             el 1 va ser "3 años", y para no tener que hacer splits
+             ni parseos le sumo 2 al seleccionado y se soluciona el problema.*/
+            unJugador.setEdad(jcmbEdad.getSelectedIndex() + 2);
 
             unJugador.setAlias(jtxtAlias.getText());
-            
-            if(!this.getModelo().existeJugador(unJugador)){
+
+            if (!this.getModelo().existeJugador(unJugador)) {
                 this.getModelo().getListaDeJugadores().add(unJugador);
                 JOptionPane.showMessageDialog(this, "Se creo correctamente el jugador.", "Exito", JOptionPane.INFORMATION_MESSAGE);
-                this.dispose();
+                limpiarCampos();
+
+                //this.dispose();
             } else {
                 JOptionPane.showMessageDialog(this, "Alias ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -183,6 +208,12 @@ public class VentanaRegistroJugador extends javax.swing.JFrame {
     }//GEN-LAST:event_jbtnGuardarActionPerformed
 
 
+    private void limpiarCampos(){
+        this.jcmbEdad.setSelectedIndex(0);
+        this.jtxtAlias.setText("");
+        this.jtxtNombre.setText("");
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanelRegistroJugador;
