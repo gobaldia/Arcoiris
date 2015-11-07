@@ -2,12 +2,22 @@ package prueba;
 
 import javax.swing.JOptionPane;
 import Interfaz.VentanaPrincipal;
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
-public class Prueba {
-
+public class Prueba implements Serializable{
     public static void main(String[] args) throws IOException {
         //Se crea el modelo
+        
+        FileOutputStream f = new FileOutputStream("miJuego");
+        BufferedOutputStream b = new BufferedOutputStream(f);
+        ObjectOutputStream s = new ObjectOutputStream(b);
+        s.writeObject(b);
+        s.close();
+        
         VentanaPrincipal ventanaPrincipal = new VentanaPrincipal();
 
         //Se crea la ventana y se le pasa el modelo por el constructor

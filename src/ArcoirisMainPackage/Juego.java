@@ -34,14 +34,7 @@ public class Juego implements Serializable {
 
     //*************************************************************************//
     //****************** CONSTRUCTOR ***********************************//
-    public Juego() throws FileNotFoundException, IOException {
-        FileOutputStream f = new FileOutputStream("miJuego");
-        BufferedOutputStream b = new BufferedOutputStream(f);
-        ObjectOutputStream s = new ObjectOutputStream(b);
-        s.writeObject(b);
-        s.close();
-        
-        
+    public Juego() {
         this.setListaDeJugadores(new ArrayList<Jugador>());
         this.setListaDePartidas(new ArrayList<Partida>());
     }
