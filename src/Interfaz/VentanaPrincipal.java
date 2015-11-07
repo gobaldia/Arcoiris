@@ -1,23 +1,28 @@
 package Interfaz;
 
+import ArcoirisMainPackage.Juego;
+
 public class VentanaPrincipal extends javax.swing.JFrame {
-
-    public VentanaPrincipal() {
-        try {
-            initComponents();
-
-           
-        } catch (Exception e) {
-            //Ver como manejar excepciones
-        }
+    private Juego modelo;
+    
+    public VentanaPrincipal(Juego unJuego) {
+        initComponents();
+        this.setModelo(unJuego);
     }
-
+    
+    public Juego getModelo() {
+        return modelo;
+    }
+    public void setModelo(Juego unModelo) {
+        this.modelo = unModelo;
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jPanelPrincipal = new javax.swing.JPanel();
-        jImage = new javax.swing.JLabel();
+        jlblImagenPrincipal = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuJugar = new javax.swing.JMenu();
         jMenuItemNuevaPartida = new javax.swing.JMenuItem();
@@ -27,21 +32,27 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jMenuItemRepetirPartida = new javax.swing.JMenuItem();
         jMenuConfiguraciones = new javax.swing.JMenu();
         jIMenuItemConfigurarNuevaPartida = new javax.swing.JMenuItem();
+        jMenuItemRegistroJugador = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(800, 600));
         setResizable(false);
 
-        jImage.setText("jLabel1");
+        jPanelPrincipal.setPreferredSize(new java.awt.Dimension(800, 600));
+
+        jlblImagenPrincipal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/imgArcoiris2.jpg"))); // NOI18N
 
         javax.swing.GroupLayout jPanelPrincipalLayout = new javax.swing.GroupLayout(jPanelPrincipal);
         jPanelPrincipal.setLayout(jPanelPrincipalLayout);
         jPanelPrincipalLayout.setHorizontalGroup(
             jPanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jImage, javax.swing.GroupLayout.DEFAULT_SIZE, 482, Short.MAX_VALUE)
+            .addGroup(jPanelPrincipalLayout.createSequentialGroup()
+                .addComponent(jlblImagenPrincipal)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanelPrincipalLayout.setVerticalGroup(
             jPanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jImage, javax.swing.GroupLayout.DEFAULT_SIZE, 427, Short.MAX_VALUE)
+            .addComponent(jlblImagenPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         jMenuJugar.setText("Jugar");
@@ -94,6 +105,15 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         jMenuConfiguraciones.add(jIMenuItemConfigurarNuevaPartida);
 
+        jMenuItemRegistroJugador.setText("Registrar Nuevo Jugador");
+        jMenuItemRegistroJugador.setToolTipText("");
+        jMenuItemRegistroJugador.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemRegistroJugadorActionPerformed(evt);
+            }
+        });
+        jMenuConfiguraciones.add(jMenuItemRegistroJugador);
+
         jMenuBar1.add(jMenuConfiguraciones);
 
         setJMenuBar(jMenuBar1);
@@ -102,14 +122,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanelPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanelPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanelPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanelPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
-        setSize(new java.awt.Dimension(500, 500));
+        setSize(new java.awt.Dimension(806, 650));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -118,7 +138,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemVolveraJugarActionPerformed
 
     private void jIMenuItemConfigurarNuevaPartidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jIMenuItemConfigurarNuevaPartidaActionPerformed
-        // TODO add your handling code here:
+        this.UpdateMenu(false);
+        VentanaConfiguracionPartida ventana = new VentanaConfiguracionPartida(this.getModelo(), this);
+        ventana.setVisible(true);
     }//GEN-LAST:event_jIMenuItemConfigurarNuevaPartidaActionPerformed
 
     private void jMenuItemNuevaPartidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemNuevaPartidaActionPerformed
@@ -133,18 +155,31 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItemRepetirPartidaActionPerformed
 
+    private void jMenuItemRegistroJugadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemRegistroJugadorActionPerformed
+        this.UpdateMenu(false);
+        VentanaRegistroJugador ventana = new VentanaRegistroJugador(this.getModelo(), this);
+        ventana.setVisible(true);
+    }//GEN-LAST:event_jMenuItemRegistroJugadorActionPerformed
+
+    public void UpdateMenu(boolean bandera){
+        this.jMenuConfiguraciones.setEnabled(bandera);
+        this.jMenuJugar.setEnabled(bandera);
+        this.jMenuHistorial.setEnabled(bandera);
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem jIMenuItemConfigurarNuevaPartida;
-    private javax.swing.JLabel jImage;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu jMenuConfiguraciones;
     private javax.swing.JMenu jMenuHistorial;
     private javax.swing.JMenuItem jMenuItemNuevaPartida;
     private javax.swing.JMenuItem jMenuItemRanking;
+    private javax.swing.JMenuItem jMenuItemRegistroJugador;
     private javax.swing.JMenuItem jMenuItemRepetirPartida;
     private javax.swing.JMenuItem jMenuItemVolveraJugar;
     private javax.swing.JMenu jMenuJugar;
     private javax.swing.JPanel jPanelPrincipal;
+    private javax.swing.JLabel jlblImagenPrincipal;
     // End of variables declaration//GEN-END:variables
 
 }

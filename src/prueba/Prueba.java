@@ -1,5 +1,6 @@
 package prueba;
 
+import ArcoirisMainPackage.Juego;
 import javax.swing.JOptionPane;
 import Interfaz.VentanaPrincipal;
 import java.io.BufferedOutputStream;
@@ -10,15 +11,13 @@ import java.io.Serializable;
 
 public class Prueba implements Serializable{
     public static void main(String[] args) throws IOException {
+        Juego miJuego = new Juego();
+        
+        
+        
+        
         //Se crea el modelo
-        
-        FileOutputStream f = new FileOutputStream("miJuego");
-        BufferedOutputStream b = new BufferedOutputStream(f);
-        ObjectOutputStream s = new ObjectOutputStream(b);
-        s.writeObject(b);
-        s.close();
-        
-        VentanaPrincipal ventanaPrincipal = new VentanaPrincipal();
+        VentanaPrincipal ventanaPrincipal = new VentanaPrincipal(miJuego);
 
         //Se crea la ventana y se le pasa el modelo por el constructor
         //VentanaPrincipal ventana = new VentanaPrincipal();
