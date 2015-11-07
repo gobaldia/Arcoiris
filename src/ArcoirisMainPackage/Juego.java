@@ -1,5 +1,6 @@
 package ArcoirisMainPackage;
 
+import java.io.Serializable;
 import java.io.BufferedOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -10,7 +11,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 
-public class Juego {
+public class Juego implements Serializable {
 
     private ArrayList<Jugador> listaDeJugadores;
     private ArrayList<Partida> listaDePartidas;
