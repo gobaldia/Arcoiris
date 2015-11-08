@@ -2,6 +2,7 @@ package Interfaz;
 
 import ArcoirisMainPackage.Juego;
 import ArcoirisMainPackage.Jugador;
+import ArcoirisMainPackage.Partida;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.ArrayList;
@@ -15,14 +16,16 @@ public class VentanaConfiguracionPartida extends javax.swing.JFrame {
     private VentanaPrincipal framePrincipal;
     private Jugador jugadorA;
     private Jugador jugadorB;
-    private boolean banderaJugadores;//Determino si ya existen 2 jugadores seleccionados
+    private ArrayList<Jugador> listaSinJugadorSeleccionado;
 
     public VentanaConfiguracionPartida(Juego unJuego, VentanaPrincipal ventanaPrincipal) {
         initComponents();
         this.setModelo(unJuego);
         this.setVentanaPrincipal(ventanaPrincipal);
         this.setAlwaysOnTop(true);
-
+        listaSinJugadorSeleccionado = new ArrayList<Jugador>();
+        
+        
         //A modo de situar los JFrames centrados en la pantalla utilizo lo siguiente
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width / 4 - this.getSize().width / 4, dim.height / 2 - this.getSize().height / 2);
@@ -38,14 +41,14 @@ public class VentanaConfiguracionPartida extends javax.swing.JFrame {
 
         if (this.getModelo().getListaDeJugadores().size() >= 2) {
             listarJugadores();
-
+            
         } else {
             JOptionPane.showMessageDialog(this, "No existe la cantidad minima de jugadores (2).\nVaya a 'Registro de Jugadores'", "Error", JOptionPane.CANCEL_OPTION);
             //Deshabilito todas las opciones del panel.
             deshabilitarPanel();
         }
     }
-
+    
     private void setModelo(Juego unModelo) {
         this.modelo = unModelo;
     }
@@ -76,14 +79,6 @@ public class VentanaConfiguracionPartida extends javax.swing.JFrame {
 
     private Jugador getJugadorB() {
         return this.jugadorB;
-    }
-
-    private void setBandera(boolean bandera) {
-        this.banderaJugadores = bandera;
-    }
-
-    private boolean getBandera() {
-        return this.banderaJugadores;
     }
 
     private void deshabilitarPanel() {
@@ -124,7 +119,7 @@ public class VentanaConfiguracionPartida extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jbtnAgregarJugador = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox();
+        jcmbCantidadMovimientos = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(750, 500));
@@ -145,6 +140,11 @@ public class VentanaConfiguracionPartida extends javax.swing.JFrame {
         jlblTitulo.setText("Configuracion de Partida");
 
         jbtnGuardar.setText("Guardar");
+        jbtnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnGuardarActionPerformed(evt);
+            }
+        });
 
         jbtnCancelar.setText("Cancelar");
         jbtnCancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -174,9 +174,19 @@ public class VentanaConfiguracionPartida extends javax.swing.JFrame {
         buttonGroupTerminar.add(jrbSinFichas);
         jrbSinFichas.setSelected(true);
         jrbSinFichas.setText("Ambos jugadores se quedan sin jugadas.");
+        jrbSinFichas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jrbSinFichasActionPerformed(evt);
+            }
+        });
 
         buttonGroupTerminar.add(jrbPrimeroOcuparCentro);
         jrbPrimeroOcuparCentro.setText("Primero en ocupar el centro.");
+        jrbPrimeroOcuparCentro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jrbPrimeroOcuparCentroActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("Jugar con timer:");
 
@@ -192,7 +202,7 @@ public class VentanaConfiguracionPartida extends javax.swing.JFrame {
 
         jLabel6.setText("Cantidad de movimientos:");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "10", "14", "16", "20", "24" }));
+        jcmbCantidadMovimientos.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "10", "14", "16", "20", "24" }));
 
         javax.swing.GroupLayout jPanelConfiguracionPartidaLayout = new javax.swing.GroupLayout(jPanelConfiguracionPartida);
         jPanelConfiguracionPartida.setLayout(jPanelConfiguracionPartidaLayout);
@@ -218,7 +228,7 @@ public class VentanaConfiguracionPartida extends javax.swing.JFrame {
                         .addGap(25, 25, 25)
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jcmbCantidadMovimientos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanelConfiguracionPartidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanelConfiguracionPartidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelConfiguracionPartidaLayout.createSequentialGroup()
@@ -302,7 +312,7 @@ public class VentanaConfiguracionPartida extends javax.swing.JFrame {
                                 .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)
                                 .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING))
                             .addComponent(jchkTimer)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jcmbCantidadMovimientos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
                         .addGroup(jPanelConfiguracionPartidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jbtnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -334,16 +344,75 @@ public class VentanaConfiguracionPartida extends javax.swing.JFrame {
         
         if (index >= 0) {
             if (this.getJugadorA() == null) {
-                //this.modelo.agregarJugadorA(listaJugadores.get(jugadorElejido - 1));
-                //Object o = jListJugadores.getModel().getElementAt(index);
+                int nroJugador = Integer.parseInt(jListJugadores.getSelectedValue().toString().substring(0,1));                
+                ((DefaultListModel)jListJugadores.getModel()).removeElementAt(index);
                 
-            } else if (this.getJugadorB() == null){
-            
+                for(int i = 0; i < this.getModelo().getListaDeJugadores().size(); i++){
+                    if(i == (nroJugador -1)){
+                        this.setJugadorA(this.getModelo().getListaDeJugadores().get(i));
+                        jlblJugador1.setText(this.getModelo().getListaDeJugadores().get(i).getAlias());
+                    }
+                }
+            } else if (this.getJugadorB() == null) {
+                int nroJugador = Integer.parseInt(jListJugadores.getSelectedValue().toString().substring(0,1));                
+                ((DefaultListModel)jListJugadores.getModel()).removeElementAt(index);
+                
+                for(int i = 0; i < this.getModelo().getListaDeJugadores().size(); i++){
+                    if(i == (nroJugador -1)){
+                        this.setJugadorB(this.getModelo().getListaDeJugadores().get(i));
+                        jlblJugador2.setText(this.getModelo().getListaDeJugadores().get(i).getAlias());
+                    }
+                }
             } else {
                 jListJugadores.setEnabled(false);
             }
         }
     }//GEN-LAST:event_jbtnAgregarJugadorActionPerformed
+
+    private void jbtnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnGuardarActionPerformed
+        try {
+            if (this.getJugadorA() != null && this.getJugadorB() != null) {
+                Partida unaPartida = new Partida();
+                
+                unaPartida.agregarJugadorA(this.getJugadorA());
+                unaPartida.agregarJugadorB(this.getJugadorB());
+                unaPartida.setMarcoInicio(jcmbMarcoInicio.getSelectedIndex() + 1);
+                unaPartida.setDistribucionInicialFichas(jcmbDistribucionFichas.getSelectedIndex() + 1);
+                
+                if(jrbPrimeroOcuparCentro.isSelected()){
+                    unaPartida.setTipoFinPartida(2);
+                    unaPartida.setCantidadMovimientos(100);
+                } else {
+                    unaPartida.setTipoFinPartida(1);
+                    unaPartida.setCantidadMovimientos(((Integer)jcmbCantidadMovimientos.getSelectedItem()).intValue());
+                }
+                
+                if(jchkTimer.isSelected()){
+                    unaPartida.setTimer(true);
+                }
+                
+                this.getModelo().agregarPartida(unaPartida);
+                JOptionPane.showMessageDialog(this, "Se configuró la partida correctamente.", "Exito", JOptionPane.INFORMATION_MESSAGE);
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Seleccionar 2 jugadores.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception ex) {
+            JOptionPane.showConfirmDialog(this, "Ocurrio un error al querer guardar la partida", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+
+    }//GEN-LAST:event_jbtnGuardarActionPerformed
+
+    private void jrbPrimeroOcuparCentroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jrbPrimeroOcuparCentroActionPerformed
+        jcmbCantidadMovimientos.setSelectedIndex(0);
+        jcmbCantidadMovimientos.setEnabled(false);
+    }//GEN-LAST:event_jrbPrimeroOcuparCentroActionPerformed
+
+    private void jrbSinFichasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jrbSinFichasActionPerformed
+        jcmbCantidadMovimientos.setSelectedIndex(0);
+        jcmbCantidadMovimientos.setEnabled(true);
+    }//GEN-LAST:event_jrbSinFichasActionPerformed
 
     private void listarJugadores() {
         ArrayList<Jugador> auxListaJugadores = this.getModelo().getListaDeJugadores();
@@ -358,7 +427,6 @@ public class VentanaConfiguracionPartida extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroupTerminar;
-    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -372,6 +440,7 @@ public class VentanaConfiguracionPartida extends javax.swing.JFrame {
     private javax.swing.JButton jbtnCancelar;
     private javax.swing.JButton jbtnGuardar;
     private javax.swing.JCheckBox jchkTimer;
+    private javax.swing.JComboBox jcmbCantidadMovimientos;
     private javax.swing.JComboBox jcmbDistribucionFichas;
     private javax.swing.JComboBox jcmbMarcoInicio;
     private javax.swing.JLabel jlblJugador1;
