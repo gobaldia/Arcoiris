@@ -1,6 +1,8 @@
 package ArcoirisMainPackage;
 
-public class Tablero {
+import java.io.Serializable;
+
+public class Tablero implements Serializable{
 
     private char[][] matriz;
     private String posicionOrigen;

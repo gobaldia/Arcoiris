@@ -1,22 +1,64 @@
 package Interfaz;
 
 import ArcoirisMainPackage.Juego;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import javax.swing.JOptionPane;
 
 public class VentanaPrincipal extends javax.swing.JFrame {
+
     private Juego modelo;
-    
+
     public VentanaPrincipal(Juego unJuego) {
         initComponents();
         this.setModelo(unJuego);
+
+        //Agrego evento para manejar el hacer click en la X al cerrar el JFrame actual y asi poder volver a habilitar el menu
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                try {
+                    serializarJuego(getModelo());
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(null, "Ocurrió un erro al guardar los datos.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                dispose();
+            }
+        });
     }
-    
+
+    private void serializarJuego(Object unJuego) throws FileNotFoundException, IOException {
+        File archivoGuardados = new File("archivos/juegoGuardado.txt");
+        if (archivoGuardados.exists() && !archivoGuardados.isDirectory()) {//Si el archivo existe, guardo en el
+            FileOutputStream fg = new FileOutputStream(archivoGuardados);
+            BufferedOutputStream bg = new BufferedOutputStream(fg);
+            ObjectOutputStream sg = new ObjectOutputStream(bg);
+            sg.writeObject(unJuego);
+            sg.close();
+        } else {// Si no existe creo un nuevo archivo y guardo en este        
+            archivoGuardados.getParentFile().mkdirs();
+            archivoGuardados.createNewFile();
+            
+            FileOutputStream fg = new FileOutputStream(archivoGuardados);
+            BufferedOutputStream bg = new BufferedOutputStream(fg);
+            ObjectOutputStream sg = new ObjectOutputStream(bg);
+            sg.writeObject(unJuego);
+            sg.close();
+        }
+    }
+
     public Juego getModelo() {
         return modelo;
     }
+
     public void setModelo(Juego unModelo) {
         this.modelo = unModelo;
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -161,12 +203,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         ventana.setVisible(true);
     }//GEN-LAST:event_jMenuItemRegistroJugadorActionPerformed
 
-    public void UpdateMenu(boolean bandera){
+    public void UpdateMenu(boolean bandera) {
         this.jMenuConfiguraciones.setEnabled(bandera);
         this.jMenuJugar.setEnabled(bandera);
         this.jMenuHistorial.setEnabled(bandera);
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem jIMenuItemConfigurarNuevaPartida;
     private javax.swing.JMenuBar jMenuBar1;

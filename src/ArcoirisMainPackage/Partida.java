@@ -1,9 +1,10 @@
 package ArcoirisMainPackage;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-public class Partida implements Comparable<Partida> {
+public class Partida implements Comparable<Partida>, Serializable {
 
     private static int idGeneral = 0;
     private int idPartida;
