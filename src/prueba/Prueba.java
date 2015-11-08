@@ -3,10 +3,13 @@ package prueba;
 import ArcoirisMainPackage.Juego;
 import javax.swing.JOptionPane;
 import Interfaz.VentanaPrincipal;
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
-public class Prueba {
-
+public class Prueba implements Serializable{
     public static void main(String[] args) throws IOException {
         Juego miJuego = new Juego();
         
