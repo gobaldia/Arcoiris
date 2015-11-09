@@ -85,7 +85,6 @@ public class VentanaJugar extends javax.swing.JFrame {
                 }
             }
         }
-
     }
 
     private void setModelo(Juego unModelo) {
@@ -253,141 +252,142 @@ public class VentanaJugar extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelJugar;
     // End of variables declaration//GEN-END:variables
 
-//    public static Tablero llenarConFichasEnI(int marcoInicio) {
-//
-//        Tablero tab = new Tablero();
-//
-//        ImageIcon neg = new ImageIcon("C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Arcoiris\\imagenes\\negra.png");
-//        Image negra = neg.getImage();
-//        Image fichaNegra = negra.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
-//        neg = new ImageIcon(fichaNegra);
-//
-//        ImageIcon blan = new ImageIcon("C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Arcoiris\\imagenes\\negra.png");
-//        Image blanca = blan.getImage();
-//        Image fichaBlanca = blanca.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
-//        blan = new ImageIcon(fichaBlanca);
-//
-//        for (int i = 0; i < 13; i++) {
-//            for (int j = 0; j < 13; j++) {
-//                if (Prueba.medirDistanciaMarco(i, j, marcoInicio)) {
-//                    if (i == marcoInicio - 1 && j == marcoInicio - 1) {
-//                        tab.botones[i][j].setIcon(blan);
-//                    } else if (i == marcoInicio - 1 && j != marcoInicio - 1) {
-//                        tab.botones[i][j].setIcon(neg);
-//                    } else if (i == tab.botones.length - marcoInicio - 1 && j != tab.botones.length - marcoInicio - 1) {
-//                        tab.botones[i][j].setIcon(neg);
-//                    } else if (i == tab.botones.length - marcoInicio - 1 && j == tab.botones.length - marcoInicio - 1) {
-//                        tab.botones[i][j].setIcon(blan);
-//                    } else {
-//                        tab.botones[i][j].setIcon(blan);
-//                    }
-//                }
-//            }
-//        }
-//        return tab;
-//    }
+    public static JButton[][] llenarConFichasEnI(int marcoInicio) {
+        
+        JButton[][] botones = new JButton[13][13];
 
-//    public static Tablero llenarConFichasEnL(int marcoInicio) {
-//
-//        Tablero tab = new Tablero();
-//
-//        ImageIcon neg = new ImageIcon("C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Arcoiris\\imagenes\\negra.png");
-//        Image negra = neg.getImage();
-//        Image fichaNegra = negra.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
-//        neg = new ImageIcon(fichaNegra);
-//
-//        ImageIcon blan = new ImageIcon("C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Arcoiris\\imagenes\\negra.png");
-//        Image blanca = blan.getImage();
-//        Image fichaBlanca = blanca.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
-//        blan = new ImageIcon(fichaBlanca);
-//
-//        boolean bandera = true;
-//        int contador = 0;
-//
-//        for (int i = 0; i < 13; i++) {
-//            for (int j = 0; j < 13; j++) {
-//
-//                if (Prueba.medirDistanciaMarco(i, j, marcoInicio)) {
-//                    //Manejo las fichas dentro del marco que se pasa por parametro
-//                    bandera = !bandera;
-//
-//                    if (contador >= 3) {
-//                        //Este codigo se corre solo para la ultima linea del marco seleccionado
-//                        tab.botones[i][j - 2].setIcon(blan);
-//                        tab.botones[i][j].setIcon(blan);
-//
-//                        if (tab.botones.length - marcoInicio - 1 == j) {
-//                            tab.botones[i][j].setIcon(neg);
-//                        }
-//                    } else {
-//                        if (bandera) {
-//                            tab.botones[i][j].setIcon(neg);
-//                            bandera = false;
-//                        } else {
-//                            tab.botones[i][j].setIcon(neg);
-//                        }
-//                    }
-//
-//                    if (i > 6) {
-//                        contador++;
-//                    }
-//                }
-//            }
-//
-//            contador = 0;
-//            bandera = true;
-//        }
-//        return tab;
-//    }
+        ImageIcon neg = new ImageIcon("C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Arcoiris\\imagenes\\negra.png");
+        Image negra = neg.getImage();
+        Image fichaNegra = negra.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
+        neg = new ImageIcon(fichaNegra);
 
-//    public static Tablero llenarConFichasAlAzar(int marcoInicio) {
-//        Tablero tab = new Tablero();
-//
-//        ImageIcon neg = new ImageIcon("C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Arcoiris\\imagenes\\negra.png");
-//        Image negra = neg.getImage();
-//        Image fichaNegra = negra.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
-//        neg = new ImageIcon(fichaNegra);
-//
-//        ImageIcon blan = new ImageIcon("C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Arcoiris\\imagenes\\negra.png");
-//        Image blanca = blan.getImage();
-//        Image fichaBlanca = blanca.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
-//        blan = new ImageIcon(fichaBlanca);
-//
-//        int fichas = 0;
-//        int blancas = 0;
-//        int negras = 0;
-//
-//        switch (marcoInicio) {
-//            case 1:
-//                fichas = 48;
-//                break;
-//            case 2:
-//                fichas = 20;
-//                break;
-//            case 3:
-//                fichas = 16;
-//                break;
-//            case 4:
-//                fichas = 12;
-//                break;
-//        }
-//
-//        for (int i = 0; i < 13; i++) {
-//            for (int j = 0; j < 13; j++) {
-//
-//                if (Prueba.medirDistanciaMarco(i, j, marcoInicio)) {
-//                    if ((Math.random() * 2) < 1 && fichas > 0) {
-//                        fichas--;
-//                        tab.botones[i][j].setIcon(blan);
-//                    } else {
-//                        tab.botones[i][j].setIcon(neg);
-//                    }
-//                }
-//            }
-//        }
-//
-//        return tab;
-//    }
+        ImageIcon blan = new ImageIcon("C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Arcoiris\\imagenes\\negra.png");
+        Image blanca = blan.getImage();
+        Image fichaBlanca = blanca.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
+        blan = new ImageIcon(fichaBlanca);
+
+        for (int i = 0; i < 13; i++) {
+            for (int j = 0; j < 13; j++) {
+                if (Prueba.medirDistanciaMarco(i, j, marcoInicio)) {
+                    if (i == marcoInicio - 1 && j == marcoInicio - 1) {
+                        botones[i][j].setIcon(blan);
+                    } else if (i == marcoInicio - 1 && j != marcoInicio - 1) {
+                        botones[i][j].setIcon(neg);
+                    } else if (i == botones.length - marcoInicio - 1 && j != botones.length - marcoInicio - 1) {
+                        botones[i][j].setIcon(neg);
+                    } else if (i == botones.length - marcoInicio - 1 && j == botones.length - marcoInicio - 1) {
+                        botones[i][j].setIcon(blan);
+                    } else {
+                        botones[i][j].setIcon(blan);
+                    }
+                }
+            }
+        }
+        return botones;
+    }
+    
+    public static JButton[][] llenarConFichasEnL(int marcoInicio){
+        
+        JButton[][] botones = new JButton[13][13];
+
+        ImageIcon neg = new ImageIcon("C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Arcoiris\\imagenes\\negra.png");
+        Image negra = neg.getImage();
+        Image fichaNegra = negra.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
+        neg = new ImageIcon(fichaNegra);
+
+        ImageIcon blan = new ImageIcon("C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Arcoiris\\imagenes\\negra.png");
+        Image blanca = blan.getImage();
+        Image fichaBlanca = blanca.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
+        blan = new ImageIcon(fichaBlanca);
+        
+        boolean bandera = true;
+        int contador = 0;
+
+        for (int i = 0; i < 13; i++) {
+            for (int j = 0; j < 13; j++) {
+
+                if (Prueba.medirDistanciaMarco(i, j, marcoInicio)) {
+                    //Manejo las fichas dentro del marco que se pasa por parametro
+                    bandera = !bandera;
+
+                    if (contador >= 3) {
+                        //Este codigo se corre solo para la ultima linea del marco seleccionado
+                        botones[i][j - 2].setIcon(blan);
+                        botones[i][j].setIcon(blan);
+
+                        if (botones.length - marcoInicio - 1 == j) {
+                            botones[i][j].setIcon(neg);
+                        }
+                    } else {
+                        if (bandera) {
+                            botones[i][j].setIcon(neg);
+                            bandera = false;
+                        } else {
+                            botones[i][j].setIcon(neg);
+                        }
+                    }
+
+                    if (i > 6) {
+                        contador++;
+                    }
+                }
+            }
+
+            contador = 0;
+            bandera = true;
+        }
+        return botones;
+    }
+    
+    public static JButton[][] llenarConFichasAlAzar(int marcoInicio){
+        
+        JButton[][] botones = new JButton[13][13];
+
+        ImageIcon neg = new ImageIcon("C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Arcoiris\\imagenes\\negra.png");
+        Image negra = neg.getImage();
+        Image fichaNegra = negra.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
+        neg = new ImageIcon(fichaNegra);
+
+        ImageIcon blan = new ImageIcon("C:\\Users\\Usuario\\Documents\\NetBeansProjects\\Arcoiris\\imagenes\\negra.png");
+        Image blanca = blan.getImage();
+        Image fichaBlanca = blanca.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
+        blan = new ImageIcon(fichaBlanca);
+        
+        int fichas = 0;
+        int blancas = 0;
+        int negras = 0;
+
+        switch (marcoInicio) {
+            case 1:
+                fichas = 48;
+                break;
+            case 2:
+                fichas = 20;
+                break;
+            case 3:
+                fichas = 16;
+                break;
+            case 4:
+                fichas = 12;
+                break;
+        }
+
+        for (int i = 0; i < 13; i++) {
+            for (int j = 0; j < 13; j++) {
+
+                if (Prueba.medirDistanciaMarco(i, j, marcoInicio)) {
+                    if ((Math.random() * 2) < 1 && fichas > 0) {
+                        fichas--;
+                        botones[i][j].setIcon(blan);
+                    } else {
+                        botones[i][j].setIcon(neg);
+                    }
+                }
+            }
+        }
+        
+        return botones;
+    }
 
     private class ListenerBoton implements ActionListener {
 

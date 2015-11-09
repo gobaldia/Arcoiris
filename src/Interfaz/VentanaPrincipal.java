@@ -77,7 +77,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jMenuItemRegistroJugador = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(800, 600));
         setResizable(false);
 
         jPanelPrincipal.setPreferredSize(new java.awt.Dimension(800, 600));
@@ -137,7 +136,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenuHistorial);
 
-        jMenuConfiguraciones.setText("Configuraciónes");
+        jMenuConfiguraciones.setText("Configuraciones");
 
         jIMenuItemConfigurarNuevaPartida.setText("Configurar Nueva Partida");
         jIMenuItemConfigurarNuevaPartida.addActionListener(new java.awt.event.ActionListener() {
