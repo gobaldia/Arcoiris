@@ -68,7 +68,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenuJugar = new javax.swing.JMenu();
         jMenuItemNuevaPartida = new javax.swing.JMenuItem();
-        jMenuItemVolveraJugar = new javax.swing.JMenuItem();
         jMenuHistorial = new javax.swing.JMenu();
         jMenuItemRanking = new javax.swing.JMenuItem();
         jMenuItemRepetirPartida = new javax.swing.JMenuItem();
@@ -98,21 +97,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         jMenuJugar.setText("Jugar");
 
-        jMenuItemNuevaPartida.setText("Nueva Partida");
+        jMenuItemNuevaPartida.setText("Iniciar Partida");
         jMenuItemNuevaPartida.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItemNuevaPartidaActionPerformed(evt);
             }
         });
         jMenuJugar.add(jMenuItemNuevaPartida);
-
-        jMenuItemVolveraJugar.setText("Volver a Jugar");
-        jMenuItemVolveraJugar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItemVolveraJugarActionPerformed(evt);
-            }
-        });
-        jMenuJugar.add(jMenuItemVolveraJugar);
 
         jMenuBar1.add(jMenuJugar);
 
@@ -174,10 +165,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jMenuItemVolveraJugarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemVolveraJugarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItemVolveraJugarActionPerformed
-
     private void jIMenuItemConfigurarNuevaPartidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jIMenuItemConfigurarNuevaPartidaActionPerformed
         this.UpdateMenu(false);
         VentanaConfiguracionPartida ventana = new VentanaConfiguracionPartida(this.getModelo(), this);
@@ -219,7 +206,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItemRanking;
     private javax.swing.JMenuItem jMenuItemRegistroJugador;
     private javax.swing.JMenuItem jMenuItemRepetirPartida;
-    private javax.swing.JMenuItem jMenuItemVolveraJugar;
     private javax.swing.JMenu jMenuJugar;
     private javax.swing.JPanel jPanelPrincipal;
     private javax.swing.JLabel jlblImagenPrincipal;

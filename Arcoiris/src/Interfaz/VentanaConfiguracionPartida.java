@@ -22,7 +22,6 @@ public class VentanaConfiguracionPartida extends javax.swing.JFrame {
         initComponents();
         this.setModelo(unJuego);
         this.setVentanaPrincipal(ventanaPrincipal);
-        this.setAlwaysOnTop(true);
         listaSinJugadorSeleccionado = new ArrayList<Jugador>();
         
         
@@ -378,13 +377,15 @@ public class VentanaConfiguracionPartida extends javax.swing.JFrame {
                 unaPartida.agregarJugadorB(this.getJugadorB());
                 unaPartida.setMarcoInicio(jcmbMarcoInicio.getSelectedIndex() + 1);
                 unaPartida.setDistribucionInicialFichas(jcmbDistribucionFichas.getSelectedIndex() + 1);
+                unaPartida.generarTableroInicial(unaPartida.getDistribucionInicialFichas(), unaPartida.getMarcoInicio());
                 
                 if(jrbPrimeroOcuparCentro.isSelected()){
                     unaPartida.setTipoFinPartida(2);
                     unaPartida.setCantidadMovimientos(100);
                 } else {
                     unaPartida.setTipoFinPartida(1);
-                    unaPartida.setCantidadMovimientos(((Integer)jcmbCantidadMovimientos.getSelectedItem()).intValue());
+                    int cantMovs = Integer.parseInt(jcmbCantidadMovimientos.getSelectedItem().toString());
+                    unaPartida.setCantidadMovimientos(cantMovs);
                 }
                 
                 if(jchkTimer.isSelected()){
@@ -393,6 +394,7 @@ public class VentanaConfiguracionPartida extends javax.swing.JFrame {
                 
                 this.getModelo().agregarPartida(unaPartida);
                 JOptionPane.showMessageDialog(this, "Se configuró la partida correctamente.", "Exito", JOptionPane.INFORMATION_MESSAGE);
+                this.getVentanaPrincipal().UpdateMenu(true);
                 this.dispose();
             } else {
                 JOptionPane.showMessageDialog(this, "Seleccionar 2 jugadores.", "Error", JOptionPane.ERROR_MESSAGE);
