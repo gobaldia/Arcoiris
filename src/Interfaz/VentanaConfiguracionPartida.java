@@ -22,7 +22,6 @@ public class VentanaConfiguracionPartida extends javax.swing.JFrame {
         initComponents();
         this.setModelo(unJuego);
         this.setVentanaPrincipal(ventanaPrincipal);
-        this.setAlwaysOnTop(true);
         listaSinJugadorSeleccionado = new ArrayList<Jugador>();
         
         

@@ -16,7 +16,6 @@ public class VentanaRegistroJugador extends javax.swing.JFrame {
         initComponents();
         this.setModelo(unJuego);
         this.setVentanaPrincipal(ventanaPrincipal);
-        this.setAlwaysOnTop(true);
 
         for (int i = 3; i <= 90; i++) {
             jcmbEdad.addItem(i + " años");
