@@ -3,6 +3,7 @@ package Interfaz;
 import ArcoirisMainPackage.Juego;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -19,6 +20,8 @@ public class VentanaJugar extends javax.swing.JFrame {
     private Juego modelo;
     private VentanaPrincipal framePrincipal;
     private JButton[][] botones;
+    private JButton[] btnColumnas;
+    private JButton[] btnFilas;
 
     public VentanaJugar(Juego unJuego, VentanaPrincipal ventanaPrincipal) {
         initComponents();
@@ -36,6 +39,33 @@ public class VentanaJugar extends javax.swing.JFrame {
         
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width / 3 - this.getSize().width / 3, dim.height / 3 - this.getSize().height / 3);
+        
+        jPanelColumnas.setLayout(new FlowLayout(13));
+        btnColumnas = new JButton[13];
+        
+        for(int i = 0; i < btnColumnas.length; i++){
+            JButton nuevoBoton = new JButton();
+            nuevoBoton.setPreferredSize(new Dimension(40, 30));
+            nuevoBoton.setFont(new Font("Arial", Font.BOLD, 10));
+            nuevoBoton.setText(i + 1 + "");
+            nuevoBoton.setBackground(Color.GRAY);
+            jPanelColumnas.add(nuevoBoton);
+            btnColumnas[i] = nuevoBoton;            
+        }
+        
+        jPanelFilas.setLayout(new FlowLayout(13));
+        btnFilas = new JButton[13];
+        
+        for(int i = 0; i < btnFilas.length; i++){
+            JButton nuevoBoton = new JButton();
+            nuevoBoton.setPreferredSize(new Dimension(40, 30));
+            nuevoBoton.setFont(new Font("Arial", Font.BOLD, 10));
+            nuevoBoton.setBackground(Color.GRAY);
+            nuevoBoton.setText(i + 1 + "");
+            //nuevoBoton.setEnabled(false);
+            jPanelFilas.add(nuevoBoton);
+            btnFilas[i] = nuevoBoton;            
+        }
         
         jPanelJugar.setLayout(new GridLayout(13, 13));
         botones = new JButton[14][14];
