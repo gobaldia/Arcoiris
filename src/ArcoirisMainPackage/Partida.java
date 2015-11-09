@@ -1,9 +1,10 @@
 package ArcoirisMainPackage;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-public class Partida implements Comparable<Partida> {
+public class Partida implements Comparable<Partida>, Serializable {
 
     private static int idGeneral = 0;
     private int idPartida;
@@ -16,6 +17,7 @@ public class Partida implements Comparable<Partida> {
     private int distribucionInicialFichas; //1-Azar, 2-En I, 3-En L
     private Tablero tableroActual;
     private Jugador ganador;//Si queda en null es porque fue empate
+    private boolean timer;
 
     public int getId() {
         return this.idPartida;
@@ -24,7 +26,15 @@ public class Partida implements Comparable<Partida> {
     public Jugador getGanador() {
         return this.ganador;
     }
-
+    
+    public boolean getTimer(){
+        return this.timer;
+    }
+    
+    public void setTimer(boolean tieneTimer){
+        this.timer = tieneTimer;
+    }
+    
     public void setGanador(Jugador unJugador) {
         this.ganador = unJugador;
     }

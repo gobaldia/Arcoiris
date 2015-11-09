@@ -1,6 +1,8 @@
 package ArcoirisMainPackage;
 
-public class Jugador implements Comparable<Jugador> {
+import java.io.Serializable;
+
+public class Jugador implements Comparable<Jugador>, Serializable {
 
     private String nombre;
     private String alias;
