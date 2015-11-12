@@ -1,4 +1,4 @@
-package prueba;
+package Prueba;
 
 import ArcoirisMainPackage.Juego;
 import javax.swing.JOptionPane;
@@ -10,8 +10,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 
-public class Prueba implements Serializable {
-
+public class Inicio implements Serializable {
     public static void main(String[] args) throws IOException {
 
         try {
