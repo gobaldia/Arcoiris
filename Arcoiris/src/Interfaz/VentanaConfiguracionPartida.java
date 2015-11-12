@@ -89,6 +89,7 @@ public class VentanaConfiguracionPartida extends javax.swing.JFrame {
         this.jrbPrimeroOcuparCentro.setEnabled(false);
         this.jrbSinFichas.setEnabled(false);
         this.jbtnAgregarJugador.setEnabled(false);
+        this.jcmbMinutosTimer.setEnabled(false);
     }
 
     @SuppressWarnings("unchecked")
@@ -119,6 +120,8 @@ public class VentanaConfiguracionPartida extends javax.swing.JFrame {
         jbtnAgregarJugador = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jcmbCantidadMovimientos = new javax.swing.JComboBox();
+        jcmbMinutosTimer = new javax.swing.JComboBox();
+        jlblMinutosTimer = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(750, 500));
@@ -152,11 +155,13 @@ public class VentanaConfiguracionPartida extends javax.swing.JFrame {
             }
         });
 
-        jlblVS.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jlblVS.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jlblVS.setText("vs");
 
+        jlblJugador1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jlblJugador1.setText("___________");
 
+        jlblJugador2.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jlblJugador2.setText("___________");
 
         jLabel1.setText("Marco inicial: ");
@@ -187,6 +192,12 @@ public class VentanaConfiguracionPartida extends javax.swing.JFrame {
             }
         });
 
+        jchkTimer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jchkTimerActionPerformed(evt);
+            }
+        });
+
         jLabel4.setText("Jugar con timer:");
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 2, 13)); // NOI18N
@@ -202,6 +213,11 @@ public class VentanaConfiguracionPartida extends javax.swing.JFrame {
         jLabel6.setText("Cantidad de movimientos:");
 
         jcmbCantidadMovimientos.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "10", "14", "16", "20", "24" }));
+
+        jcmbMinutosTimer.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "1 minuto", "3 minutos", "5 minutos", "10 minutos" }));
+        jcmbMinutosTimer.setEnabled(false);
+
+        jlblMinutosTimer.setText("Tiempo:");
 
         javax.swing.GroupLayout jPanelConfiguracionPartidaLayout = new javax.swing.GroupLayout(jPanelConfiguracionPartida);
         jPanelConfiguracionPartida.setLayout(jPanelConfiguracionPartidaLayout);
@@ -219,15 +235,7 @@ public class VentanaConfiguracionPartida extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanelConfiguracionPartidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelConfiguracionPartidaLayout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jchkTimer)
-                        .addGap(25, 25, 25)
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jcmbCantidadMovimientos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanelConfiguracionPartidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanelConfiguracionPartidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanelConfiguracionPartidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelConfiguracionPartidaLayout.createSequentialGroup()
@@ -247,26 +255,41 @@ public class VentanaConfiguracionPartida extends javax.swing.JFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
                                 .addGroup(jPanelConfiguracionPartidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanelConfiguracionPartidaLayout.createSequentialGroup()
-                                        .addGap(12, 12, 12)
-                                        .addComponent(jlblJugador1)
-                                        .addGap(32, 32, 32)
-                                        .addComponent(jlblVS)
-                                        .addGap(29, 29, 29)
-                                        .addComponent(jlblJugador2))
-                                    .addGroup(jPanelConfiguracionPartidaLayout.createSequentialGroup()
                                         .addComponent(jcmbMarcoInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
-                                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelConfiguracionPartidaLayout.createSequentialGroup()
-                            .addComponent(jbtnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(18, 18, 18)
-                            .addComponent(jbtnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanelConfiguracionPartidaLayout.createSequentialGroup()
+                                        .addComponent(jlblJugador1)
+                                        .addGap(28, 28, 28)
+                                        .addComponent(jlblVS)
+                                        .addGap(28, 28, 28)
+                                        .addComponent(jlblJugador2)))
+                                .addGap(17, 17, 17)))
+                        .addGroup(jPanelConfiguracionPartidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanelConfiguracionPartidaLayout.createSequentialGroup()
+                                .addGap(137, 137, 137)
+                                .addGroup(jPanelConfiguracionPartidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jrbSinFichas)
+                                    .addComponent(jrbPrimeroOcuparCentro)))
+                            .addGroup(jPanelConfiguracionPartidaLayout.createSequentialGroup()
+                                .addGap(75, 75, 75)
+                                .addGroup(jPanelConfiguracionPartidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jlblMinutosTimer))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanelConfiguracionPartidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanelConfiguracionPartidaLayout.createSequentialGroup()
+                                        .addComponent(jchkTimer)
+                                        .addGap(25, 25, 25)
+                                        .addComponent(jLabel6)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jcmbCantidadMovimientos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jcmbMinutosTimer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(jPanelConfiguracionPartidaLayout.createSequentialGroup()
-                        .addGap(137, 137, 137)
-                        .addGroup(jPanelConfiguracionPartidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jrbSinFichas)
-                            .addComponent(jrbPrimeroOcuparCentro))))
-                .addContainerGap(41, Short.MAX_VALUE))
+                        .addComponent(jbtnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jbtnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanelConfiguracionPartidaLayout.setVerticalGroup(
             jPanelConfiguracionPartidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -281,13 +304,11 @@ public class VentanaConfiguracionPartida extends javax.swing.JFrame {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 279, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanelConfiguracionPartidaLayout.createSequentialGroup()
-                        .addGroup(jPanelConfiguracionPartidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanelConfiguracionPartidaLayout.createSequentialGroup()
-                                .addGap(3, 3, 3)
-                                .addGroup(jPanelConfiguracionPartidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jlblJugador1)
-                                    .addComponent(jlblJugador2)
-                                    .addComponent(jbtnAgregarJugador)))
+                        .addGap(3, 3, 3)
+                        .addGroup(jPanelConfiguracionPartidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jlblJugador1)
+                            .addComponent(jlblJugador2)
+                            .addComponent(jbtnAgregarJugador)
                             .addComponent(jlblVS))
                         .addGap(32, 32, 32)
                         .addGroup(jPanelConfiguracionPartidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -305,14 +326,18 @@ public class VentanaConfiguracionPartida extends javax.swing.JFrame {
                                 .addComponent(jrbSinFichas)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jrbPrimeroOcuparCentro)))
-                        .addGap(14, 14, 14)
+                        .addGap(9, 9, 9)
                         .addGroup(jPanelConfiguracionPartidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanelConfiguracionPartidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING))
-                            .addComponent(jchkTimer)
-                            .addComponent(jcmbCantidadMovimientos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
+                            .addGroup(jPanelConfiguracionPartidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel4)
+                                .addComponent(jLabel6))
+                            .addComponent(jcmbCantidadMovimientos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jchkTimer))
+                        .addGap(12, 12, 12)
+                        .addGroup(jPanelConfiguracionPartidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jcmbMinutosTimer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jlblMinutosTimer))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
                         .addGroup(jPanelConfiguracionPartidaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jbtnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jbtnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -390,6 +415,23 @@ public class VentanaConfiguracionPartida extends javax.swing.JFrame {
                 
                 if(jchkTimer.isSelected()){
                     unaPartida.setTimer(true);
+                    switch(jcmbMinutosTimer.getSelectedIndex()){
+                        case 0:
+                            unaPartida.setMinutosTimer(600);//El timer se ejecutara 1 ves cada 0.6 segundos por 100 veces de la progressBar, osea 1 minuto durara la partida.
+                            break;
+                        case 1:
+                            unaPartida.setMinutosTimer(1800);
+                            break;
+                        case 2:
+                            unaPartida.setMinutosTimer(3000);
+                            break;
+                        case 3:
+                            unaPartida.setMinutosTimer(6000);
+                            break;
+                        default:
+                            unaPartida.setMinutosTimer(600);
+                            break;
+                    }
                 }
                 
                 this.getModelo().agregarPartida(unaPartida);
@@ -415,6 +457,14 @@ public class VentanaConfiguracionPartida extends javax.swing.JFrame {
         jcmbCantidadMovimientos.setSelectedIndex(0);
         jcmbCantidadMovimientos.setEnabled(true);
     }//GEN-LAST:event_jrbSinFichasActionPerformed
+
+    private void jchkTimerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jchkTimerActionPerformed
+        if(jchkTimer.isSelected()){
+            jcmbMinutosTimer.setEnabled(true);
+        } else {
+            jcmbMinutosTimer.setEnabled(false);
+        }
+    }//GEN-LAST:event_jchkTimerActionPerformed
 
     private void listarJugadores() {
         ArrayList<Jugador> auxListaJugadores = this.getModelo().getListaDeJugadores();
@@ -445,8 +495,10 @@ public class VentanaConfiguracionPartida extends javax.swing.JFrame {
     private javax.swing.JComboBox jcmbCantidadMovimientos;
     private javax.swing.JComboBox jcmbDistribucionFichas;
     private javax.swing.JComboBox jcmbMarcoInicio;
+    private javax.swing.JComboBox jcmbMinutosTimer;
     private javax.swing.JLabel jlblJugador1;
     private javax.swing.JLabel jlblJugador2;
+    private javax.swing.JLabel jlblMinutosTimer;
     private javax.swing.JLabel jlblTitulo;
     private javax.swing.JLabel jlblVS;
     private javax.swing.JLabel jlbltitulo;

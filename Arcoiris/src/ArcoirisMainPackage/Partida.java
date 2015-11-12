@@ -18,6 +18,7 @@ public class Partida implements Comparable<Partida>, Serializable {
     private Tablero tableroActual;
     private Jugador ganador;//Si queda en null es porque fue empate
     private boolean timer;
+    private int minutosTimer;
 
     public int getId() {
         return this.idPartida;
@@ -63,6 +64,14 @@ public class Partida implements Comparable<Partida>, Serializable {
         return this.marcoInicio;
     }
 
+    public void setMinutosTimer(int minutos) {
+        this.minutosTimer = minutos;
+    }
+
+    public int getMinutosTimer() {
+        return this.minutosTimer;
+    }
+    
     public Jugador getJugadorA() {
         return this.jugadorA;
     }

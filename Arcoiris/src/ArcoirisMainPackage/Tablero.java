@@ -2,7 +2,7 @@ package ArcoirisMainPackage;
 
 import java.io.Serializable;
 
-public class Tablero implements Serializable{
+public class Tablero implements Serializable {
 
     private char[][] matriz;
     private String posicionOrigen;
@@ -129,85 +129,89 @@ public class Tablero implements Serializable{
 
         char[][] mat = this.getMatriz();
 
-        if (mat[filaO][colO] == autorMovimiento.getTipoFicha()) {
-            haciaAdentro = Math.abs(6 - filaO) > Math.abs(6 - filaD) || Math.abs(6 - colO) > Math.abs(6 - colD);
-            esDiagonal = Math.abs(filaD - filaO) == Math.abs(colD - colO);
-            esRecto = filaD == filaO || colD == colO;
-
-            if (esDiagonal) {
-                int inc = 1;
-                if (filaD > filaO && colD > colO) {
-                    while (filaO + inc <= filaD) {
-                        if (mat[filaO + inc][colO + inc] != 'O') {
-                            estaVacio = false;
-                        }
-                        inc++;
-                    }
-                } else if (filaD < filaO && colD < colO) {
-                    while (filaO - inc >= filaD) {
-                        if (mat[filaO - inc][colO - inc] != 'O') {
-                            estaVacio = false;
-                        }
-                        inc++;
-                    }
-                } else if (filaD > filaO && colD < colO) {
-                    while (filaO + inc <= filaD) {
-                        if (mat[filaO + inc][colO - inc] != 'O') {
-                            estaVacio = false;
-                        }
-                        inc++;
-                    }
-                } else if (filaD < filaO && colD > colO) {
-                    while (filaO - inc >= filaD) {
-                        if (mat[filaO - inc][colO + inc] != 'O') {
-                            estaVacio = false;
-                        }
-                        inc++;
-                    }
-                }
-
-            } else if (esRecto) {
-                int inc = 1;
-                if (filaO == filaD) {
-                    if (colO < colD) {
-                        while (colO + inc <= colD) {
-                            if (mat[filaO][colO + inc] != 'O') {
-                                estaVacio = false;
-                            }
-                            inc++;
-                        }
-                    } else {
-                        while (colO - inc >= colD) {
-                            if (mat[filaO][colO - inc] != 'O') {
-                                estaVacio = false;
-                            }
-                            inc++;
-                        }
-                    }
-
-                } else {
-                    if (filaO < filaD) {
-                        while (filaO + inc <= filaD) {
-                            if (mat[filaO + inc][colO] != 'O') {
-                                estaVacio = false;
-                            }
-                            inc++;
-                        }
-                    } else {
-                        while (filaO - inc >= filaD) {
-                            if (mat[filaO - inc][colO] != 'O') {
-                                estaVacio = false;
-                            }
-                            inc++;
-                        }
-                    }
-
-                }
-            }
-
-            resultado = haciaAdentro && (esDiagonal || esRecto) && estaVacio;
-        } else {
+        if (filaD == 6 && colD == 6) {
             resultado = false;
+        } else {
+            if (mat[filaO][colO] == autorMovimiento.getTipoFicha()) {
+                haciaAdentro = Math.abs(6 - filaO) > Math.abs(6 - filaD) || Math.abs(6 - colO) > Math.abs(6 - colD);
+                esDiagonal = Math.abs(filaD - filaO) == Math.abs(colD - colO);
+                esRecto = filaD == filaO || colD == colO;
+
+                if (esDiagonal) {
+                    int inc = 1;
+                    if (filaD > filaO && colD > colO) {
+                        while (filaO + inc <= filaD) {
+                            if (mat[filaO + inc][colO + inc] != 'O') {
+                                estaVacio = false;
+                            }
+                            inc++;
+                        }
+                    } else if (filaD < filaO && colD < colO) {
+                        while (filaO - inc >= filaD) {
+                            if (mat[filaO - inc][colO - inc] != 'O') {
+                                estaVacio = false;
+                            }
+                            inc++;
+                        }
+                    } else if (filaD > filaO && colD < colO) {
+                        while (filaO + inc <= filaD) {
+                            if (mat[filaO + inc][colO - inc] != 'O') {
+                                estaVacio = false;
+                            }
+                            inc++;
+                        }
+                    } else if (filaD < filaO && colD > colO) {
+                        while (filaO - inc >= filaD) {
+                            if (mat[filaO - inc][colO + inc] != 'O') {
+                                estaVacio = false;
+                            }
+                            inc++;
+                        }
+                    }
+
+                } else if (esRecto) {
+                    int inc = 1;
+                    if (filaO == filaD) {
+                        if (colO < colD) {
+                            while (colO + inc <= colD) {
+                                if (mat[filaO][colO + inc] != 'O') {
+                                    estaVacio = false;
+                                }
+                                inc++;
+                            }
+                        } else {
+                            while (colO - inc >= colD) {
+                                if (mat[filaO][colO - inc] != 'O') {
+                                    estaVacio = false;
+                                }
+                                inc++;
+                            }
+                        }
+
+                    } else {
+                        if (filaO < filaD) {
+                            while (filaO + inc <= filaD) {
+                                if (mat[filaO + inc][colO] != 'O') {
+                                    estaVacio = false;
+                                }
+                                inc++;
+                            }
+                        } else {
+                            while (filaO - inc >= filaD) {
+                                if (mat[filaO - inc][colO] != 'O') {
+                                    estaVacio = false;
+                                }
+                                inc++;
+                            }
+                        }
+
+                    }
+                }
+
+                resultado = haciaAdentro && (esDiagonal || esRecto) && estaVacio;
+            } else {
+                resultado = false;
+            }
         }
 
         return resultado;

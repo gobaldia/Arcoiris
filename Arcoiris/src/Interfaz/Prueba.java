@@ -453,6 +453,8 @@ public class Prueba {
                     movimientoEsValido = false;
                     formaMarco = false;
                 } else {//Mueve jugador B
+                
+                    // <editor-fold defaultstate="collapsed" desc="Mueve jugador B">
                     System.out.println("\n-> Turno de " + jugadorB.getAlias() + " (Fichas blancas)");
                     System.out.print("Indique la ficha de origen y el destino hacia donde mover ficha.\nEjemplo 'A1-C3'\nIngrese opción: ");
 
@@ -534,7 +536,9 @@ public class Prueba {
                     bandera = false;
                     turnoJugador = !turnoJugador;
                     movimientoEsValido = false;
-                    formaMarco = false;
+                    formaMarco = false;                    
+                    // </editor-fold>
+                    
                 }
 
                 unaPartida.setCantidadMovimientos(unaPartida.getCantidadMovimientos() - 1);
