@@ -1,5 +1,6 @@
 package Interfaz;
 
+import ArcoirisMainPackage.ArchivoGrabacion;
 import ArcoirisMainPackage.Juego;
 import ArcoirisMainPackage.Partida;
 import ArcoirisMainPackage.Tablero;
@@ -15,7 +16,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -35,74 +40,95 @@ public class VentanaJugar extends javax.swing.JFrame {
     private Timer timer;
     private int[] auxMovimiento;
     private boolean turno;
+    private boolean formaMarco;
+    private boolean finTimer;
     private String detallesJugadas;
+    private ArchivoGrabacion miArchivo;
 
     public VentanaJugar(Juego unJuego, VentanaPrincipal ventanaPrincipal) {
-        initComponents();
-        this.setModelo(unJuego);
-        this.setVentanaPrincipal(ventanaPrincipal);
-        auxMovimiento = new int[]{-1, -1};
-        detallesJugadas = "";
+        try {
+            initComponents();
+            this.setModelo(unJuego);
+            this.setVentanaPrincipal(ventanaPrincipal);
+            auxMovimiento = new int[]{-1, -1};
+            detallesJugadas = "";
 
-        //Inicializo la grilla con botones.
-        jPanelJugar.setLayout(new GridLayout(13, 13));
-        botones = new JButton[14][14];
-        for (int i = 0; i < 13; i++) {
-            for (int j = 0; j < 13; j++) {
-                JButton jButton = new JButton();
-                jButton.addActionListener(new ListenerBoton(i, j));
-                jButton.setPreferredSize(new Dimension(30, 30));
-                jButton.setFont(new Font("Arial", Font.PLAIN, 10));
-                jPanelJugar.add(jButton);
-                botones[i][j] = jButton;
+            //Inicializo la grilla con botones.
+            jPanelJugar.setLayout(new GridLayout(13, 13));
+            botones = new JButton[14][14];
+            for (int i = 0; i < 13; i++) {
+                for (int j = 0; j < 13; j++) {
+                    JButton jButton = new JButton();
+                    jButton.addActionListener(new ListenerBoton(i, j));
+                    jButton.setPreferredSize(new Dimension(30, 30));
+                    jButton.setFont(new Font("Arial", Font.PLAIN, 10));
+                    jPanelJugar.add(jButton);
+                    botones[i][j] = jButton;
+                }
             }
-        }
 
-        //Agrego evento para manejar el hacer click en la X al cerrar el JFrame actual y asi poder volver a habilitar el menu
-        this.addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                getVentanaPrincipal().UpdateMenu(true);
+            //Agrego evento para manejar el hacer click en la X al cerrar el JFrame actual y asi poder volver a habilitar el menu
+            this.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                    getVentanaPrincipal().UpdateMenu(true);
+                    dispose();
+                }
+            });
+
+            Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+            this.setLocation(dim.width / 3 - this.getSize().width / 3, dim.height / 3 - this.getSize().height / 3);
+
+            if (getModelo().getListaDePartidas().size() > 0) {
+                ArrayList<Partida> listaDePartidas = this.getModelo().ordenarPartidasDesc();
+                this.setPartidaActual(listaDePartidas.get(0));//Obtengo la ultima partida configurada.           
+
+                this.getPartidaActual().getJugadorA().setTipoFicha('N');
+                this.getPartidaActual().getJugadorB().setTipoFicha('B');
+
+                configurarProximaPartida();
+                miArchivo = new ArchivoGrabacion(new File(".").getCanonicalPath() + "\\archivos\\partidasGuardadas\\" + "PARTIDA" + obtenerFechaHora() + ".txt");
+                miArchivo.grabarLinea(this.getPartidaActual().getJugadorA().getAlias() + "  vs  " + this.getPartidaActual().getJugadorB().getAlias());
+                
+                jlblJugadoresVS.setText(this.getPartidaActual().getJugadorA().getAlias() + "  vs  " + this.getPartidaActual().getJugadorB().getAlias());
+
+                if (this.getPartidaActual().getTimer()) {
+                    jlblFin.setVisible(true);
+                    jlblInicio.setVisible(true);
+                    jProgressBarTimer.setVisible(true);
+                    ejecutarTimer();
+                    timer.start();
+                } else {
+                    jProgressBarTimer.setVisible(false);
+                    jlblFin.setVisible(false);
+                    jlblInicio.setVisible(false);
+                }
+
+                jlblTurnoDe.setText(this.getPartidaActual().getJugadorA().getAlias() + " (Fichas Negras)");
+                generarIndicesFilaColumna();
+                mostrarTablero(this.getPartidaActual().getListaDeTableros().get(0).getMatriz());
+                this.getPartidaActual().setTableroActual(this.getPartidaActual().getListaDeTableros().get(0));
+
+            } else {
+                JOptionPane.showMessageDialog(this, "No existen partidas configuradas.", "Error", JOptionPane.CANCEL_OPTION);
+                //Deshabilito todas las opciones del panel.
                 dispose();
             }
-        });
-
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setLocation(dim.width / 3 - this.getSize().width / 3, dim.height / 3 - this.getSize().height / 3);
-
-        if (getModelo().getListaDePartidas().size() > 0) {
-            ArrayList<Partida> listaDePartidas = this.getModelo().ordenarPartidasDesc();
-            this.setPartidaActual(listaDePartidas.get(0));//Obtengo la ultima partida configurada.           
-
-            this.getPartidaActual().getJugadorA().setTipoFicha('N');
-            this.getPartidaActual().getJugadorB().setTipoFicha('B');
-
-            configurarProximaPartida();
-
-            jlblJugadoresVS.setText(this.getPartidaActual().getJugadorA().getAlias() + "  vs  " + this.getPartidaActual().getJugadorB().getAlias());
-
-            if (this.getPartidaActual().getTimer()) {
-                jlblFin.setVisible(true);
-                jlblInicio.setVisible(true);
-                jProgressBarTimer.setVisible(true);
-                ejecutarTimer();
-                timer.start();
-            } else {
-                jProgressBarTimer.setVisible(false);
-                jlblFin.setVisible(false);
-                jlblInicio.setVisible(false);
-            }
-
-            jlblTurnoDe.setText(this.getPartidaActual().getJugadorA().getAlias() + " (Fichas Negras)");
-            generarIndicesFilaColumna();
-            mostrarTablero(this.getPartidaActual().getListaDeTableros().get(0).getMatriz());
-            this.getPartidaActual().setTableroActual(this.getPartidaActual().getListaDeTableros().get(0));
-
-        } else {
-            JOptionPane.showMessageDialog(this, "No existen partidas configuradas.", "Error", JOptionPane.CANCEL_OPTION);
-            //Deshabilito todas las opciones del panel.
-            dispose();
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    private String obtenerFechaHora() {
+        String resultado = "";
+        DateFormat dateFormat = new SimpleDateFormat("MMddHHmm");
+
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.HOUR, -1);
+
+        resultado = dateFormat.format(cal.getTime());
+
+        return resultado;
     }
 
     private void configurarProximaPartida() {
@@ -416,7 +442,7 @@ public class VentanaJugar extends javax.swing.JFrame {
                             botones[i][j].setBackground(Color.BLUE);
                             botones[i][j].setIcon(null);
                         }
-                    } else {
+                    } else if (i == 6 && j == 6){
                         botones[i][j].setBackground(Color.WHITE);
                         botones[i][j].setIcon(null);
                     }
@@ -501,6 +527,7 @@ public class VentanaJugar extends javax.swing.JFrame {
                 int val = jProgressBarTimer.getValue();
                 if (val >= 100) {
                     timer.stop();
+                    finTimer = true;
                     return;
                 }
                 jProgressBarTimer.setValue(++val);
@@ -577,13 +604,6 @@ public class VentanaJugar extends javax.swing.JFrame {
                     Tablero tableroClon = new Tablero();
                     tableroClon.setMatriz(matrizClon);
 
-                    for (int i = 0; i < tableroClon.getMatriz().length; i++) {
-                        for (int j = 0; j < tableroClon.getMatriz()[0].length; j++) {
-                            System.out.print(tableroClon.getMatriz()[i][j] + " ");
-                        }
-                        System.out.println();
-                    }
-
                     if (turno) {
                         tableroClon.getMatriz()[fila][columna] = getPartidaActual().getJugadorB().getTipoFicha();
                         tableroClon.getMatriz()[auxMovimiento[0]][auxMovimiento[1]] = 'O';
@@ -596,21 +616,24 @@ public class VentanaJugar extends javax.swing.JFrame {
                         tableroClon.setAutorMovimiento(getPartidaActual().getJugadorA());
                     }
 
-                    System.out.println();
-
-                    for (int i = 0; i < tableroClon.getMatriz().length; i++) {
-                        for (int j = 0; j < tableroClon.getMatriz()[0].length; j++) {
-                            System.out.print(tableroClon.getMatriz()[i][j] + " ");
+                    //Verifico se formo un marco                    
+                    if (turno) {
+                        formaMarco = tableroClon.formaMarco(fila, columna, getPartidaActual().getJugadorB());
+                        if (formaMarco) {
+                            tableroClon.getMatriz()[6][6] = getPartidaActual().getJugadorB().getTipoFicha();
                         }
-                        System.out.println();
+                    } else {
+                        formaMarco = tableroClon.formaMarco(fila, columna, getPartidaActual().getJugadorA());
+
+                        if (formaMarco) {
+                            tableroClon.getMatriz()[6][6] = getPartidaActual().getJugadorA().getTipoFicha();
+                        }
                     }
 
                     detallesJugadas += tableroClon.comerFichas(fila, columna);
                     jlblDetalleJugadas.setText(detallesJugadas);
                     botones[auxMovimiento[0]][auxMovimiento[1]].setEnabled(true);
-
-                    //Verifico si formo un marco
-                    //formaMarco = tableroClon.formaMarco(posicionDestino[0], posicionDestino[1], jugadorA);
+                    
                     mostrarTablero(tableroClon.getMatriz());
 
                     //Debo de formatear los numeros para mostrar un mensaje acorde de lo sucedido en la comida
