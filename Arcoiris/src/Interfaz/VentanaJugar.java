@@ -43,7 +43,9 @@ public class VentanaJugar extends javax.swing.JFrame {
     private boolean formaMarco;
     private boolean finTimer;
     private String detallesJugadas;
-    private ArchivoGrabacion miArchivo;
+    private ArchivoGrabacion archGrabacion;
+    private int cantMovimientos;
+    private char[] letras = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'};
 
     public VentanaJugar(Juego unJuego, VentanaPrincipal ventanaPrincipal) {
         try {
@@ -52,20 +54,7 @@ public class VentanaJugar extends javax.swing.JFrame {
             this.setVentanaPrincipal(ventanaPrincipal);
             auxMovimiento = new int[]{-1, -1};
             detallesJugadas = "";
-
-            //Inicializo la grilla con botones.
-            jPanelJugar.setLayout(new GridLayout(13, 13));
-            botones = new JButton[14][14];
-            for (int i = 0; i < 13; i++) {
-                for (int j = 0; j < 13; j++) {
-                    JButton jButton = new JButton();
-                    jButton.addActionListener(new ListenerBoton(i, j));
-                    jButton.setPreferredSize(new Dimension(30, 30));
-                    jButton.setFont(new Font("Arial", Font.PLAIN, 10));
-                    jPanelJugar.add(jButton);
-                    botones[i][j] = jButton;
-                }
-            }
+            cantMovimientos = 0;
 
             //Agrego evento para manejar el hacer click en la X al cerrar el JFrame actual y asi poder volver a habilitar el menu
             this.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -80,6 +69,20 @@ public class VentanaJugar extends javax.swing.JFrame {
             this.setLocation(dim.width / 3 - this.getSize().width / 3, dim.height / 3 - this.getSize().height / 3);
 
             if (getModelo().getListaDePartidas().size() > 0) {
+                //Inicializo la grilla con botones.
+                jPanelJugar.setLayout(new GridLayout(13, 13));
+                botones = new JButton[14][14];
+                for (int i = 0; i < 13; i++) {
+                    for (int j = 0; j < 13; j++) {
+                        JButton jButton = new JButton();
+                        jButton.addActionListener(new ListenerBoton(i, j));
+                        jButton.setPreferredSize(new Dimension(30, 30));
+                        jButton.setFont(new Font("Arial", Font.PLAIN, 10));
+                        jPanelJugar.add(jButton);
+                        botones[i][j] = jButton;
+                    }
+                }
+
                 ArrayList<Partida> listaDePartidas = this.getModelo().ordenarPartidasDesc();
                 this.setPartidaActual(listaDePartidas.get(0));//Obtengo la ultima partida configurada.           
 
@@ -87,9 +90,9 @@ public class VentanaJugar extends javax.swing.JFrame {
                 this.getPartidaActual().getJugadorB().setTipoFicha('B');
 
                 configurarProximaPartida();
-                miArchivo = new ArchivoGrabacion(new File(".").getCanonicalPath() + "\\archivos\\partidasGuardadas\\" + "PARTIDA" + obtenerFechaHora() + ".txt");
-                miArchivo.grabarLinea(this.getPartidaActual().getJugadorA().getAlias() + "  vs  " + this.getPartidaActual().getJugadorB().getAlias());
-                
+                archGrabacion = new ArchivoGrabacion(new File(".").getCanonicalPath() + "\\archivos\\partidasGuardadas\\" + "PARTIDA" + obtenerFechaHora() + ".txt");
+                archGrabacion.grabarLinea(this.getPartidaActual().getJugadorA().getAlias() + "  vs  " + this.getPartidaActual().getJugadorB().getAlias());
+
                 jlblJugadoresVS.setText(this.getPartidaActual().getJugadorA().getAlias() + "  vs  " + this.getPartidaActual().getJugadorB().getAlias());
 
                 if (this.getPartidaActual().getTimer()) {
@@ -111,6 +114,10 @@ public class VentanaJugar extends javax.swing.JFrame {
 
             } else {
                 JOptionPane.showMessageDialog(this, "No existen partidas configuradas.", "Error", JOptionPane.CANCEL_OPTION);
+                jPanelColumnas.setEnabled(false);
+                jPanelDetalle.setEnabled(false);
+                jPanelFilas.setEnabled(false);
+                jPanelJugar.setEnabled(false);
                 //Deshabilito todas las opciones del panel.
                 dispose();
             }
@@ -195,8 +202,7 @@ public class VentanaJugar extends javax.swing.JFrame {
         jlblFin = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jlblTurnoDe = new javax.swing.JLabel();
-        jlblDetalleJugadasTitulo = new javax.swing.JLabel();
-        jlblDetalleJugadas = new javax.swing.JLabel();
+        jlblGanador = new javax.swing.JLabel();
         jlblJugadoresVS = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -259,10 +265,8 @@ public class VentanaJugar extends javax.swing.JFrame {
 
         jlblTurnoDe.setText("__________");
 
-        jlblDetalleJugadasTitulo.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        jlblDetalleJugadasTitulo.setText("< Detalle de Jugadas >");
-
-        jlblDetalleJugadas.setText("__________________");
+        jlblGanador.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jlblGanador.setText("<Aca va el ganador>");
 
         jlblJugadoresVS.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jlblJugadoresVS.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -274,40 +278,39 @@ public class VentanaJugar extends javax.swing.JFrame {
         jPanelDetalleLayout.setHorizontalGroup(
             jPanelDetalleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelDetalleLayout.createSequentialGroup()
-                .addGroup(jPanelDetalleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelDetalleLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jlblTurnoDe, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanelDetalleLayout.createSequentialGroup()
-                        .addGap(50, 50, 50)
-                        .addComponent(jlblDetalleJugadasTitulo)))
-                .addContainerGap(46, Short.MAX_VALUE))
-            .addGroup(jPanelDetalleLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanelDetalleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jProgressBarTimer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelDetalleLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanelDetalleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelDetalleLayout.createSequentialGroup()
+                                .addComponent(jlblTitulo)
+                                .addGap(73, 73, 73))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelDetalleLayout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jlblTurnoDe, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(48, 48, 48))))
                     .addGroup(jPanelDetalleLayout.createSequentialGroup()
                         .addComponent(jlblInicio)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jlblFin, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jlblDetalleJugadas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                        .addComponent(jlblFin, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
             .addGroup(jPanelDetalleLayout.createSequentialGroup()
-                .addComponent(jlblJugadoresVS, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanelDetalleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jlblJugadoresVS, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanelDetalleLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jProgressBarTimer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jlblGanador, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelDetalleLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jlblTitulo)
-                .addGap(73, 73, 73))
         );
         jPanelDetalleLayout.setVerticalGroup(
             jPanelDetalleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelDetalleLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(41, 41, 41)
                 .addComponent(jlblTitulo)
-                .addGap(18, 18, 18)
+                .addGap(26, 26, 26)
                 .addComponent(jlblJugadoresVS, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28)
                 .addGroup(jPanelDetalleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -315,15 +318,13 @@ public class VentanaJugar extends javax.swing.JFrame {
                     .addComponent(jlblFin))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jProgressBarTimer, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(49, 49, 49)
                 .addGroup(jPanelDetalleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jlblTurnoDe))
-                .addGap(18, 18, 18)
-                .addComponent(jlblDetalleJugadasTitulo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jlblDetalleJugadas)
-                .addContainerGap(310, Short.MAX_VALUE))
+                    .addComponent(jlblTurnoDe)
+                    .addComponent(jLabel1))
+                .addGap(53, 53, 53)
+                .addComponent(jlblGanador, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -344,7 +345,7 @@ public class VentanaJugar extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 13, Short.MAX_VALUE)
+                        .addGap(0, 34, Short.MAX_VALUE)
                         .addComponent(jPanelColumnas, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -365,9 +366,8 @@ public class VentanaJugar extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelFilas;
     private javax.swing.JPanel jPanelJugar;
     private javax.swing.JProgressBar jProgressBarTimer;
-    private javax.swing.JLabel jlblDetalleJugadas;
-    private javax.swing.JLabel jlblDetalleJugadasTitulo;
     private javax.swing.JLabel jlblFin;
+    private javax.swing.JLabel jlblGanador;
     private javax.swing.JLabel jlblInicio;
     private javax.swing.JLabel jlblJugadoresVS;
     private javax.swing.JLabel jlblTitulo;
@@ -386,6 +386,16 @@ public class VentanaJugar extends javax.swing.JFrame {
             Image fichaBlanca = blanca.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
             blan = new ImageIcon(fichaBlanca);
 
+            ImageIcon blanQ = new ImageIcon(new File(".").getCanonicalPath() + "\\src\\Imagenes\\blancaQ.png");
+            Image blancaQ = blanQ.getImage();
+            Image fichaBlancaQ = blancaQ.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
+            blanQ = new ImageIcon(fichaBlancaQ);
+            
+            ImageIcon negQ = new ImageIcon(new File(".").getCanonicalPath() + "\\src\\Imagenes\\negraQ.png");
+            Image negraQ = negQ.getImage();
+            Image fichaNegraQ = negraQ.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
+            negQ = new ImageIcon(fichaNegraQ);
+            
             for (int i = 0; i < 13; i++) {
                 for (int j = 0; j < 13; j++) {
                     if (medirDistanciaMarco(i, j, 1)) {
@@ -442,9 +452,15 @@ public class VentanaJugar extends javax.swing.JFrame {
                             botones[i][j].setBackground(Color.BLUE);
                             botones[i][j].setIcon(null);
                         }
-                    } else if (i == 6 && j == 6){
-                        botones[i][j].setBackground(Color.WHITE);
-                        botones[i][j].setIcon(null);
+                    } else {
+                        if (unTablero[i][j] == 'B') {
+                            botones[i][j].setIcon(blanQ);
+                        } else if (unTablero[i][j] == 'N') {
+                            botones[i][j].setIcon(negQ);
+                        } else {
+                            botones[i][j].setBackground(Color.WHITE);
+                            botones[i][j].setIcon(null);
+                        }
                     }
                 }
             }
@@ -552,8 +568,6 @@ public class VentanaJugar extends javax.swing.JFrame {
 
         jPanelFilas.setLayout(new GridLayout(13, 1));
         btnFilas = new JButton[13];
-        char[] letras = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'};
-
         for (int i = 0; i < btnFilas.length; i++) {
             JButton nuevoBoton = new JButton();
             nuevoBoton.setPreferredSize(new Dimension(30, 30));
@@ -577,14 +591,15 @@ public class VentanaJugar extends javax.swing.JFrame {
             y = j;
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
-
             clickBoton(x, y);
         }
 
         private void clickBoton(int fila, int columna) {
             boolean bandera;
-            //Posicion 0 y 1 son para la ficha de origen       
+
+            //En auxMovimientos se guardan las posiciones del boton que se clickeo en primera instancia    
             if (auxMovimiento[0] >= 0) {
 
                 if (turno) {
@@ -622,19 +637,51 @@ public class VentanaJugar extends javax.swing.JFrame {
                         if (formaMarco) {
                             tableroClon.getMatriz()[6][6] = getPartidaActual().getJugadorB().getTipoFicha();
                         }
+                        
+                        //Cambio label al Alias del proximo jugador
+                        jlblTurnoDe.setText(getPartidaActual().getJugadorA().getAlias());
                     } else {
                         formaMarco = tableroClon.formaMarco(fila, columna, getPartidaActual().getJugadorA());
 
                         if (formaMarco) {
                             tableroClon.getMatriz()[6][6] = getPartidaActual().getJugadorA().getTipoFicha();
                         }
+                        
+                        //Cambio label al Alias del proximo jugador
+                        jlblTurnoDe.setText(getPartidaActual().getJugadorB().getAlias());
                     }
 
-                    detallesJugadas += tableroClon.comerFichas(fila, columna);
-                    jlblDetalleJugadas.setText(detallesJugadas);
+                    String resultadoComida = "";
+                    resultadoComida = tableroClon.comerFichas(fila, columna);                    
                     botones[auxMovimiento[0]][auxMovimiento[1]].setEnabled(true);
-                    
+
                     mostrarTablero(tableroClon.getMatriz());
+                    
+                    if(!resultadoComida.isEmpty() && formaMarco){
+                        if(turno){
+                            archGrabacion.grabarLinea("Mueve: " +  getPartidaActual().getJugadorB().getAlias() + "|| " + "Desplazamiento con captura y ocupación del centro: " + letras[auxMovimiento[0]] + (auxMovimiento[1]+1) + "-" + letras[fila] + (columna+1) + " " + resultadoComida + "*");                         
+                        } else {
+                            archGrabacion.grabarLinea("Mueve: " +  getPartidaActual().getJugadorA().getAlias() + "|| " + "Desplazamiento con captura y ocupación del centro: " + letras[auxMovimiento[0]] + (auxMovimiento[1]+1) + "-" + letras[fila] + (columna+1) + " " + resultadoComida + "*");
+                        }
+                    } else if(!resultadoComida.isEmpty()){
+                        if(turno){
+                            archGrabacion.grabarLinea("Mueve: " +  getPartidaActual().getJugadorB().getAlias() + "|| " + "Desplazamiento con captura: " + letras[auxMovimiento[0]] + (auxMovimiento[1]+1) + "-" + letras[fila] + (columna+1) + " " + resultadoComida);
+                        } else {
+                            archGrabacion.grabarLinea("Mueve: " +  getPartidaActual().getJugadorA().getAlias() + "|| " + "Desplazamiento con captura: " + letras[auxMovimiento[0]] + (auxMovimiento[1]+1) + "-" + letras[fila] + (columna+1) + " " + resultadoComida);
+                        }
+                    } else if(formaMarco){
+                        if(turno){
+                            archGrabacion.grabarLinea("Mueve: " +  getPartidaActual().getJugadorB().getAlias() + "|| " + "Desplazamiento con ocupación del centro: " + letras[auxMovimiento[0]] + (auxMovimiento[1]+1) + "-" + letras[fila] + (columna+1) + " *");
+                        } else {
+                            archGrabacion.grabarLinea("Mueve: " +  getPartidaActual().getJugadorA().getAlias() + "|| " + "Desplazamiento con ocupación del centro: " + letras[auxMovimiento[0]] + (auxMovimiento[1]+1) + "-" + letras[fila] + (columna+1) + " *");
+                        }
+                    } else {
+                        if(turno){
+                            archGrabacion.grabarLinea("Mueve: " +  getPartidaActual().getJugadorB().getAlias() + "|| " + "Desplazamiento simple: " + letras[auxMovimiento[0]] + (auxMovimiento[1]+1) + "-" + letras[fila] + (columna+1));
+                        } else {
+                            archGrabacion.grabarLinea("Mueve: " +  getPartidaActual().getJugadorA().getAlias() + "|| " + "Desplazamiento simple: " + letras[auxMovimiento[0]] + (auxMovimiento[1]+1) + "-" + letras[fila] + (columna+1));
+                        }
+                    }
 
                     //Debo de formatear los numeros para mostrar un mensaje acorde de lo sucedido en la comida
                     //Limpio la accion del clon anterior
@@ -650,8 +697,21 @@ public class VentanaJugar extends javax.swing.JFrame {
 //                    }
 //
 //                    System.out.println("\n• Resultado de la accion anterior: " + tableroClon.getResultadoAccion());
+                    
                     getPartidaActual().setTableroActual(tableroClon);
                     getPartidaActual().getListaDeTableros().add(tableroClon);
+                    
+                    if(getPartidaActual().getTipoFinPartida() == 1 && !finTimer){//Si se esta jugando al primero en conquistar el centro y el timer esta en false
+                    
+                    
+                    } else if (getPartidaActual().getTipoFinPartida() == 2 && !finTimer && getPartidaActual().getCantidadMovimientos() > cantMovimientos){
+                        
+                    } else {
+                        
+                    }
+                    
+                    
+                    
                     turno = !turno;
                     auxMovimiento[0] = -1;
                     auxMovimiento[1] = -1;
@@ -662,6 +722,8 @@ public class VentanaJugar extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(VentanaJugar.this, "Movimiento NO valido!", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
+
+                // <editor-fold defaultstate="collapsed" desc="Click botón origen">
                 if (turno) {
                     if (fila == 6 && columna == 6) {
                         JOptionPane.showMessageDialog(VentanaJugar.this, "Movimiento NO valido!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -689,6 +751,8 @@ public class VentanaJugar extends javax.swing.JFrame {
                         }
                     }
                 }
+                // </editor-fold>
+
             }
         }
     }
