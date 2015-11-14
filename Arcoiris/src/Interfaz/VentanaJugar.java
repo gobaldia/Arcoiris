@@ -52,12 +52,16 @@ public class VentanaJugar extends javax.swing.JFrame {
             this.setVentanaPrincipal(ventanaPrincipal);
             auxMovimiento = new int[]{-1, -1};
             detallesJugadas = "";
-            cantMovimientos = 0;
+            cantMovimientos = 1;
 
             //Agrego evento para manejar el hacer click en la X al cerrar el JFrame actual y asi poder volver a habilitar el menu
             this.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
                 public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                    if (getModelo().getListaDePartidas().size() > 0 && !finPartida) {
+                        validarPartidaAlSalir();
+                    }
+
                     getVentanaPrincipal().UpdateMenu(true);
                     dispose();
                 }
@@ -116,10 +120,17 @@ public class VentanaJugar extends javax.swing.JFrame {
                 jPanelDetalle.setEnabled(false);
                 jPanelFilas.setEnabled(false);
                 jPanelJugar.setEnabled(false);
+                jlblJugadoresVS.setVisible(false);
+                jlblInicio.setVisible(false);
+                jlblFin.setVisible(false);
+                jlblTurnoDe.setVisible(false);
+                jProgressBarTimer.setVisible(false);
+                jLabel1.setVisible(false);
                 //Deshabilito todas las opciones del panel.
                 dispose();
             }
         } catch (IOException ex) {
+
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -263,8 +274,8 @@ public class VentanaJugar extends javax.swing.JFrame {
 
         jlblTurnoDe.setText("__________");
 
-        jlblGanador.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jlblGanador.setText("<Aca va el ganador>");
+        jlblGanador.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jlblGanador.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
         jlblJugadoresVS.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jlblJugadoresVS.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -393,7 +404,7 @@ public class VentanaJugar extends javax.swing.JFrame {
             Image negraQ = negQ.getImage();
             Image fichaNegraQ = negraQ.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
             negQ = new ImageIcon(fichaNegraQ);
-            
+
             ImageIcon pie = new ImageIcon(new File(".").getCanonicalPath() + "\\src\\Imagenes\\piedra.png");
             Image piedraImg = pie.getImage();
             Image imgPiedra = piedraImg.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
@@ -406,7 +417,7 @@ public class VentanaJugar extends javax.swing.JFrame {
                             botones[i][j].setIcon(blan);
                         } else if (unTablero[i][j] == 'N') {
                             botones[i][j].setIcon(neg);
-                        } else if (unTablero[i][j] == 'P'){
+                        } else if (unTablero[i][j] == 'P') {
                             botones[i][j].setIcon(pie);
                         } else {
                             botones[i][j].setBackground(Color.RED);
@@ -417,7 +428,7 @@ public class VentanaJugar extends javax.swing.JFrame {
                             botones[i][j].setIcon(blan);
                         } else if (unTablero[i][j] == 'N') {
                             botones[i][j].setIcon(neg);
-                        } else if (unTablero[i][j] == 'P'){
+                        } else if (unTablero[i][j] == 'P') {
                             botones[i][j].setIcon(pie);
                         } else {
                             botones[i][j].setBackground(Color.ORANGE);
@@ -428,7 +439,7 @@ public class VentanaJugar extends javax.swing.JFrame {
                             botones[i][j].setIcon(blan);
                         } else if (unTablero[i][j] == 'N') {
                             botones[i][j].setIcon(neg);
-                        } else if (unTablero[i][j] == 'P'){
+                        } else if (unTablero[i][j] == 'P') {
                             botones[i][j].setIcon(pie);
                         } else {
                             botones[i][j].setBackground(Color.YELLOW);
@@ -439,7 +450,7 @@ public class VentanaJugar extends javax.swing.JFrame {
                             botones[i][j].setIcon(blan);
                         } else if (unTablero[i][j] == 'N') {
                             botones[i][j].setIcon(neg);
-                        } else if (unTablero[i][j] == 'P'){
+                        } else if (unTablero[i][j] == 'P') {
                             botones[i][j].setIcon(pie);
                         } else {
                             botones[i][j].setBackground(Color.GREEN);
@@ -450,7 +461,7 @@ public class VentanaJugar extends javax.swing.JFrame {
                             botones[i][j].setIcon(blan);
                         } else if (unTablero[i][j] == 'N') {
                             botones[i][j].setIcon(neg);
-                        } else if (unTablero[i][j] == 'P'){
+                        } else if (unTablero[i][j] == 'P') {
                             botones[i][j].setIcon(pie);
                         } else {
                             botones[i][j].setBackground(Color.CYAN);
@@ -461,7 +472,7 @@ public class VentanaJugar extends javax.swing.JFrame {
                             botones[i][j].setIcon(blan);
                         } else if (unTablero[i][j] == 'N') {
                             botones[i][j].setIcon(neg);
-                        } else if (unTablero[i][j] == 'P'){
+                        } else if (unTablero[i][j] == 'P') {
                             botones[i][j].setIcon(pie);
                         } else {
                             botones[i][j].setBackground(Color.BLUE);
@@ -472,7 +483,7 @@ public class VentanaJugar extends javax.swing.JFrame {
                             botones[i][j].setIcon(blanQ);
                         } else if (unTablero[i][j] == 'N') {
                             botones[i][j].setIcon(negQ);
-                        } else if (unTablero[i][j] == 'P'){
+                        } else if (unTablero[i][j] == 'P') {
                             botones[i][j].setIcon(pie);
                         } else {
                             botones[i][j].setBackground(Color.WHITE);
@@ -561,7 +572,6 @@ public class VentanaJugar extends javax.swing.JFrame {
                 if (val >= 100) {
                     timer.stop();
                     finTimer = true;
-
                     finPartida = true;
                     validarPartida();
                     return;
@@ -572,16 +582,52 @@ public class VentanaJugar extends javax.swing.JFrame {
     }
 
     private void validarPartida() {
+        String resultado = "";
         if (getPartidaActual().getTableroActual().getMatriz()[6][6] == 'B') {
             getPartidaActual().getJugadorA().setGanadas(getPartidaActual().getJugadorA().getGanadas() + 1);
             getPartidaActual().getJugadorB().setPerdidas(getPartidaActual().getJugadorB().getPerdidas() + 1);
+
+            resultado = "GANADOR:   " + getPartidaActual().getJugadorA().getAlias();
+            jlblGanador.setText(resultado);
+
         } else if (getPartidaActual().getTableroActual().getMatriz()[6][6] == 'N') {
             getPartidaActual().getJugadorB().setGanadas(getPartidaActual().getJugadorB().getGanadas() + 1);
             getPartidaActual().getJugadorA().setPerdidas(getPartidaActual().getJugadorA().getPerdidas() + 1);
+
+            resultado = "GANADOR:   " + getPartidaActual().getJugadorB().getAlias();
+            jlblGanador.setText(resultado);
+
         } else {
             getPartidaActual().getJugadorB().setEmpates(getPartidaActual().getJugadorB().getEmpates() + 1);
             getPartidaActual().getJugadorA().setPerdidas(getPartidaActual().getJugadorA().getEmpates() + 1);
+
+            resultado = "<< EMPATE >>";
+
+            jlblGanador.setText(resultado);
         }
+
+        JOptionPane.showMessageDialog(this, resultado, "(ノಠ益ಠ)ノ彡┻━┻ FIN DE LA PARTIDA", JOptionPane.INFORMATION_MESSAGE);
+        jPanelJugar.setEnabled(false);
+    }
+
+    private void validarPartidaAlSalir() {
+        String resutlado = "";
+        if (turno) {
+            getPartidaActual().getJugadorA().setGanadas(getPartidaActual().getJugadorA().getGanadas() + 1);
+            getPartidaActual().getJugadorB().setPerdidas(getPartidaActual().getJugadorB().getPerdidas() + 1);
+            resutlado = "GANADOR:   " + getPartidaActual().getJugadorA().getAlias();
+
+            jlblGanador.setText(resutlado);
+
+        } else {
+            getPartidaActual().getJugadorB().setGanadas(getPartidaActual().getJugadorB().getGanadas() + 1);
+            getPartidaActual().getJugadorA().setPerdidas(getPartidaActual().getJugadorA().getPerdidas() + 1);
+
+            resutlado = "GANADOR:   " + getPartidaActual().getJugadorB().getAlias();
+            jlblGanador.setText(resutlado);
+        }
+
+        JOptionPane.showMessageDialog(this, "resutlado", "(ノಠ益ಠ)ノ彡┻━┻ ABANDONO", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void generarIndicesFilaColumna() {
@@ -691,72 +737,84 @@ public class VentanaJugar extends javax.swing.JFrame {
                     botones[auxMovimiento[0]][auxMovimiento[1]].setEnabled(true);
 
                     mostrarTablero(tableroClon.getMatriz());
+                    String resultadoAccion = "";
 
                     if (!resultadoComida.isEmpty() && formaMarco) {
+                        resultadoAccion = "Desplazamiento con captura y ocupación del centro: " + letras[auxMovimiento[0]] + (auxMovimiento[1] + 1) + "-" + letras[fila] + (columna + 1) + " " + resultadoComida + "*";
+
                         if (turno) {
-                            archGrabacion.grabarLinea("Mueve: " + getPartidaActual().getJugadorB().getAlias() + "|| " + "Desplazamiento con captura y ocupación del centro: " + letras[auxMovimiento[0]] + (auxMovimiento[1] + 1) + "-" + letras[fila] + (columna + 1) + " " + resultadoComida + "*");
+                            archGrabacion.grabarLinea("Mueve: " + getPartidaActual().getJugadorB().getAlias() + "|| " + resultadoAccion);
                         } else {
-                            archGrabacion.grabarLinea("Mueve: " + getPartidaActual().getJugadorA().getAlias() + "|| " + "Desplazamiento con captura y ocupación del centro: " + letras[auxMovimiento[0]] + (auxMovimiento[1] + 1) + "-" + letras[fila] + (columna + 1) + " " + resultadoComida + "*");
+                            archGrabacion.grabarLinea("Mueve: " + getPartidaActual().getJugadorA().getAlias() + "|| " + resultadoAccion);
                         }
+                        tableroClon.setResultadoAccion(resultadoAccion);
+
                     } else if (!resultadoComida.isEmpty()) {
+                        resultadoAccion = "Desplazamiento con captura: " + letras[auxMovimiento[0]] + (auxMovimiento[1] + 1) + "-" + letras[fila] + (columna + 1) + " " + resultadoComida;
                         if (turno) {
-                            archGrabacion.grabarLinea("Mueve: " + getPartidaActual().getJugadorB().getAlias() + "|| " + "Desplazamiento con captura: " + letras[auxMovimiento[0]] + (auxMovimiento[1] + 1) + "-" + letras[fila] + (columna + 1) + " " + resultadoComida);
+                            archGrabacion.grabarLinea("Mueve: " + getPartidaActual().getJugadorB().getAlias() + "|| " + resultadoAccion);
                         } else {
-                            archGrabacion.grabarLinea("Mueve: " + getPartidaActual().getJugadorA().getAlias() + "|| " + "Desplazamiento con captura: " + letras[auxMovimiento[0]] + (auxMovimiento[1] + 1) + "-" + letras[fila] + (columna + 1) + " " + resultadoComida);
+                            archGrabacion.grabarLinea("Mueve: " + getPartidaActual().getJugadorA().getAlias() + "|| " + resultadoAccion);
                         }
+                        tableroClon.setResultadoAccion(resultadoAccion);
+
                     } else if (formaMarco) {
+                        resultadoAccion = "Desplazamiento con ocupación del centro: " + letras[auxMovimiento[0]] + (auxMovimiento[1] + 1) + "-" + letras[fila] + (columna + 1) + " *";
                         if (turno) {
-                            archGrabacion.grabarLinea("Mueve: " + getPartidaActual().getJugadorB().getAlias() + "|| " + "Desplazamiento con ocupación del centro: " + letras[auxMovimiento[0]] + (auxMovimiento[1] + 1) + "-" + letras[fila] + (columna + 1) + " *");
+                            archGrabacion.grabarLinea("Mueve: " + getPartidaActual().getJugadorB().getAlias() + "|| " + resultadoAccion);
                         } else {
-                            archGrabacion.grabarLinea("Mueve: " + getPartidaActual().getJugadorA().getAlias() + "|| " + "Desplazamiento con ocupación del centro: " + letras[auxMovimiento[0]] + (auxMovimiento[1] + 1) + "-" + letras[fila] + (columna + 1) + " *");
+                            archGrabacion.grabarLinea("Mueve: " + getPartidaActual().getJugadorA().getAlias() + "|| " + resultadoAccion);
                         }
+                        tableroClon.setResultadoAccion(resultadoAccion);
+
                     } else {
+                        resultadoAccion = "Desplazamiento simple: " + letras[auxMovimiento[0]] + (auxMovimiento[1] + 1) + "-" + letras[fila] + (columna + 1);
                         if (turno) {
-                            archGrabacion.grabarLinea("Mueve: " + getPartidaActual().getJugadorB().getAlias() + "|| " + "Desplazamiento simple: " + letras[auxMovimiento[0]] + (auxMovimiento[1] + 1) + "-" + letras[fila] + (columna + 1));
+                            archGrabacion.grabarLinea("Mueve: " + getPartidaActual().getJugadorB().getAlias() + "|| " + resultadoAccion);
                         } else {
-                            archGrabacion.grabarLinea("Mueve: " + getPartidaActual().getJugadorA().getAlias() + "|| " + "Desplazamiento simple: " + letras[auxMovimiento[0]] + (auxMovimiento[1] + 1) + "-" + letras[fila] + (columna + 1));
+                            archGrabacion.grabarLinea("Mueve: " + getPartidaActual().getJugadorA().getAlias() + "|| " + resultadoAccion);
                         }
+                        tableroClon.setResultadoAccion(resultadoAccion);
                     }
 
-                    //Debo de formatear los numeros para mostrar un mensaje acorde de lo sucedido en la comida
-                    //Limpio la accion del clon anterior
-//                    tableroClon.setResultadoAccion("");
-//                    if (!resultadoComida.isEmpty() && formaMarco) {
-//                        tableroClon.setResultadoAccion("Desplazamiento con captura y ocupación del centro: " + movimientosOrigenDestino[0] + "-" + movimientosOrigenDestino[1] + " " + resultadoComida + "*");
-//                    } else if (!resultadoComida.isEmpty()) {
-//                        tableroClon.setResultadoAccion("Desplazamiento con captura: " + movimientosOrigenDestino[0] + "-" + movimientosOrigenDestino[1] + " " + resultadoComida);
-//                    } else if (formaMarco) {
-//                        tableroClon.setResultadoAccion("Desplazamiento con ocupación del centro: " + movimientosOrigenDestino[0] + "-" + movimientosOrigenDestino[1] + " *");
-//                    } else {
-//                        tableroClon.setResultadoAccion("Desplazamiento simple: " + movimientosOrigenDestino[0] + "-" + movimientosOrigenDestino[1]);
-//                    }
-//
-//                    System.out.println("\n• Resultado de la accion anterior: " + tableroClon.getResultadoAccion());
                     getPartidaActual().setTableroActual(tableroClon);
                     getPartidaActual().getListaDeTableros().add(tableroClon);
 
                     if (!finTimer) {
-                        if (getPartidaActual().getTipoFinPartida() == 1) {
+                        if (getPartidaActual().getTipoFinPartida() == 2 && formaMarco) {
 
-                            if (formaMarco) {
-                                finPartida = true;
+                            finPartida = true;
 
-                                if (turno) {
-                                    getPartidaActual().getJugadorB().setGanadas(getPartidaActual().getJugadorB().getGanadas() + 1);
-                                    getPartidaActual().getJugadorA().setPerdidas(getPartidaActual().getJugadorA().getPerdidas() + 1);
-                                } else {
+                            String resultPartida = "";
+                            if (turno) {
+                                getPartidaActual().getJugadorB().setGanadas(getPartidaActual().getJugadorB().getGanadas() + 1);
+                                getPartidaActual().getJugadorA().setPerdidas(getPartidaActual().getJugadorA().getPerdidas() + 1);
 
-                                }
-
+                                resultPartida = "GANADOR:   " + getPartidaActual().getJugadorB().getAlias();
+                                jlblGanador.setText(resultPartida);
+                            } else {
+                                getPartidaActual().getJugadorA().setGanadas(getPartidaActual().getJugadorA().getGanadas() + 1);
+                                getPartidaActual().getJugadorB().setPerdidas(getPartidaActual().getJugadorB().getPerdidas() + 1);
+                                
+                                resultPartida = "GANADOR:   " + getPartidaActual().getJugadorA().getAlias();
+                                jlblGanador.setText(resultPartida);
                             }
 
-                        } else if (getPartidaActual().getTipoFinPartida() == 2 && !finTimer && getPartidaActual().getCantidadMovimientos() > cantMovimientos) {
+                            JOptionPane.showMessageDialog(VentanaJugar.this, resultPartida, "(ノಠ益ಠ)ノ彡┻━┻ FIN DE LA PARTIDA", JOptionPane.INFORMATION_MESSAGE);
 
-                        } else {
+                            jPanelJugar.setEnabled(false);
 
+                        } else if (getPartidaActual().getTipoFinPartida() == 2 && getPartidaActual().getCantidadMovimientos() >= cantMovimientos) {
+                            cantMovimientos++;
+
+                            if (getPartidaActual().getCantidadMovimientos() < cantMovimientos) {
+                                finPartida = true;
+                                validarPartida();
+                            }
                         }
                     } else {
-
+                        finPartida = true;
+                        validarPartida();
                     }
 
                     turno = !turno;
