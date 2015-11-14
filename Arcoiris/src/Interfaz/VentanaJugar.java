@@ -6,9 +6,7 @@ import ArcoirisMainPackage.Partida;
 import ArcoirisMainPackage.Tablero;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -20,7 +18,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -66,8 +63,8 @@ public class VentanaJugar extends javax.swing.JFrame {
             });
 
             Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-            this.setLocation(dim.width / 3 - this.getSize().width / 3, dim.height / 3 - this.getSize().height / 3);
-
+            this.setLocation(dim.width / 3 - this.getSize().width / 3, dim.height / 3 - this.getSize().height / 3);            
+            
             if (getModelo().getListaDePartidas().size() > 0) {
                 //Inicializo la grilla con botones.
                 jPanelJugar.setLayout(new GridLayout(13, 13));

@@ -1,34 +1,49 @@
 package Interfaz;
 
 import ArcoirisMainPackage.Juego;
+import java.awt.Dimension;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import java.awt.Image;
+import javax.swing.JLabel;
 
 public class VentanaPrincipal extends javax.swing.JFrame {
 
     private Juego modelo;
 
     public VentanaPrincipal(Juego unJuego) {
-        initComponents();
-        this.setModelo(unJuego);
+        try {
+            initComponents();
+            this.setModelo(unJuego);
+            
+            ImageIcon backImg = new ImageIcon(new File(".").getCanonicalPath() + "\\src\\Imagenes\\imgArcoiris2.jpg");
+            Image img = backImg.getImage();
+            Image imageBack = img.getScaledInstance(800, 600, java.awt.Image.SCALE_SMOOTH);
+            backImg = new ImageIcon(imageBack);
 
-        //Agrego evento para manejar el hacer click en la X al cerrar el JFrame actual y asi poder volver a habilitar el menu
-        this.addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                try {
-                    serializarJuego(getModelo());
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(null, "Ocurrió un erro al guardar los datos.", "Error", JOptionPane.ERROR_MESSAGE);
+            jlblImagenPrincipal.setIcon(backImg);
+
+            //Agrego evento para manejar el hacer click en la X al cerrar el JFrame actual y asi poder volver a habilitar el menu
+            this.addWindowListener(new java.awt.event.WindowAdapter() {
+                @Override
+                public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                    try {
+                        serializarJuego(getModelo());
+                    } catch (IOException ex) {
+                        JOptionPane.showMessageDialog(null, "Ocurrió un erro al guardar los datos.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                    dispose();
                 }
-                dispose();
-            }
-        });
+            });
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void serializarJuego(Object unJuego) throws FileNotFoundException, IOException {
@@ -42,7 +57,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         } else {// Si no existe creo un nuevo archivo y guardo en este        
             archivoGuardados.getParentFile().mkdirs();
             archivoGuardados.createNewFile();
-            
+
             FileOutputStream fg = new FileOutputStream(archivoGuardados);
             BufferedOutputStream bg = new BufferedOutputStream(fg);
             ObjectOutputStream sg = new ObjectOutputStream(bg);
@@ -80,19 +95,21 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         jPanelPrincipal.setPreferredSize(new java.awt.Dimension(800, 600));
 
-        jlblImagenPrincipal.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/imgArcoiris2.jpg"))); // NOI18N
+        jlblImagenPrincipal.setPreferredSize(new java.awt.Dimension(801, 601));
 
         javax.swing.GroupLayout jPanelPrincipalLayout = new javax.swing.GroupLayout(jPanelPrincipal);
         jPanelPrincipal.setLayout(jPanelPrincipalLayout);
         jPanelPrincipalLayout.setHorizontalGroup(
             jPanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelPrincipalLayout.createSequentialGroup()
-                .addComponent(jlblImagenPrincipal)
+                .addComponent(jlblImagenPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanelPrincipalLayout.setVerticalGroup(
             jPanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jlblImagenPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanelPrincipalLayout.createSequentialGroup()
+                .addComponent(jlblImagenPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         jMenuJugar.setText("Jugar");
