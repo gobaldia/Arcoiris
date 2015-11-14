@@ -1,6 +1,7 @@
 package ArcoirisMainPackage;
 
 import java.io.Serializable;
+import java.util.Random;
 
 public class Tablero implements Serializable {
 
@@ -262,6 +263,8 @@ public class Tablero implements Serializable {
             contador = 0;
             bandera = true;
         }
+        
+        insertarPiedras(unaMatriz, marcoInicio);
 
         return unaMatriz;
     }
@@ -307,6 +310,8 @@ public class Tablero implements Serializable {
                 }
             }
         }
+        
+        insertarPiedras(unaMatriz, marcoInicio);
 
         return unaMatriz;
     }
@@ -345,8 +350,32 @@ public class Tablero implements Serializable {
             contador = 0;
             bandera = true;
         }
+        
+        insertarPiedras(unaMatriz, marcoInicio);
 
         return unaMatriz;
+    }
+
+    public void insertarPiedras(char[][] mat, int marcoInicio) {
+
+        int cant = 3;
+
+        // defino el mínimo y el máximo para el random
+        int min = 1;
+        int max = 11;
+        
+        Random r = new Random();
+        while (cant > 0) {
+            int i = r.nextInt(max - min + 1) + min;
+            int j = r.nextInt(max - min + 1) + min;
+            for (int k = marcoInicio + 1; k < 6; k++) {
+                if (medirDistanciaMarco(i, j, k) && mat[i][j] != 'P') {
+                    mat[i][j] = 'P';
+                    cant--;
+                }
+            }
+        }
+
     }
 
     private boolean medirDistanciaMarco(int fila, int columna, int marcoAPintar) {

@@ -42,6 +42,7 @@ public class VentanaJugar extends javax.swing.JFrame {
     private String detallesJugadas;
     private ArchivoGrabacion archGrabacion;
     private int cantMovimientos;
+    private boolean finPartida;
     private char[] letras = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'};
 
     public VentanaJugar(Juego unJuego, VentanaPrincipal ventanaPrincipal) {
@@ -63,8 +64,8 @@ public class VentanaJugar extends javax.swing.JFrame {
             });
 
             Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-            this.setLocation(dim.width / 3 - this.getSize().width / 3, dim.height / 3 - this.getSize().height / 3);            
-            
+            this.setLocation(dim.width / 3 - this.getSize().width / 3, dim.height / 3 - this.getSize().height / 3);
+
             if (getModelo().getListaDePartidas().size() > 0) {
                 //Inicializo la grilla con botones.
                 jPanelJugar.setLayout(new GridLayout(13, 13));
@@ -387,12 +388,17 @@ public class VentanaJugar extends javax.swing.JFrame {
             Image blancaQ = blanQ.getImage();
             Image fichaBlancaQ = blancaQ.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
             blanQ = new ImageIcon(fichaBlancaQ);
-            
+
             ImageIcon negQ = new ImageIcon(new File(".").getCanonicalPath() + "\\src\\Imagenes\\negraQ.png");
             Image negraQ = negQ.getImage();
             Image fichaNegraQ = negraQ.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
             negQ = new ImageIcon(fichaNegraQ);
             
+            ImageIcon pie = new ImageIcon(new File(".").getCanonicalPath() + "\\src\\Imagenes\\piedra.png");
+            Image piedraImg = pie.getImage();
+            Image imgPiedra = piedraImg.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
+            pie = new ImageIcon(imgPiedra);
+
             for (int i = 0; i < 13; i++) {
                 for (int j = 0; j < 13; j++) {
                     if (medirDistanciaMarco(i, j, 1)) {
@@ -400,6 +406,8 @@ public class VentanaJugar extends javax.swing.JFrame {
                             botones[i][j].setIcon(blan);
                         } else if (unTablero[i][j] == 'N') {
                             botones[i][j].setIcon(neg);
+                        } else if (unTablero[i][j] == 'P'){
+                            botones[i][j].setIcon(pie);
                         } else {
                             botones[i][j].setBackground(Color.RED);
                             botones[i][j].setIcon(null);
@@ -409,6 +417,8 @@ public class VentanaJugar extends javax.swing.JFrame {
                             botones[i][j].setIcon(blan);
                         } else if (unTablero[i][j] == 'N') {
                             botones[i][j].setIcon(neg);
+                        } else if (unTablero[i][j] == 'P'){
+                            botones[i][j].setIcon(pie);
                         } else {
                             botones[i][j].setBackground(Color.ORANGE);
                             botones[i][j].setIcon(null);
@@ -418,6 +428,8 @@ public class VentanaJugar extends javax.swing.JFrame {
                             botones[i][j].setIcon(blan);
                         } else if (unTablero[i][j] == 'N') {
                             botones[i][j].setIcon(neg);
+                        } else if (unTablero[i][j] == 'P'){
+                            botones[i][j].setIcon(pie);
                         } else {
                             botones[i][j].setBackground(Color.YELLOW);
                             botones[i][j].setIcon(null);
@@ -427,6 +439,8 @@ public class VentanaJugar extends javax.swing.JFrame {
                             botones[i][j].setIcon(blan);
                         } else if (unTablero[i][j] == 'N') {
                             botones[i][j].setIcon(neg);
+                        } else if (unTablero[i][j] == 'P'){
+                            botones[i][j].setIcon(pie);
                         } else {
                             botones[i][j].setBackground(Color.GREEN);
                             botones[i][j].setIcon(null);
@@ -436,6 +450,8 @@ public class VentanaJugar extends javax.swing.JFrame {
                             botones[i][j].setIcon(blan);
                         } else if (unTablero[i][j] == 'N') {
                             botones[i][j].setIcon(neg);
+                        } else if (unTablero[i][j] == 'P'){
+                            botones[i][j].setIcon(pie);
                         } else {
                             botones[i][j].setBackground(Color.CYAN);
                             botones[i][j].setIcon(null);
@@ -445,6 +461,8 @@ public class VentanaJugar extends javax.swing.JFrame {
                             botones[i][j].setIcon(blan);
                         } else if (unTablero[i][j] == 'N') {
                             botones[i][j].setIcon(neg);
+                        } else if (unTablero[i][j] == 'P'){
+                            botones[i][j].setIcon(pie);
                         } else {
                             botones[i][j].setBackground(Color.BLUE);
                             botones[i][j].setIcon(null);
@@ -454,6 +472,8 @@ public class VentanaJugar extends javax.swing.JFrame {
                             botones[i][j].setIcon(blanQ);
                         } else if (unTablero[i][j] == 'N') {
                             botones[i][j].setIcon(negQ);
+                        } else if (unTablero[i][j] == 'P'){
+                            botones[i][j].setIcon(pie);
                         } else {
                             botones[i][j].setBackground(Color.WHITE);
                             botones[i][j].setIcon(null);
@@ -541,11 +561,27 @@ public class VentanaJugar extends javax.swing.JFrame {
                 if (val >= 100) {
                     timer.stop();
                     finTimer = true;
+
+                    finPartida = true;
+                    validarPartida();
                     return;
                 }
                 jProgressBarTimer.setValue(++val);
             }
         });
+    }
+
+    private void validarPartida() {
+        if (getPartidaActual().getTableroActual().getMatriz()[6][6] == 'B') {
+            getPartidaActual().getJugadorA().setGanadas(getPartidaActual().getJugadorA().getGanadas() + 1);
+            getPartidaActual().getJugadorB().setPerdidas(getPartidaActual().getJugadorB().getPerdidas() + 1);
+        } else if (getPartidaActual().getTableroActual().getMatriz()[6][6] == 'N') {
+            getPartidaActual().getJugadorB().setGanadas(getPartidaActual().getJugadorB().getGanadas() + 1);
+            getPartidaActual().getJugadorA().setPerdidas(getPartidaActual().getJugadorA().getPerdidas() + 1);
+        } else {
+            getPartidaActual().getJugadorB().setEmpates(getPartidaActual().getJugadorB().getEmpates() + 1);
+            getPartidaActual().getJugadorA().setPerdidas(getPartidaActual().getJugadorA().getEmpates() + 1);
+        }
     }
 
     private void generarIndicesFilaColumna() {
@@ -590,7 +626,9 @@ public class VentanaJugar extends javax.swing.JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            clickBoton(x, y);
+            if (!finPartida) {
+                clickBoton(x, y);
+            }
         }
 
         private void clickBoton(int fila, int columna) {
@@ -634,7 +672,7 @@ public class VentanaJugar extends javax.swing.JFrame {
                         if (formaMarco) {
                             tableroClon.getMatriz()[6][6] = getPartidaActual().getJugadorB().getTipoFicha();
                         }
-                        
+
                         //Cambio label al Alias del proximo jugador
                         jlblTurnoDe.setText(getPartidaActual().getJugadorA().getAlias());
                     } else {
@@ -643,40 +681,40 @@ public class VentanaJugar extends javax.swing.JFrame {
                         if (formaMarco) {
                             tableroClon.getMatriz()[6][6] = getPartidaActual().getJugadorA().getTipoFicha();
                         }
-                        
+
                         //Cambio label al Alias del proximo jugador
                         jlblTurnoDe.setText(getPartidaActual().getJugadorB().getAlias());
                     }
 
                     String resultadoComida = "";
-                    resultadoComida = tableroClon.comerFichas(fila, columna);                    
+                    resultadoComida = tableroClon.comerFichas(fila, columna);
                     botones[auxMovimiento[0]][auxMovimiento[1]].setEnabled(true);
 
                     mostrarTablero(tableroClon.getMatriz());
-                    
-                    if(!resultadoComida.isEmpty() && formaMarco){
-                        if(turno){
-                            archGrabacion.grabarLinea("Mueve: " +  getPartidaActual().getJugadorB().getAlias() + "|| " + "Desplazamiento con captura y ocupación del centro: " + letras[auxMovimiento[0]] + (auxMovimiento[1]+1) + "-" + letras[fila] + (columna+1) + " " + resultadoComida + "*");                         
+
+                    if (!resultadoComida.isEmpty() && formaMarco) {
+                        if (turno) {
+                            archGrabacion.grabarLinea("Mueve: " + getPartidaActual().getJugadorB().getAlias() + "|| " + "Desplazamiento con captura y ocupación del centro: " + letras[auxMovimiento[0]] + (auxMovimiento[1] + 1) + "-" + letras[fila] + (columna + 1) + " " + resultadoComida + "*");
                         } else {
-                            archGrabacion.grabarLinea("Mueve: " +  getPartidaActual().getJugadorA().getAlias() + "|| " + "Desplazamiento con captura y ocupación del centro: " + letras[auxMovimiento[0]] + (auxMovimiento[1]+1) + "-" + letras[fila] + (columna+1) + " " + resultadoComida + "*");
+                            archGrabacion.grabarLinea("Mueve: " + getPartidaActual().getJugadorA().getAlias() + "|| " + "Desplazamiento con captura y ocupación del centro: " + letras[auxMovimiento[0]] + (auxMovimiento[1] + 1) + "-" + letras[fila] + (columna + 1) + " " + resultadoComida + "*");
                         }
-                    } else if(!resultadoComida.isEmpty()){
-                        if(turno){
-                            archGrabacion.grabarLinea("Mueve: " +  getPartidaActual().getJugadorB().getAlias() + "|| " + "Desplazamiento con captura: " + letras[auxMovimiento[0]] + (auxMovimiento[1]+1) + "-" + letras[fila] + (columna+1) + " " + resultadoComida);
+                    } else if (!resultadoComida.isEmpty()) {
+                        if (turno) {
+                            archGrabacion.grabarLinea("Mueve: " + getPartidaActual().getJugadorB().getAlias() + "|| " + "Desplazamiento con captura: " + letras[auxMovimiento[0]] + (auxMovimiento[1] + 1) + "-" + letras[fila] + (columna + 1) + " " + resultadoComida);
                         } else {
-                            archGrabacion.grabarLinea("Mueve: " +  getPartidaActual().getJugadorA().getAlias() + "|| " + "Desplazamiento con captura: " + letras[auxMovimiento[0]] + (auxMovimiento[1]+1) + "-" + letras[fila] + (columna+1) + " " + resultadoComida);
+                            archGrabacion.grabarLinea("Mueve: " + getPartidaActual().getJugadorA().getAlias() + "|| " + "Desplazamiento con captura: " + letras[auxMovimiento[0]] + (auxMovimiento[1] + 1) + "-" + letras[fila] + (columna + 1) + " " + resultadoComida);
                         }
-                    } else if(formaMarco){
-                        if(turno){
-                            archGrabacion.grabarLinea("Mueve: " +  getPartidaActual().getJugadorB().getAlias() + "|| " + "Desplazamiento con ocupación del centro: " + letras[auxMovimiento[0]] + (auxMovimiento[1]+1) + "-" + letras[fila] + (columna+1) + " *");
+                    } else if (formaMarco) {
+                        if (turno) {
+                            archGrabacion.grabarLinea("Mueve: " + getPartidaActual().getJugadorB().getAlias() + "|| " + "Desplazamiento con ocupación del centro: " + letras[auxMovimiento[0]] + (auxMovimiento[1] + 1) + "-" + letras[fila] + (columna + 1) + " *");
                         } else {
-                            archGrabacion.grabarLinea("Mueve: " +  getPartidaActual().getJugadorA().getAlias() + "|| " + "Desplazamiento con ocupación del centro: " + letras[auxMovimiento[0]] + (auxMovimiento[1]+1) + "-" + letras[fila] + (columna+1) + " *");
+                            archGrabacion.grabarLinea("Mueve: " + getPartidaActual().getJugadorA().getAlias() + "|| " + "Desplazamiento con ocupación del centro: " + letras[auxMovimiento[0]] + (auxMovimiento[1] + 1) + "-" + letras[fila] + (columna + 1) + " *");
                         }
                     } else {
-                        if(turno){
-                            archGrabacion.grabarLinea("Mueve: " +  getPartidaActual().getJugadorB().getAlias() + "|| " + "Desplazamiento simple: " + letras[auxMovimiento[0]] + (auxMovimiento[1]+1) + "-" + letras[fila] + (columna+1));
+                        if (turno) {
+                            archGrabacion.grabarLinea("Mueve: " + getPartidaActual().getJugadorB().getAlias() + "|| " + "Desplazamiento simple: " + letras[auxMovimiento[0]] + (auxMovimiento[1] + 1) + "-" + letras[fila] + (columna + 1));
                         } else {
-                            archGrabacion.grabarLinea("Mueve: " +  getPartidaActual().getJugadorA().getAlias() + "|| " + "Desplazamiento simple: " + letras[auxMovimiento[0]] + (auxMovimiento[1]+1) + "-" + letras[fila] + (columna+1));
+                            archGrabacion.grabarLinea("Mueve: " + getPartidaActual().getJugadorA().getAlias() + "|| " + "Desplazamiento simple: " + letras[auxMovimiento[0]] + (auxMovimiento[1] + 1) + "-" + letras[fila] + (columna + 1));
                         }
                     }
 
@@ -694,21 +732,33 @@ public class VentanaJugar extends javax.swing.JFrame {
 //                    }
 //
 //                    System.out.println("\n• Resultado de la accion anterior: " + tableroClon.getResultadoAccion());
-                    
                     getPartidaActual().setTableroActual(tableroClon);
                     getPartidaActual().getListaDeTableros().add(tableroClon);
-                    
-                    if(getPartidaActual().getTipoFinPartida() == 1 && !finTimer){//Si se esta jugando al primero en conquistar el centro y el timer esta en false
-                    
-                    
-                    } else if (getPartidaActual().getTipoFinPartida() == 2 && !finTimer && getPartidaActual().getCantidadMovimientos() > cantMovimientos){
-                        
+
+                    if (!finTimer) {
+                        if (getPartidaActual().getTipoFinPartida() == 1) {
+
+                            if (formaMarco) {
+                                finPartida = true;
+
+                                if (turno) {
+                                    getPartidaActual().getJugadorB().setGanadas(getPartidaActual().getJugadorB().getGanadas() + 1);
+                                    getPartidaActual().getJugadorA().setPerdidas(getPartidaActual().getJugadorA().getPerdidas() + 1);
+                                } else {
+
+                                }
+
+                            }
+
+                        } else if (getPartidaActual().getTipoFinPartida() == 2 && !finTimer && getPartidaActual().getCantidadMovimientos() > cantMovimientos) {
+
+                        } else {
+
+                        }
                     } else {
-                        
+
                     }
-                    
-                    
-                    
+
                     turno = !turno;
                     auxMovimiento[0] = -1;
                     auxMovimiento[1] = -1;
