@@ -626,7 +626,7 @@ public class VentanaJugar extends javax.swing.JFrame {
             resutlado = "GANADOR:   " + getPartidaActual().getJugadorB().getAlias();
             jlblGanador.setText(resutlado);
         }
-
+        archGrabacion.cerrar();
         JOptionPane.showMessageDialog(this, "resutlado", "(ノಠ益ಠ)ノ彡┻━┻ ABANDONO", JOptionPane.INFORMATION_MESSAGE);
     }
 
@@ -720,7 +720,7 @@ public class VentanaJugar extends javax.swing.JFrame {
                         }
 
                         //Cambio label al Alias del proximo jugador
-                        jlblTurnoDe.setText(getPartidaActual().getJugadorA().getAlias());
+                        jlblTurnoDe.setText(getPartidaActual().getJugadorA().getAlias() + " (Fichas Negras)");
                     } else {
                         formaMarco = tableroClon.formaMarco(fila, columna, getPartidaActual().getJugadorA());
 
@@ -729,7 +729,7 @@ public class VentanaJugar extends javax.swing.JFrame {
                         }
 
                         //Cambio label al Alias del proximo jugador
-                        jlblTurnoDe.setText(getPartidaActual().getJugadorB().getAlias());
+                        jlblTurnoDe.setText(getPartidaActual().getJugadorB().getAlias() + " (Fichas Blancas)");
                     }
 
                     String resultadoComida = "";
@@ -801,7 +801,7 @@ public class VentanaJugar extends javax.swing.JFrame {
                             }
 
                             JOptionPane.showMessageDialog(VentanaJugar.this, resultPartida, "(ノಠ益ಠ)ノ彡┻━┻ FIN DE LA PARTIDA", JOptionPane.INFORMATION_MESSAGE);
-
+                            archGrabacion.cerrar();
                             jPanelJugar.setEnabled(false);
 
                         } else if (getPartidaActual().getTipoFinPartida() == 2 && getPartidaActual().getCantidadMovimientos() >= cantMovimientos) {
@@ -809,11 +809,13 @@ public class VentanaJugar extends javax.swing.JFrame {
 
                             if (getPartidaActual().getCantidadMovimientos() < cantMovimientos) {
                                 finPartida = true;
+                                archGrabacion.cerrar();
                                 validarPartida();
                             }
                         }
                     } else {
                         finPartida = true;
+                        archGrabacion.cerrar();
                         validarPartida();
                     }
 
