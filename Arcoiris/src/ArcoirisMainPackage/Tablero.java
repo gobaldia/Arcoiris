@@ -126,6 +126,7 @@ public class Tablero implements Serializable {
         boolean esDiagonal;
         boolean esRecto;
         boolean estaVacio = true;
+        boolean aMarcoInterno;
         boolean resultado;
 
         char[][] mat = this.getMatriz();
@@ -137,6 +138,7 @@ public class Tablero implements Serializable {
                 haciaAdentro = Math.abs(6 - filaO) > Math.abs(6 - filaD) || Math.abs(6 - colO) > Math.abs(6 - colD);
                 esDiagonal = Math.abs(filaD - filaO) == Math.abs(colD - colO);
                 esRecto = filaD == filaO || colD == colO;
+                aMarcoInterno = consultaMarco(filaO, colO) < consultaMarco(filaD, colD);
 
                 if (esDiagonal) {
                     int inc = 1;
@@ -209,7 +211,7 @@ public class Tablero implements Serializable {
                     }
                 }
 
-                resultado = haciaAdentro && (esDiagonal || esRecto) && estaVacio;
+                resultado = haciaAdentro && (esDiagonal || esRecto) && estaVacio && aMarcoInterno;
             } else {
                 resultado = false;
             }
@@ -263,7 +265,7 @@ public class Tablero implements Serializable {
             contador = 0;
             bandera = true;
         }
-        
+
         insertarPiedras(unaMatriz, marcoInicio);
 
         return unaMatriz;
@@ -310,7 +312,7 @@ public class Tablero implements Serializable {
                 }
             }
         }
-        
+
         insertarPiedras(unaMatriz, marcoInicio);
 
         return unaMatriz;
@@ -350,7 +352,7 @@ public class Tablero implements Serializable {
             contador = 0;
             bandera = true;
         }
-        
+
         insertarPiedras(unaMatriz, marcoInicio);
 
         return unaMatriz;
@@ -363,7 +365,7 @@ public class Tablero implements Serializable {
         // defino el mínimo y el máximo para el random
         int min = 1;
         int max = 11;
-        
+
         Random r = new Random();
         while (cant > 0) {
             int i = r.nextInt(max - min + 1) + min;
@@ -462,15 +464,18 @@ public class Tablero implements Serializable {
         boolean meEncuentro = false;
         boolean encuentroO = false;
         boolean borde = false;
+        boolean encuentroP = false;
 
         for (int i = 0; i < movsX.length; i++) {
-            while (!(meEncuentro || encuentroO || borde)) {
+            while (!(meEncuentro || encuentroO || borde || encuentroP)) {
                 nuevaFila = nuevaFila + movsX[i];
                 nuevaColumna = nuevaColumna + movsY[i];
                 if (nuevaFila == 0 || nuevaColumna == 0 || nuevaFila == mat.length - 1 || nuevaColumna == mat[0].length - 1) {
                     borde = true;
                 } else if (mat[nuevaFila][nuevaColumna] == 'O') {
                     encuentroO = true;
+                } else if (mat[nuevaFila][nuevaColumna] == 'P') {
+                    encuentroP = true;
                 } else if (mat[nuevaFila][nuevaColumna] == mat[fila][col]) {
                     meEncuentro = true;
                 }
@@ -479,7 +484,7 @@ public class Tablero implements Serializable {
                 while (nuevaFila != fila || nuevaColumna != col) {
                     mat[nuevaFila][nuevaColumna] = mat[fila][col];
 
-                    if (contador >= 1) {//Si el contador es mayor a 1 es porque realize una comida.
+                    if (contador >= 1) {//Si el contador es mayor a 1 es porque realicé una comida.
                         resultadoComida += nuevaFila + "-" + nuevaColumna + "-";
                     }
                     contador++;
@@ -492,6 +497,7 @@ public class Tablero implements Serializable {
             meEncuentro = false;
             encuentroO = false;
             borde = false;
+            encuentroP = false;
             nuevaFila = fila;
             nuevaColumna = col;
         }
@@ -501,5 +507,23 @@ public class Tablero implements Serializable {
         }
 
         return resultadoComida;
+    }
+
+    public int consultaMarco(int i, int j) {
+        int marco = 0;
+        if (medirDistanciaMarco(i, j, 1)) {
+            marco = 1;
+        } else if (medirDistanciaMarco(i, j, 2)) {
+            marco = 2;
+        } else if (medirDistanciaMarco(i, j, 3)) {
+            marco = 3;
+        } else if (medirDistanciaMarco(i, j, 4)) {
+            marco = 4;
+        } else if (medirDistanciaMarco(i, j, 5)) {
+            marco = 5;
+        } else if (medirDistanciaMarco(i, j, 6)) {
+            marco = 6;
+        }
+        return marco;
     }
 }
