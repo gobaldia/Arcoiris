@@ -20,8 +20,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
@@ -53,7 +55,7 @@ public class VentanaJugar extends javax.swing.JFrame {
             auxMovimiento = new int[]{-1, -1};
             detallesJugadas = "";
             cantMovimientos = 1;
-
+            
             //Agrego evento para manejar el hacer click en la X al cerrar el JFrame actual y asi poder volver a habilitar el menu
             this.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
@@ -275,7 +277,7 @@ public class VentanaJugar extends javax.swing.JFrame {
         jlblTurnoDe.setText("__________");
 
         jlblGanador.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jlblGanador.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jlblGanador.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
         jlblJugadoresVS.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jlblJugadoresVS.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -602,9 +604,11 @@ public class VentanaJugar extends javax.swing.JFrame {
             getPartidaActual().getJugadorA().setPerdidas(getPartidaActual().getJugadorA().getEmpates() + 1);
 
             resultado = "<< EMPATE >>";
-
             jlblGanador.setText(resultado);
         }
+
+        archGrabacion.grabarLinea(resultado);
+        archGrabacion.cerrar();
 
         JOptionPane.showMessageDialog(this, resultado, "(ノಠ益ಠ)ノ彡┻━┻ FIN DE LA PARTIDA", JOptionPane.INFORMATION_MESSAGE);
         jPanelJugar.setEnabled(false);
@@ -615,9 +619,9 @@ public class VentanaJugar extends javax.swing.JFrame {
         if (turno) {
             getPartidaActual().getJugadorA().setGanadas(getPartidaActual().getJugadorA().getGanadas() + 1);
             getPartidaActual().getJugadorB().setPerdidas(getPartidaActual().getJugadorB().getPerdidas() + 1);
-            resultado = "GANADOR:   " + getPartidaActual().getJugadorA().getAlias();
 
-            jlblGanador.setText(resultado);
+            resutlado = "GANADOR:   " + getPartidaActual().getJugadorA().getAlias();
+            jlblGanador.setText(resutlado);
 
         } else {
             getPartidaActual().getJugadorB().setGanadas(getPartidaActual().getJugadorB().getGanadas() + 1);
@@ -626,9 +630,10 @@ public class VentanaJugar extends javax.swing.JFrame {
             resultado = "GANADOR:   " + getPartidaActual().getJugadorB().getAlias();
             jlblGanador.setText(resultado);
         }
+
+        archGrabacion.grabarLinea(resutlado);
         archGrabacion.cerrar();
-        JOptionPane.showMessageDialog(this, "resultado", "(ノಠ益ಠ)ノ彡┻━┻ ABANDONO", JOptionPane.INFORMATION_MESSAGE);
-        modelo.getListaDePartidas().add(partidaActual); // ver esto
+        JOptionPane.showMessageDialog(this, resutlado, "(ノಠ益ಠ)ノ彡┻━┻ ABANDONO", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void generarIndicesFilaColumna() {
@@ -796,27 +801,27 @@ public class VentanaJugar extends javax.swing.JFrame {
                             } else {
                                 getPartidaActual().getJugadorA().setGanadas(getPartidaActual().getJugadorA().getGanadas() + 1);
                                 getPartidaActual().getJugadorB().setPerdidas(getPartidaActual().getJugadorB().getPerdidas() + 1);
-                                
+
                                 resultPartida = "GANADOR:   " + getPartidaActual().getJugadorA().getAlias();
                                 jlblGanador.setText(resultPartida);
                             }
 
                             JOptionPane.showMessageDialog(VentanaJugar.this, resultPartida, "(ノಠ益ಠ)ノ彡┻━┻ FIN DE LA PARTIDA", JOptionPane.INFORMATION_MESSAGE);
+
+                            archGrabacion.grabarLinea(resultPartida);
                             archGrabacion.cerrar();
                             jPanelJugar.setEnabled(false);
 
-                        } else if (getPartidaActual().getTipoFinPartida() == 2 && getPartidaActual().getCantidadMovimientos() >= cantMovimientos) {
+                        } else if (getPartidaActual().getTipoFinPartida() == 1 && getPartidaActual().getCantidadMovimientos() >= cantMovimientos) {
                             cantMovimientos++;
 
                             if (getPartidaActual().getCantidadMovimientos() < cantMovimientos) {
                                 finPartida = true;
-                                archGrabacion.cerrar();
                                 validarPartida();
                             }
                         }
                     } else {
                         finPartida = true;
-                        archGrabacion.cerrar();
                         validarPartida();
                     }
 
