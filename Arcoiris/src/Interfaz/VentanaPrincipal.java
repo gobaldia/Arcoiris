@@ -199,7 +199,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemRankingActionPerformed
 
     private void jMenuItemRepetirPartidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemRepetirPartidaActionPerformed
-        // TODO add your handling code here:
+        this.UpdateMenu(false);
+        VentanaElegirPartida ventana = new VentanaElegirPartida(this.getModelo(), this);
+        ventana.setVisible(true);
     }//GEN-LAST:event_jMenuItemRepetirPartidaActionPerformed
 
     private void jMenuItemRegistroJugadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemRegistroJugadorActionPerformed

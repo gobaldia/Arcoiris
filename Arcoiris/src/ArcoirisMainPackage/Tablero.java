@@ -271,7 +271,7 @@ public class Tablero implements Serializable {
         return unaMatriz;
     }
 
-    public char[][] generarMatrizConFichasAlAzar(int marcoInicio) {
+        public char[][] generarMatrizConFichasAlAzar(int marcoInicio) {
         char[][] unaMatriz = new char[13][13];
 
         for (int i = 0; i < unaMatriz.length; i++) {
@@ -281,42 +281,68 @@ public class Tablero implements Serializable {
         }
 
         int fichas = 0;
-        int blancas = 0;
-        int negras = 0;
+        int mitad = 0;
 
         switch (marcoInicio) {
             case 1:
                 fichas = 48;
+                mitad = 24;
                 break;
             case 2:
-                fichas = 20;
+                fichas = 40;
+                mitad = 20;
                 break;
             case 3:
-                fichas = 16;
+                fichas = 32;
+                mitad = 16;
                 break;
             case 4:
-                fichas = 12;
+                fichas = 24;
+                mitad = 12;
                 break;
         }
+        
+        char[] aux = new char[fichas];
+            for (int i = 0; i < aux.length; i++) {
+                if (i < mitad) {
+                    aux[i] = 'B';
+                } else {
+                    aux[i] = 'N';
+                }
+            }
+        
+        desordenaArray(aux);
+        
+        int fichasRestantes = fichas;
 
         for (int i = 0; i < unaMatriz.length; i++) {
             for (int j = 0; j < unaMatriz[0].length; j++) {
 
                 if (medirDistanciaMarco(i, j, marcoInicio)) {
-                    if ((Math.random() * 2) < 1 && fichas > 0) {
-                        fichas--;
-                        unaMatriz[i][j] = 'B';
-                    } else {
-                        unaMatriz[i][j] = 'N';
-                    }
+                    unaMatriz[i][j] = aux[fichasRestantes-1];
+                    fichasRestantes--;
                 }
             }
         }
 
-        insertarPiedras(unaMatriz, marcoInicio);
-
         return unaMatriz;
     }
+    
+    private static void desordenaArray(char[] unArray)
+{
+    int j;
+    Random random = new Random();
+    for (int i = unArray.length - 1; i > 0; i--)
+    {
+        j = random.nextInt(i + 1);
+        if (j != i)
+        {
+            unArray[j] ^= unArray[i];
+            unArray[i] ^= unArray[j];
+            unArray[j] ^= unArray[i];
+        }
+    }
+}
 
     public char[][] generarMatrizConFichasEnI(int marcoInicio) {
         char[][] unaMatriz = new char[13][13];

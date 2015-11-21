@@ -413,6 +413,7 @@ public class VentanaJugar extends javax.swing.JFrame {
             for (int i = 0; i < 13; i++) {
                 for (int j = 0; j < 13; j++) {
                     if (medirDistanciaMarco(i, j, 1)) {
+                        botones[i][j].setBackground(Color.RED);
                         if (unTablero[i][j] == 'B') {
                             botones[i][j].setIcon(blan);
                         } else if (unTablero[i][j] == 'N') {
@@ -420,10 +421,10 @@ public class VentanaJugar extends javax.swing.JFrame {
                         } else if (unTablero[i][j] == 'P') {
                             botones[i][j].setIcon(pie);
                         } else {
-                            botones[i][j].setBackground(Color.RED);
                             botones[i][j].setIcon(null);
                         }
                     } else if (medirDistanciaMarco(i, j, 2)) {
+                        botones[i][j].setBackground(Color.ORANGE);
                         if (unTablero[i][j] == 'B') {
                             botones[i][j].setIcon(blan);
                         } else if (unTablero[i][j] == 'N') {
@@ -431,10 +432,10 @@ public class VentanaJugar extends javax.swing.JFrame {
                         } else if (unTablero[i][j] == 'P') {
                             botones[i][j].setIcon(pie);
                         } else {
-                            botones[i][j].setBackground(Color.ORANGE);
                             botones[i][j].setIcon(null);
                         }
                     } else if (medirDistanciaMarco(i, j, 3)) {
+                        botones[i][j].setBackground(Color.YELLOW);
                         if (unTablero[i][j] == 'B') {
                             botones[i][j].setIcon(blan);
                         } else if (unTablero[i][j] == 'N') {
@@ -442,10 +443,10 @@ public class VentanaJugar extends javax.swing.JFrame {
                         } else if (unTablero[i][j] == 'P') {
                             botones[i][j].setIcon(pie);
                         } else {
-                            botones[i][j].setBackground(Color.YELLOW);
                             botones[i][j].setIcon(null);
                         }
                     } else if (medirDistanciaMarco(i, j, 4)) {
+                        botones[i][j].setBackground(Color.GREEN);
                         if (unTablero[i][j] == 'B') {
                             botones[i][j].setIcon(blan);
                         } else if (unTablero[i][j] == 'N') {
@@ -453,10 +454,10 @@ public class VentanaJugar extends javax.swing.JFrame {
                         } else if (unTablero[i][j] == 'P') {
                             botones[i][j].setIcon(pie);
                         } else {
-                            botones[i][j].setBackground(Color.GREEN);
                             botones[i][j].setIcon(null);
                         }
                     } else if (medirDistanciaMarco(i, j, 5)) {
+                        botones[i][j].setBackground(Color.CYAN);
                         if (unTablero[i][j] == 'B') {
                             botones[i][j].setIcon(blan);
                         } else if (unTablero[i][j] == 'N') {
@@ -464,10 +465,10 @@ public class VentanaJugar extends javax.swing.JFrame {
                         } else if (unTablero[i][j] == 'P') {
                             botones[i][j].setIcon(pie);
                         } else {
-                            botones[i][j].setBackground(Color.CYAN);
                             botones[i][j].setIcon(null);
                         }
                     } else if (medirDistanciaMarco(i, j, 6)) {
+                        botones[i][j].setBackground(Color.BLUE);
                         if (unTablero[i][j] == 'B') {
                             botones[i][j].setIcon(blan);
                         } else if (unTablero[i][j] == 'N') {
@@ -475,10 +476,10 @@ public class VentanaJugar extends javax.swing.JFrame {
                         } else if (unTablero[i][j] == 'P') {
                             botones[i][j].setIcon(pie);
                         } else {
-                            botones[i][j].setBackground(Color.BLUE);
                             botones[i][j].setIcon(null);
                         }
                     } else {
+                        botones[i][j].setBackground(Color.WHITE);
                         if (unTablero[i][j] == 'B') {
                             botones[i][j].setIcon(blanQ);
                         } else if (unTablero[i][j] == 'N') {
@@ -486,7 +487,6 @@ public class VentanaJugar extends javax.swing.JFrame {
                         } else if (unTablero[i][j] == 'P') {
                             botones[i][j].setIcon(pie);
                         } else {
-                            botones[i][j].setBackground(Color.WHITE);
                             botones[i][j].setIcon(null);
                         }
                     }
@@ -611,23 +611,24 @@ public class VentanaJugar extends javax.swing.JFrame {
     }
 
     private void validarPartidaAlSalir() {
-        String resutlado = "";
+        String resultado = "";
         if (turno) {
             getPartidaActual().getJugadorA().setGanadas(getPartidaActual().getJugadorA().getGanadas() + 1);
             getPartidaActual().getJugadorB().setPerdidas(getPartidaActual().getJugadorB().getPerdidas() + 1);
-            resutlado = "GANADOR:   " + getPartidaActual().getJugadorA().getAlias();
+            resultado = "GANADOR:   " + getPartidaActual().getJugadorA().getAlias();
 
-            jlblGanador.setText(resutlado);
+            jlblGanador.setText(resultado);
 
         } else {
             getPartidaActual().getJugadorB().setGanadas(getPartidaActual().getJugadorB().getGanadas() + 1);
             getPartidaActual().getJugadorA().setPerdidas(getPartidaActual().getJugadorA().getPerdidas() + 1);
 
-            resutlado = "GANADOR:   " + getPartidaActual().getJugadorB().getAlias();
-            jlblGanador.setText(resutlado);
+            resultado = "GANADOR:   " + getPartidaActual().getJugadorB().getAlias();
+            jlblGanador.setText(resultado);
         }
         archGrabacion.cerrar();
-        JOptionPane.showMessageDialog(this, "resutlado", "(ノಠ益ಠ)ノ彡┻━┻ ABANDONO", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, "resultado", "(ノಠ益ಠ)ノ彡┻━┻ ABANDONO", JOptionPane.INFORMATION_MESSAGE);
+        modelo.getListaDePartidas().add(partidaActual); // ver esto
     }
 
     private void generarIndicesFilaColumna() {
