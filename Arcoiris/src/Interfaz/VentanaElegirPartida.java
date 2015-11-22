@@ -74,6 +74,11 @@ public class VentanaElegirPartida extends javax.swing.JFrame {
         });
         
         try{
+            if (this.getModelo().getListaDePartidas().size() > 1) {
+                listarPartidas();
+            } else {
+                JOptionPane.showMessageDialog(this, "No hay partidas para replicar", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         listarPartidas();
         } catch (Exception e){
             JOptionPane.showMessageDialog(this, "No hay partidas para replicar", "Error", JOptionPane.ERROR_MESSAGE);
