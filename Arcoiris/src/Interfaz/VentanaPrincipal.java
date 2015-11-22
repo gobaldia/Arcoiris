@@ -1,7 +1,6 @@
 package Interfaz;
 
 import ArcoirisMainPackage.Juego;
-import java.awt.Dimension;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -11,7 +10,6 @@ import java.io.ObjectOutputStream;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import java.awt.Image;
-import javax.swing.JLabel;
 
 public class VentanaPrincipal extends javax.swing.JFrame {
 
@@ -195,7 +193,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItemNuevaPartidaActionPerformed
 
     private void jMenuItemRankingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemRankingActionPerformed
-        // TODO add your handling code here:
+        this.UpdateMenu(false);
+        VentanaRanking ventana = new VentanaRanking(this.getModelo(), this);
+        ventana.setVisible(true);
     }//GEN-LAST:event_jMenuItemRankingActionPerformed
 
     private void jMenuItemRepetirPartidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemRepetirPartidaActionPerformed

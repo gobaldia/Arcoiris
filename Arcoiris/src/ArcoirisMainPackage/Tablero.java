@@ -271,7 +271,7 @@ public class Tablero implements Serializable {
         return unaMatriz;
     }
 
-        public char[][] generarMatrizConFichasAlAzar(int marcoInicio) {
+    public char[][] generarMatrizConFichasAlAzar(int marcoInicio) {
         char[][] unaMatriz = new char[13][13];
 
         for (int i = 0; i < unaMatriz.length; i++) {
@@ -301,25 +301,25 @@ public class Tablero implements Serializable {
                 mitad = 12;
                 break;
         }
-        
+
         char[] aux = new char[fichas];
-            for (int i = 0; i < aux.length; i++) {
-                if (i < mitad) {
-                    aux[i] = 'B';
-                } else {
-                    aux[i] = 'N';
-                }
+        for (int i = 0; i < aux.length; i++) {
+            if (i < mitad) {
+                aux[i] = 'B';
+            } else {
+                aux[i] = 'N';
             }
-        
+        }
+
         desordenaArray(aux);
-        
+
         int fichasRestantes = fichas;
 
         for (int i = 0; i < unaMatriz.length; i++) {
             for (int j = 0; j < unaMatriz[0].length; j++) {
 
                 if (medirDistanciaMarco(i, j, marcoInicio)) {
-                    unaMatriz[i][j] = aux[fichasRestantes-1];
+                    unaMatriz[i][j] = aux[fichasRestantes - 1];
                     fichasRestantes--;
                 }
             }
@@ -327,22 +327,19 @@ public class Tablero implements Serializable {
 
         return unaMatriz;
     }
-    
-    private static void desordenaArray(char[] unArray)
-{
-    int j;
-    Random random = new Random();
-    for (int i = unArray.length - 1; i > 0; i--)
-    {
-        j = random.nextInt(i + 1);
-        if (j != i)
-        {
-            unArray[j] ^= unArray[i];
-            unArray[i] ^= unArray[j];
-            unArray[j] ^= unArray[i];
+
+    private void desordenaArray(char[] unArray) {
+        int j;
+        Random random = new Random();
+        for (int i = unArray.length - 1; i > 0; i--) {
+            j = random.nextInt(i + 1);
+            if (j != i) {
+                unArray[j] ^= unArray[i];
+                unArray[i] ^= unArray[j];
+                unArray[j] ^= unArray[i];
+            }
         }
     }
-}
 
     public char[][] generarMatrizConFichasEnI(int marcoInicio) {
         char[][] unaMatriz = new char[13][13];
