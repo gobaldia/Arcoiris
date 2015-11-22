@@ -66,6 +66,10 @@ public class VentanaJugar extends javax.swing.JFrame {
                         getModelo().agregarPartida(getProximaPartida());
                     }
 
+                    if (timer != null && timer.isRunning()) {
+                        timer.stop();
+                    }
+
                     getVentanaPrincipal().UpdateMenu(true);
                     dispose();
                 }
@@ -615,6 +619,10 @@ public class VentanaJugar extends javax.swing.JFrame {
 
         archGrabacion.grabarLinea(resultado);
         archGrabacion.cerrar();
+
+        if (timer != null && timer.isRunning()) {
+            timer.stop();
+        }
 
         JOptionPane.showMessageDialog(this, resultado, "(ノಠ益ಠ)ノ彡┻━┻ FIN DE LA PARTIDA", JOptionPane.INFORMATION_MESSAGE);
         jPanelJugar.setEnabled(false);
