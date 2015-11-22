@@ -810,6 +810,9 @@ public class VentanaJugar extends javax.swing.JFrame {
                                 jlblGanador.setText(resultPartida);
                             }
 
+                            timer.stop();
+                            jProgressBarTimer.setEnabled(false);
+                            
                             JOptionPane.showMessageDialog(VentanaJugar.this, resultPartida, "(ノಠ益ಠ)ノ彡┻━┻ FIN DE LA PARTIDA", JOptionPane.INFORMATION_MESSAGE);
 
                             archGrabacion.grabarLinea(resultPartida);
@@ -821,6 +824,8 @@ public class VentanaJugar extends javax.swing.JFrame {
 
                             if (getPartidaActual().getCantidadMovimientos() < cantMovimientos) {
                                 finPartida = true;
+                                jProgressBarTimer.setEnabled(false);
+                                timer.stop();
                                 validarPartida();
                             }
                         }
