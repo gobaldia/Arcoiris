@@ -53,7 +53,7 @@ public class VentanaJugar extends javax.swing.JFrame {
             auxMovimiento = new int[]{-1, -1};
             detallesJugadas = "";
             cantMovimientos = 1;
-            
+
             //Agrego evento para manejar el hacer click en la X al cerrar el JFrame actual y asi poder volver a habilitar el menu
             this.addWindowListener(new java.awt.event.WindowAdapter() {
                 @Override
@@ -62,10 +62,10 @@ public class VentanaJugar extends javax.swing.JFrame {
                         validarPartidaAlSalir();
                     }
 
-                    if(getProximaPartida() != null){
+                    if (getProximaPartida() != null) {
                         getModelo().agregarPartida(getProximaPartida());
                     }
-                    
+
                     getVentanaPrincipal().UpdateMenu(true);
                     dispose();
                 }
@@ -167,7 +167,7 @@ public class VentanaJugar extends javax.swing.JFrame {
         if (this.getPartidaActual().getTimer()) {
             proximaPartida.setMinutosTimer(this.getPartidaActual().getMinutosTimer());
         }
-        
+
         this.setProximaPartida(proximaPartida);
     }
 
@@ -812,9 +812,11 @@ public class VentanaJugar extends javax.swing.JFrame {
                                 jlblGanador.setText(resultPartida);
                             }
 
-                            timer.stop();
-                            jProgressBarTimer.setEnabled(false);
-                            
+                            if (getPartidaActual().getTimer()) {
+                                timer.stop();
+                                jProgressBarTimer.setEnabled(false);
+                            }
+
                             JOptionPane.showMessageDialog(VentanaJugar.this, resultPartida, "(ノಠ益ಠ)ノ彡┻━┻ FIN DE LA PARTIDA", JOptionPane.INFORMATION_MESSAGE);
 
                             archGrabacion.grabarLinea(resultPartida);
@@ -826,8 +828,12 @@ public class VentanaJugar extends javax.swing.JFrame {
 
                             if (getPartidaActual().getCantidadMovimientos() < cantMovimientos) {
                                 finPartida = true;
-                                jProgressBarTimer.setEnabled(false);
-                                timer.stop();
+
+                                if (getPartidaActual().getTimer()) {
+                                    timer.stop();
+                                    jProgressBarTimer.setEnabled(false);
+                                }
+
                                 validarPartida();
                             }
                         }
