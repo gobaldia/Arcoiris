@@ -1,9 +1,0 @@
-player2  vs  player1
-Mueve: player2|| Desplazamiento simple: D7-E7
-Mueve: player1|| Desplazamiento simple: F4-F6
-Mueve: player2|| Desplazamiento simple: D8-G8
-Mueve: player1|| Desplazamiento simple: J7-H7
-Mueve: player2|| Desplazamiento simple: H10-H8
-Mueve: player1|| Desplazamiento simple: H4-H6
-Mueve: player2|| Desplazamiento simple: D9-F9
-GANADOR:   player2
