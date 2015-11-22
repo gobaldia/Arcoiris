@@ -7,10 +7,20 @@ package Interfaz;
 
 import ArcoirisMainPackage.Juego;
 import ArcoirisMainPackage.Partida;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Toolkit;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
 /**
@@ -21,6 +31,24 @@ public class VentanaElegirPartida extends javax.swing.JFrame {
     private Juego modelo;
     private ArrayList<Partida> listaPartidas;
     private VentanaPrincipal framePrincipal;
+    private Partida partidaElegida;
+    private Partida partidaActual;
+    private Partida proximaPartida;
+    private JButton[][] botones;
+    private JButton[] btnColumnas;
+    private JButton[] btnFilas;
+//    private Timer timer;
+    private int[] auxMovimiento;
+    private boolean turno;
+    private boolean formaMarco;
+    private boolean finTimer;
+    private String detallesJugadas;
+    
+    private int contador;
+//    private ArchivoGrabacion archGrabacion;
+    private int cantMovimientos;
+    private boolean finPartida;
+    private char[] letras = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'};
 
     /**
      * Creates new form VentanaReplicar
@@ -31,6 +59,7 @@ public class VentanaElegirPartida extends javax.swing.JFrame {
         this.setModelo(unJuego);
         listaPartidas = new ArrayList<>();
         
+        contador = 0;
         //A modo de situar los JFrames centrados en la pantalla utilizo lo siguiente
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width / 4 - this.getSize().width / 4, dim.height / 2 - this.getSize().height / 2);
@@ -50,8 +79,35 @@ public class VentanaElegirPartida extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "No hay partidas para replicar", "Error", JOptionPane.ERROR_MESSAGE);
             deshabilitarPanel();
         }
+        
+        replicaTablero.setLayout(new GridLayout(13, 13));
+        botones = new JButton[14][14];
+        for (int i = 0; i < 13; i++) {
+            for (int j = 0; j < 13; j++) {
+                JButton jButton = new JButton();
+//                        jButton.addActionListener(new ListenerBoton(i, j));
+                jButton.setPreferredSize(new Dimension(30, 30));
+                jButton.setFont(new Font("Arial", Font.PLAIN, 10));
+                replicaTablero.add(jButton);
+                botones[i][j] = jButton;
+            }
+        }
+        
+        generarIndicesFilaColumna();
+        
+        replicaTablero.setVisible(false);
+        jPanelColumnas.setVisible(false);
+        jPanelFilas.setVisible(false);
+        jButtonSiguienteJugada.setVisible(false);
     }
 
+    
+    private Partida getPartidaElegida(){
+        return this.partidaElegida;
+    }
+    private void setPartidaElegida(Partida unaPartida){
+        this.partidaElegida = unaPartida;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -61,15 +117,20 @@ public class VentanaElegirPartida extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        jLabelElegirPartida = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jListPartidas = new javax.swing.JList();
+        replicaTablero = new javax.swing.JPanel();
+        jPanelFilas = new javax.swing.JPanel();
+        jPanelColumnas = new javax.swing.JPanel();
         jbtnElegirPartida = new javax.swing.JButton();
+        jButtonSiguienteJugada = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(940, 598));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel1.setText("Elegir la partida a replicar:");
+        jLabelElegirPartida.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabelElegirPartida.setText("Elegir la partida a replicar:");
 
         jListPartidas.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -78,6 +139,46 @@ public class VentanaElegirPartida extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jListPartidas);
 
+        replicaTablero.setFocusTraversalPolicyProvider(true);
+        replicaTablero.setPreferredSize(new java.awt.Dimension(600, 500));
+
+        javax.swing.GroupLayout replicaTableroLayout = new javax.swing.GroupLayout(replicaTablero);
+        replicaTablero.setLayout(replicaTableroLayout);
+        replicaTableroLayout.setHorizontalGroup(
+            replicaTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 600, Short.MAX_VALUE)
+        );
+        replicaTableroLayout.setVerticalGroup(
+            replicaTableroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 500, Short.MAX_VALUE)
+        );
+
+        jPanelFilas.setPreferredSize(new java.awt.Dimension(40, 500));
+
+        javax.swing.GroupLayout jPanelFilasLayout = new javax.swing.GroupLayout(jPanelFilas);
+        jPanelFilas.setLayout(jPanelFilasLayout);
+        jPanelFilasLayout.setHorizontalGroup(
+            jPanelFilasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 40, Short.MAX_VALUE)
+        );
+        jPanelFilasLayout.setVerticalGroup(
+            jPanelFilasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 500, Short.MAX_VALUE)
+        );
+
+        jPanelColumnas.setPreferredSize(new java.awt.Dimension(600, 40));
+
+        javax.swing.GroupLayout jPanelColumnasLayout = new javax.swing.GroupLayout(jPanelColumnas);
+        jPanelColumnas.setLayout(jPanelColumnasLayout);
+        jPanelColumnasLayout.setHorizontalGroup(
+            jPanelColumnasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 600, Short.MAX_VALUE)
+        );
+        jPanelColumnasLayout.setVerticalGroup(
+            jPanelColumnasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 40, Short.MAX_VALUE)
+        );
+
         jbtnElegirPartida.setText("Elegir partida");
         jbtnElegirPartida.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -85,37 +186,69 @@ public class VentanaElegirPartida extends javax.swing.JFrame {
             }
         });
 
+        jButtonSiguienteJugada.setText("Siguiente Jugada");
+        jButtonSiguienteJugada.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSiguienteJugadaActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jbtnElegirPartida)
-                .addGap(115, 115, 115))
             .addGroup(layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(410, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(46, 46, 46)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jbtnElegirPartida)))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jPanelColumnas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanelFilas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(replicaTablero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonSiguienteJugada)
+                .addContainerGap(839, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(jLabel1)
-                    .addContainerGap(449, Short.MAX_VALUE)))
+                    .addComponent(jLabelElegirPartida)
+                    .addContainerGap(1683, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(62, 62, 62)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
-                .addComponent(jbtnElegirPartida)
-                .addGap(57, 57, 57))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addComponent(jPanelColumnas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(replicaTablero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(15, 15, 15)
+                                .addComponent(jButtonSiguienteJugada))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(62, 62, 62)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanelFilas, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jbtnElegirPartida)))))
+                .addContainerGap(301, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(420, Short.MAX_VALUE)))
+                    .addComponent(jLabelElegirPartida, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(828, Short.MAX_VALUE)))
         );
 
         pack();
@@ -123,7 +256,37 @@ public class VentanaElegirPartida extends javax.swing.JFrame {
 
     private void jbtnElegirPartidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnElegirPartidaActionPerformed
         // TODO add your handling code here:
+        jLabelElegirPartida.setVisible(false);
+        jListPartidas.setVisible(false);
+        jScrollPane1.setVisible(false);
+        jbtnElegirPartida.setVisible(false);
+        replicaTablero.setVisible(true);
+        jPanelColumnas.setVisible(true);
+        jPanelFilas.setVisible(true);
+        jButtonSiguienteJugada.setVisible(true);
+        
+        
+        
+        int index = jListPartidas.getSelectedIndex();
+        this.setPartidaElegida(getModelo().getListaDePartidas().get(index));
+        
+//        for (int i = 0; i < partidaElegida.getListaDeTableros().size(); i++) {
+//            mostrarTablero(partidaElegida.getListaDeTableros().get(i).getMatriz());
+//        }
+        
+        mostrarTablero(partidaElegida.getListaDeTableros().get(0).getMatriz());
+        
     }//GEN-LAST:event_jbtnElegirPartidaActionPerformed
+
+    private void jButtonSiguienteJugadaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSiguienteJugadaActionPerformed
+        contador++;
+        
+        if (contador < this.getPartidaElegida().getListaDeTableros().size()) {
+            mostrarTablero(partidaElegida.getListaDeTableros().get(contador).getMatriz());
+        }
+
+// TODO add your handling code here:
+    }//GEN-LAST:event_jButtonSiguienteJugadaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -149,11 +312,219 @@ public class VentanaElegirPartida extends javax.swing.JFrame {
         ArrayList<Partida> auxListaPartidas = this.getModelo().getListaDePartidas();
 
         DefaultListModel modeloLista = new DefaultListModel();
-        for (int i = 0; i < auxListaPartidas.size(); i++) {
+        for (int i = 0; i < auxListaPartidas.size() - 1; i++) {
             modeloLista.addElement((i + 1) + ". " + auxListaPartidas.get(i).toString());
         }
 
         jListPartidas.setModel(modeloLista);
+    }
+    
+    private void generarIndicesFilaColumna() {
+        jPanelColumnas.setLayout(new GridLayout(1, 13));
+        btnColumnas = new JButton[13];
+
+        for (int i = 0; i < btnColumnas.length; i++) {
+            JButton nuevoBoton = new JButton();
+            nuevoBoton.setPreferredSize(new Dimension(30, 30));
+            nuevoBoton.setFont(new Font("Arial", Font.BOLD, 12));
+            nuevoBoton.setText(i + 1 + "");
+            nuevoBoton.setBackground(Color.GRAY);
+
+            jPanelColumnas.add(nuevoBoton);
+            btnColumnas[i] = nuevoBoton;
+        }
+
+        jPanelFilas.setLayout(new GridLayout(13, 1));
+        btnFilas = new JButton[13];
+        for (int i = 0; i < btnFilas.length; i++) {
+            JButton nuevoBoton = new JButton();
+            nuevoBoton.setPreferredSize(new Dimension(30, 30));
+            nuevoBoton.setFont(new Font("Arial", Font.BOLD, 12));
+            nuevoBoton.setBackground(Color.GRAY);
+            nuevoBoton.setText(letras[i] + "");
+            //nuevoBoton.setEnabled(false);
+            jPanelFilas.add(nuevoBoton);
+            btnFilas[i] = nuevoBoton;
+        }
+    }
+    
+    private void mostrarTablero(char[][] unTablero) {
+        try {
+            ImageIcon neg = new ImageIcon(new File(".").getCanonicalPath() + "\\src\\Imagenes\\negra.png");
+            Image negra = neg.getImage();
+            Image fichaNegra = negra.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
+            neg = new ImageIcon(fichaNegra);
+
+            ImageIcon blan = new ImageIcon(new File(".").getCanonicalPath() + "\\src\\Imagenes\\blanca.png");
+            Image blanca = blan.getImage();
+            Image fichaBlanca = blanca.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
+            blan = new ImageIcon(fichaBlanca);
+
+            ImageIcon blanQ = new ImageIcon(new File(".").getCanonicalPath() + "\\src\\Imagenes\\blancaQ.png");
+            Image blancaQ = blanQ.getImage();
+            Image fichaBlancaQ = blancaQ.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
+            blanQ = new ImageIcon(fichaBlancaQ);
+
+            ImageIcon negQ = new ImageIcon(new File(".").getCanonicalPath() + "\\src\\Imagenes\\negraQ.png");
+            Image negraQ = negQ.getImage();
+            Image fichaNegraQ = negraQ.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
+            negQ = new ImageIcon(fichaNegraQ);
+
+            ImageIcon pie = new ImageIcon(new File(".").getCanonicalPath() + "\\src\\Imagenes\\piedra.png");
+            Image piedraImg = pie.getImage();
+            Image imgPiedra = piedraImg.getScaledInstance(30, 30, java.awt.Image.SCALE_SMOOTH);
+            pie = new ImageIcon(imgPiedra);
+
+            for (int i = 0; i < 13; i++) {
+                for (int j = 0; j < 13; j++) {
+                    if (medirDistanciaMarco(i, j, 1)) {
+                        botones[i][j].setBackground(Color.RED);
+                        if (unTablero[i][j] == 'B') {
+                            botones[i][j].setIcon(blan);
+                        } else if (unTablero[i][j] == 'N') {
+                            botones[i][j].setIcon(neg);
+                        } else if (unTablero[i][j] == 'P') {
+                            botones[i][j].setIcon(pie);
+                        } else {
+                            botones[i][j].setIcon(null);
+                        }
+                    } else if (medirDistanciaMarco(i, j, 2)) {
+                        botones[i][j].setBackground(Color.ORANGE);
+                        if (unTablero[i][j] == 'B') {
+                            botones[i][j].setIcon(blan);
+                        } else if (unTablero[i][j] == 'N') {
+                            botones[i][j].setIcon(neg);
+                        } else if (unTablero[i][j] == 'P') {
+                            botones[i][j].setIcon(pie);
+                        } else {
+                            botones[i][j].setIcon(null);
+                        }
+                    } else if (medirDistanciaMarco(i, j, 3)) {
+                        botones[i][j].setBackground(Color.YELLOW);
+                        if (unTablero[i][j] == 'B') {
+                            botones[i][j].setIcon(blan);
+                        } else if (unTablero[i][j] == 'N') {
+                            botones[i][j].setIcon(neg);
+                        } else if (unTablero[i][j] == 'P') {
+                            botones[i][j].setIcon(pie);
+                        } else {
+                            botones[i][j].setIcon(null);
+                        }
+                    } else if (medirDistanciaMarco(i, j, 4)) {
+                        botones[i][j].setBackground(Color.GREEN);
+                        if (unTablero[i][j] == 'B') {
+                            botones[i][j].setIcon(blan);
+                        } else if (unTablero[i][j] == 'N') {
+                            botones[i][j].setIcon(neg);
+                        } else if (unTablero[i][j] == 'P') {
+                            botones[i][j].setIcon(pie);
+                        } else {
+                            botones[i][j].setIcon(null);
+                        }
+                    } else if (medirDistanciaMarco(i, j, 5)) {
+                        botones[i][j].setBackground(Color.CYAN);
+                        if (unTablero[i][j] == 'B') {
+                            botones[i][j].setIcon(blan);
+                        } else if (unTablero[i][j] == 'N') {
+                            botones[i][j].setIcon(neg);
+                        } else if (unTablero[i][j] == 'P') {
+                            botones[i][j].setIcon(pie);
+                        } else {
+                            botones[i][j].setIcon(null);
+                        }
+                    } else if (medirDistanciaMarco(i, j, 6)) {
+                        botones[i][j].setBackground(Color.BLUE);
+                        if (unTablero[i][j] == 'B') {
+                            botones[i][j].setIcon(blan);
+                        } else if (unTablero[i][j] == 'N') {
+                            botones[i][j].setIcon(neg);
+                        } else if (unTablero[i][j] == 'P') {
+                            botones[i][j].setIcon(pie);
+                        } else {
+                            botones[i][j].setIcon(null);
+                        }
+                    } else {
+                        botones[i][j].setBackground(Color.WHITE);
+                        if (unTablero[i][j] == 'B') {
+                            botones[i][j].setIcon(blanQ);
+                        } else if (unTablero[i][j] == 'N') {
+                            botones[i][j].setIcon(negQ);
+                        } else if (unTablero[i][j] == 'P') {
+                            botones[i][j].setIcon(pie);
+                        } else {
+                            botones[i][j].setIcon(null);
+                        }
+                    }
+                }
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(VentanaJugar.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    private boolean medirDistanciaMarco(int fila, int columna, int marcoAPintar) {
+        boolean bandera = false;
+
+        switch (marcoAPintar) {
+            case 1:
+                if ((fila == 0 && (columna >= 0 && columna <= 12))
+                        || (columna == 0 && (fila >= 0 && fila <= 12))) {
+                    bandera = true;
+                } else if ((fila == 12 && (columna >= 0 && columna <= 12))
+                        || (columna == 12 && (fila >= 0 && fila <= 12))) {
+                    bandera = true;
+                }
+                break;
+            case 2:
+                if ((fila == 1 && (columna >= 1 && columna <= 11))
+                        || (columna == 1 && (fila >= 1 && fila <= 11))) {
+                    bandera = true;
+                } else if ((fila == 11 && (columna >= 1 && columna <= 11))
+                        || (columna == 11 && (fila >= 1 && fila <= 11))) {
+                    bandera = true;
+                }
+                break;
+            case 3:
+                if ((fila == 2 && (columna >= 2 && columna <= 10))
+                        || (columna == 2 && (fila >= 2 && fila <= 10))) {
+                    bandera = true;
+                } else if ((fila == 10 && (columna >= 2 && columna <= 10))
+                        || (columna == 10 && (fila >= 2 && fila <= 10))) {
+                    bandera = true;
+                }
+                break;
+            case 4:
+                if ((fila == 3 && (columna >= 3 && columna <= 9))
+                        || (columna == 3 && (fila >= 3 && fila <= 9))) {
+                    bandera = true;
+                } else if ((fila == 9 && (columna >= 3 && columna <= 9))
+                        || (columna == 9 && (fila >= 3 && fila <= 9))) {
+                    bandera = true;
+                }
+                break;
+            case 5:
+                if ((fila == 4 && (columna >= 4 && columna <= 8))
+                        || (columna == 4 && (fila >= 4 && fila <= 8))) {
+                    bandera = true;
+                } else if ((fila == 8 && (columna >= 4 && columna <= 8))
+                        || (columna == 8 && (fila >= 4 && fila <= 8))) {
+                    bandera = true;
+                }
+                break;
+            case 6:
+                if ((fila == 5 && (columna >= 5 && columna <= 7))
+                        || (columna == 5 && (fila >= 5 && fila <= 7))) {
+                    bandera = true;
+                } else if ((fila == 7 && (columna >= 5 && columna <= 7))
+                        || (columna == 7 && (fila >= 5 && fila <= 7))) {
+                    bandera = true;
+                }
+                break;
+            default:
+                break;
+        }
+
+        return bandera;
     }
     
     private void deshabilitarPanel() {
@@ -162,9 +533,13 @@ public class VentanaElegirPartida extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton jButtonSiguienteJugada;
+    private javax.swing.JLabel jLabelElegirPartida;
     private javax.swing.JList jListPartidas;
+    private javax.swing.JPanel jPanelColumnas;
+    private javax.swing.JPanel jPanelFilas;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton jbtnElegirPartida;
+    private javax.swing.JPanel replicaTablero;
     // End of variables declaration//GEN-END:variables
 }

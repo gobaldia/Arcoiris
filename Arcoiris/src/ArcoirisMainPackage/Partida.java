@@ -19,6 +19,7 @@ public class Partida implements Comparable<Partida>, Serializable {
     private Jugador ganador;//Si queda en null es porque fue empate
     private boolean timer;
     private int minutosTimer;
+    private String fechaHora;
 
     public int getId() {
         return this.idPartida;
@@ -110,6 +111,23 @@ public class Partida implements Comparable<Partida>, Serializable {
 
     public void setTipoFinPartida(int unTipoFinPartida) {
         this.tipoFinPartida = unTipoFinPartida;
+    }
+    
+    public String getFechaHora() {
+        return this.fechaHora;
+    }
+
+    public void setFechaHora(String unaFechaHora) {
+        this.fechaHora = unaFechaHora;
+    }
+    
+    @Override
+    public String toString() {
+        return this.getJugadorA().getAlias() + " vs " + this.getJugadorB().getAlias() + " " +
+                this.getFechaHora().substring(2, 4) + "/" +
+                this.getFechaHora().substring(0, 2) + " " +
+                this.getFechaHora().substring(4, 6) + ":" +
+                this.getFechaHora().substring(6, 8);
     }
 
     public Partida() {

@@ -94,6 +94,7 @@ public class VentanaJugar extends javax.swing.JFrame {
 
                 this.getPartidaActual().getJugadorA().setTipoFicha('N');
                 this.getPartidaActual().getJugadorB().setTipoFicha('B');
+                this.getPartidaActual().setFechaHora(obtenerFechaHora());
 
                 configurarProximaPartida();
                 archGrabacion = new ArchivoGrabacion(new File(".").getCanonicalPath() + "\\archivos\\partidasGuardadas\\" + "PARTIDA" + obtenerFechaHora() + ".txt");
@@ -162,6 +163,7 @@ public class VentanaJugar extends javax.swing.JFrame {
         proximaPartida.generarTableroInicial(this.getPartidaActual().getDistribucionInicialFichas(), this.getPartidaActual().getMarcoInicio());
         proximaPartida.setCantidadMovimientos(this.getPartidaActual().getCantidadMovimientos());
         proximaPartida.setTimer(this.getPartidaActual().getTimer());
+        proximaPartida.setFechaHora(obtenerFechaHora());
         if (this.getPartidaActual().getTimer()) {
             proximaPartida.setMinutosTimer(this.getPartidaActual().getMinutosTimer());
         }
