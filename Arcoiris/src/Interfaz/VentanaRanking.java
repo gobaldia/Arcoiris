@@ -1,8 +1,12 @@
 package Interfaz;
 
 import ArcoirisMainPackage.Juego;
+import ArcoirisMainPackage.Jugador;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.ArrayList;
+import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 
 public class VentanaRanking extends javax.swing.JFrame {
 
@@ -26,7 +30,14 @@ public class VentanaRanking extends javax.swing.JFrame {
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width / 3 - this.getSize().width / 3, dim.height / 3 - this.getSize().height / 3);
 
-        //getModelo().obtenerRanking();
+        if(getModelo().getListaDeJugadores().size() > 0){
+            getModelo().obtenerRanking();
+            mostrarRanking();
+            
+        } else {
+            JOptionPane.showMessageDialog(this, "No existe jugadores registrados", "Error", JOptionPane.CANCEL_OPTION);
+            jListRanking.setEnabled(false);
+        }
 
         /*
         if (unJuego.getListaDeJugadores().isEmpty()) {
@@ -78,11 +89,6 @@ public class VentanaRanking extends javax.swing.JFrame {
         jlblTituloRanking.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jlblTituloRanking.setText("Ranking");
 
-        jListRanking.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
         jScrollPane1.setViewportView(jListRanking);
 
         javax.swing.GroupLayout jPanelRankingLayout = new javax.swing.GroupLayout(jPanelRanking);
@@ -92,9 +98,11 @@ public class VentanaRanking extends javax.swing.JFrame {
             .addGroup(jPanelRankingLayout.createSequentialGroup()
                 .addGap(35, 35, 35)
                 .addGroup(jPanelRankingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jlblTituloRanking, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(28, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 486, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanelRankingLayout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addComponent(jlblTituloRanking, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
         jPanelRankingLayout.setVerticalGroup(
             jPanelRankingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -110,7 +118,9 @@ public class VentanaRanking extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanelRanking, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanelRanking, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -126,4 +136,24 @@ public class VentanaRanking extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel jlblTituloRanking;
     // End of variables declaration//GEN-END:variables
+
+
+    private void mostrarRanking(){
+         ArrayList<Jugador> auxListaJugadores = this.getModelo().getListaDeJugadores();
+         String aux = "";
+         
+        DefaultListModel modeloLista = new DefaultListModel();
+        for (int i = 0; i < auxListaJugadores.size(); i++) {
+            
+            Jugador j = auxListaJugadores.get(i);
+            aux = j.toString() + " || " + "Ganadas: " + j.getGanadas()
+                        + " | Empatadas: " + j.getEmpates()
+                        + " | Perdidas: " + j.getPerdidas();
+            
+            
+            modeloLista.addElement(i + 1 + ". " + aux);
+        }
+
+        jListRanking.setModel(modeloLista);
+    }
 }
