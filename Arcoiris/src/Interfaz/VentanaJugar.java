@@ -620,8 +620,8 @@ public class VentanaJugar extends javax.swing.JFrame {
             getPartidaActual().getJugadorA().setGanadas(getPartidaActual().getJugadorA().getGanadas() + 1);
             getPartidaActual().getJugadorB().setPerdidas(getPartidaActual().getJugadorB().getPerdidas() + 1);
 
-            resutlado = "GANADOR:   " + getPartidaActual().getJugadorA().getAlias();
-            jlblGanador.setText(resutlado);
+            resultado = "GANADOR:   " + getPartidaActual().getJugadorA().getAlias();
+            jlblGanador.setText(resultado);
 
         } else {
             getPartidaActual().getJugadorB().setGanadas(getPartidaActual().getJugadorB().getGanadas() + 1);
@@ -631,9 +631,9 @@ public class VentanaJugar extends javax.swing.JFrame {
             jlblGanador.setText(resultado);
         }
 
-        archGrabacion.grabarLinea(resutlado);
+        archGrabacion.grabarLinea(resultado);
         archGrabacion.cerrar();
-        JOptionPane.showMessageDialog(this, resutlado, "(ノಠ益ಠ)ノ彡┻━┻ ABANDONO", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, resultado, "(ノಠ益ಠ)ノ彡┻━┻ ABANDONO", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void generarIndicesFilaColumna() {

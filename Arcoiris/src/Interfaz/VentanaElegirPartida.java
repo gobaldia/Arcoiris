@@ -27,6 +27,8 @@ public class VentanaElegirPartida extends javax.swing.JFrame {
      */
     public VentanaElegirPartida(Juego unJuego, VentanaPrincipal ventanaPrincipal) {
         initComponents();
+        this.setVentanaPrincipal(ventanaPrincipal);
+        this.setModelo(unJuego);
         listaPartidas = new ArrayList<>();
         
         //A modo de situar los JFrames centrados en la pantalla utilizo lo siguiente
@@ -64,7 +66,7 @@ public class VentanaElegirPartida extends javax.swing.JFrame {
         jListPartidas = new javax.swing.JList();
         jbtnElegirPartida = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel1.setText("Elegir la partida a replicar:");
