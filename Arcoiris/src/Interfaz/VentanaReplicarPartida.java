@@ -27,7 +27,7 @@ import javax.swing.JOptionPane;
  *
  * @author Usuario
  */
-public class VentanaElegirPartida extends javax.swing.JFrame {
+public class VentanaReplicarPartida extends javax.swing.JFrame {
     private Juego modelo;
     private ArrayList<Partida> listaPartidas;
     private VentanaPrincipal framePrincipal;
@@ -53,7 +53,7 @@ public class VentanaElegirPartida extends javax.swing.JFrame {
     /**
      * Creates new form VentanaReplicar
      */
-    public VentanaElegirPartida(Juego unJuego, VentanaPrincipal ventanaPrincipal) {
+    public VentanaReplicarPartida(Juego unJuego, VentanaPrincipal ventanaPrincipal) {
         initComponents();
         this.setVentanaPrincipal(ventanaPrincipal);
         this.setModelo(unJuego);
@@ -132,7 +132,6 @@ public class VentanaElegirPartida extends javax.swing.JFrame {
         jButtonSiguienteJugada = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(940, 598));
 
         jLabelElegirPartida.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabelElegirPartida.setText("Elegir la partida a replicar:");
@@ -219,12 +218,12 @@ public class VentanaElegirPartida extends javax.swing.JFrame {
                         .addComponent(replicaTablero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButtonSiguienteJugada)
-                .addContainerGap(839, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(jLabelElegirPartida)
-                    .addContainerGap(1683, Short.MAX_VALUE)))
+                    .addContainerGap(854, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -248,12 +247,12 @@ public class VentanaElegirPartida extends javax.swing.JFrame {
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jbtnElegirPartida)))))
-                .addContainerGap(301, Short.MAX_VALUE))
+                .addContainerGap(42, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(jLabelElegirPartida, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(828, Short.MAX_VALUE)))
+                    .addContainerGap(569, Short.MAX_VALUE)))
         );
 
         pack();
@@ -269,11 +268,13 @@ public class VentanaElegirPartida extends javax.swing.JFrame {
         jPanelColumnas.setVisible(true);
         jPanelFilas.setVisible(true);
         jButtonSiguienteJugada.setVisible(true);
-        
-        
-        
+             
         int index = jListPartidas.getSelectedIndex();
         this.setPartidaElegida(getModelo().getListaDePartidas().get(index));
+        
+        if (partidaElegida.getListaDeTableros().size() == 1) {
+            
+        }
         
 //        for (int i = 0; i < partidaElegida.getListaDeTableros().size(); i++) {
 //            mostrarTablero(partidaElegida.getListaDeTableros().get(i).getMatriz());

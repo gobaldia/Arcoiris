@@ -45,13 +45,13 @@
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jButtonSiguienteJugada" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="839" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
           <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabelElegirPartida" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="1683" max="32767" attributes="0"/>
+                  <EmptySpace pref="854" max="32767" attributes="0"/>
               </Group>
           </Group>
       </Group>
@@ -86,13 +86,13 @@
                       </Group>
                   </Group>
               </Group>
-              <EmptySpace pref="301" max="32767" attributes="0"/>
+              <EmptySpace pref="42" max="32767" attributes="0"/>
           </Group>
           <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabelElegirPartida" min="-2" pref="24" max="-2" attributes="0"/>
-                  <EmptySpace pref="828" max="32767" attributes="0"/>
+                  <EmptySpace pref="569" max="32767" attributes="0"/>
               </Group>
           </Group>
       </Group>

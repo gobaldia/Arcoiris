@@ -200,7 +200,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void jMenuItemRepetirPartidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemRepetirPartidaActionPerformed
         this.UpdateMenu(false);
-        VentanaElegirPartida ventana = new VentanaElegirPartida(this.getModelo(), this);
+        VentanaReplicarPartida ventana = new VentanaReplicarPartida(this.getModelo(), this);
         ventana.setVisible(true);
     }//GEN-LAST:event_jMenuItemRepetirPartidaActionPerformed
 
