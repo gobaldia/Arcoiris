@@ -598,6 +598,7 @@ public class VentanaJugar extends javax.swing.JFrame {
         if (getPartidaActual().getTableroActual().getMatriz()[6][6] == 'B') {
             getPartidaActual().getJugadorA().setGanadas(getPartidaActual().getJugadorA().getGanadas() + 1);
             getPartidaActual().getJugadorB().setPerdidas(getPartidaActual().getJugadorB().getPerdidas() + 1);
+            getPartidaActual().setGanador(getPartidaActual().getJugadorA());
 
             resultado = "GANADOR:   " + getPartidaActual().getJugadorA().getAlias();
             jlblGanador.setText(resultado);
@@ -605,6 +606,7 @@ public class VentanaJugar extends javax.swing.JFrame {
         } else if (getPartidaActual().getTableroActual().getMatriz()[6][6] == 'N') {
             getPartidaActual().getJugadorB().setGanadas(getPartidaActual().getJugadorB().getGanadas() + 1);
             getPartidaActual().getJugadorA().setPerdidas(getPartidaActual().getJugadorA().getPerdidas() + 1);
+            getPartidaActual().setGanador(getPartidaActual().getJugadorB());
 
             resultado = "GANADOR:   " + getPartidaActual().getJugadorB().getAlias();
             jlblGanador.setText(resultado);
@@ -633,6 +635,7 @@ public class VentanaJugar extends javax.swing.JFrame {
         if (turno) {
             getPartidaActual().getJugadorA().setGanadas(getPartidaActual().getJugadorA().getGanadas() + 1);
             getPartidaActual().getJugadorB().setPerdidas(getPartidaActual().getJugadorB().getPerdidas() + 1);
+            getPartidaActual().setGanador(getPartidaActual().getJugadorA());
 
             resultado = "GANADOR:   " + getPartidaActual().getJugadorA().getAlias();
             jlblGanador.setText(resultado);
@@ -640,6 +643,7 @@ public class VentanaJugar extends javax.swing.JFrame {
         } else {
             getPartidaActual().getJugadorB().setGanadas(getPartidaActual().getJugadorB().getGanadas() + 1);
             getPartidaActual().getJugadorA().setPerdidas(getPartidaActual().getJugadorA().getPerdidas() + 1);
+            getPartidaActual().setGanador(getPartidaActual().getJugadorB());
 
             resultado = "GANADOR:   " + getPartidaActual().getJugadorB().getAlias();
             jlblGanador.setText(resultado);
@@ -809,12 +813,14 @@ public class VentanaJugar extends javax.swing.JFrame {
                             if (turno) {
                                 getPartidaActual().getJugadorB().setGanadas(getPartidaActual().getJugadorB().getGanadas() + 1);
                                 getPartidaActual().getJugadorA().setPerdidas(getPartidaActual().getJugadorA().getPerdidas() + 1);
+                                getPartidaActual().setGanador(getPartidaActual().getJugadorB());
 
                                 resultPartida = "GANADOR:   " + getPartidaActual().getJugadorB().getAlias();
                                 jlblGanador.setText(resultPartida);
                             } else {
                                 getPartidaActual().getJugadorA().setGanadas(getPartidaActual().getJugadorA().getGanadas() + 1);
                                 getPartidaActual().getJugadorB().setPerdidas(getPartidaActual().getJugadorB().getPerdidas() + 1);
+                                getPartidaActual().setGanador(getPartidaActual().getJugadorA());
 
                                 resultPartida = "GANADOR:   " + getPartidaActual().getJugadorA().getAlias();
                                 jlblGanador.setText(resultPartida);

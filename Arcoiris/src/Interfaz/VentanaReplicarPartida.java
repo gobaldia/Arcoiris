@@ -32,22 +32,11 @@ public class VentanaReplicarPartida extends javax.swing.JFrame {
     private ArrayList<Partida> listaPartidas;
     private VentanaPrincipal framePrincipal;
     private Partida partidaElegida;
-    private Partida partidaActual;
-    private Partida proximaPartida;
     private JButton[][] botones;
     private JButton[] btnColumnas;
     private JButton[] btnFilas;
-//    private Timer timer;
-    private int[] auxMovimiento;
-    private boolean turno;
-    private boolean formaMarco;
-    private boolean finTimer;
-    private String detallesJugadas;
-    
+    private boolean ultimoMovimiento = false;
     private int contador;
-//    private ArchivoGrabacion archGrabacion;
-    private int cantMovimientos;
-    private boolean finPartida;
     private char[] letras = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'};
 
     /**
@@ -104,6 +93,10 @@ public class VentanaReplicarPartida extends javax.swing.JFrame {
         jPanelColumnas.setVisible(false);
         jPanelFilas.setVisible(false);
         jButtonSiguienteJugada.setVisible(false);
+        jLabelPartidaSinMovimientos.setVisible(false);
+        jLabelUltimoMovimiento.setVisible(false);
+        jPanelLateralDerecho.setVisible(false);
+        jTextAreaResultadosAcciones.setVisible(false);
     }
 
     
@@ -129,7 +122,12 @@ public class VentanaReplicarPartida extends javax.swing.JFrame {
         jPanelFilas = new javax.swing.JPanel();
         jPanelColumnas = new javax.swing.JPanel();
         jbtnElegirPartida = new javax.swing.JButton();
+        jPanelLateralDerecho = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextAreaResultadosAcciones = new javax.swing.JTextArea();
+        jLabelUltimoMovimiento = new javax.swing.JLabel();
         jButtonSiguienteJugada = new javax.swing.JButton();
+        jLabelPartidaSinMovimientos = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -190,12 +188,50 @@ public class VentanaReplicarPartida extends javax.swing.JFrame {
             }
         });
 
+        jTextAreaResultadosAcciones.setColumns(20);
+        jTextAreaResultadosAcciones.setRows(5);
+        jScrollPane2.setViewportView(jTextAreaResultadosAcciones);
+
+        jLabelUltimoMovimiento.setText("Este fue el último movimiento de esta partida");
+
         jButtonSiguienteJugada.setText("Siguiente Jugada");
         jButtonSiguienteJugada.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonSiguienteJugadaActionPerformed(evt);
             }
         });
+
+        jLabelPartidaSinMovimientos.setText("Esta partida no tuvo movimientos");
+
+        javax.swing.GroupLayout jPanelLateralDerechoLayout = new javax.swing.GroupLayout(jPanelLateralDerecho);
+        jPanelLateralDerecho.setLayout(jPanelLateralDerechoLayout);
+        jPanelLateralDerechoLayout.setHorizontalGroup(
+            jPanelLateralDerechoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelLateralDerechoLayout.createSequentialGroup()
+                .addContainerGap(133, Short.MAX_VALUE)
+                .addGroup(jPanelLateralDerechoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelPartidaSinMovimientos)
+                    .addComponent(jButtonSiguienteJugada)
+                    .addComponent(jLabelUltimoMovimiento))
+                .addGap(19, 19, 19))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelLateralDerechoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2)
+                .addContainerGap())
+        );
+        jPanelLateralDerechoLayout.setVerticalGroup(
+            jPanelLateralDerechoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelLateralDerechoLayout.createSequentialGroup()
+                .addGap(115, 115, 115)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabelPartidaSinMovimientos, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonSiguienteJugada)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabelUltimoMovimiento, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -216,14 +252,17 @@ public class VentanaReplicarPartida extends javax.swing.JFrame {
                         .addComponent(jPanelFilas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(replicaTablero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonSiguienteJugada)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(248, 248, 248))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(jLabelElegirPartida)
-                    .addContainerGap(854, Short.MAX_VALUE)))
+                    .addContainerGap(971, Short.MAX_VALUE)))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap(781, Short.MAX_VALUE)
+                    .addComponent(jPanelLateralDerecho, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap()))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -232,13 +271,8 @@ public class VentanaReplicarPartida extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(16, 16, 16)
                         .addComponent(jPanelColumnas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(replicaTablero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(15, 15, 15)
-                                .addComponent(jButtonSiguienteJugada))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(replicaTablero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(62, 62, 62)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -247,12 +281,17 @@ public class VentanaReplicarPartida extends javax.swing.JFrame {
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jbtnElegirPartida)))))
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addGap(42, 42, 42))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
                     .addComponent(jLabelElegirPartida, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(569, Short.MAX_VALUE)))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addContainerGap(17, Short.MAX_VALUE)
+                    .addComponent(jPanelLateralDerecho, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(101, Short.MAX_VALUE)))
         );
 
         pack();
@@ -267,21 +306,26 @@ public class VentanaReplicarPartida extends javax.swing.JFrame {
         replicaTablero.setVisible(true);
         jPanelColumnas.setVisible(true);
         jPanelFilas.setVisible(true);
-        jButtonSiguienteJugada.setVisible(true);
+        jPanelLateralDerecho.setVisible(true);
+        jTextAreaResultadosAcciones.setVisible(true);
              
         int index = jListPartidas.getSelectedIndex();
         this.setPartidaElegida(getModelo().getListaDePartidas().get(index));
         
         if (partidaElegida.getListaDeTableros().size() == 1) {
-            
+            jLabelPartidaSinMovimientos.setVisible(true);
+        } else {
+            jButtonSiguienteJugada.setVisible(true);
         }
         
 //        for (int i = 0; i < partidaElegida.getListaDeTableros().size(); i++) {
 //            mostrarTablero(partidaElegida.getListaDeTableros().get(i).getMatriz());
 //        }
         
+
         mostrarTablero(partidaElegida.getListaDeTableros().get(0).getMatriz());
-        
+        jTextAreaResultadosAcciones.append(partidaElegida.getJugadorA().getAlias() +
+                " vs " + partidaElegida.getJugadorB().getAlias());
     }//GEN-LAST:event_jbtnElegirPartidaActionPerformed
 
     private void jButtonSiguienteJugadaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSiguienteJugadaActionPerformed
@@ -289,6 +333,17 @@ public class VentanaReplicarPartida extends javax.swing.JFrame {
         
         if (contador < this.getPartidaElegida().getListaDeTableros().size()) {
             mostrarTablero(partidaElegida.getListaDeTableros().get(contador).getMatriz());
+            jTextAreaResultadosAcciones.append("\nAutor: " + partidaElegida.getListaDeTableros().get(contador).getAutorMovimiento().getAlias() +
+                "\nResultado: " + partidaElegida.getListaDeTableros().get(contador).getResultadoAccion());
+        } 
+        if (contador == this.getPartidaElegida().getListaDeTableros().size() - 1){
+            ultimoMovimiento = true;
+        }
+        
+        if (ultimoMovimiento) {
+            jButtonSiguienteJugada.setVisible(false);
+            jLabelUltimoMovimiento.setVisible(true);
+            jTextAreaResultadosAcciones.append("\nGanador: " + partidaElegida.getGanador().getAlias());
         }
 
 // TODO add your handling code here:
@@ -541,10 +596,15 @@ public class VentanaReplicarPartida extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonSiguienteJugada;
     private javax.swing.JLabel jLabelElegirPartida;
+    private javax.swing.JLabel jLabelPartidaSinMovimientos;
+    private javax.swing.JLabel jLabelUltimoMovimiento;
     private javax.swing.JList jListPartidas;
     private javax.swing.JPanel jPanelColumnas;
     private javax.swing.JPanel jPanelFilas;
+    private javax.swing.JPanel jPanelLateralDerecho;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTextArea jTextAreaResultadosAcciones;
     private javax.swing.JButton jbtnElegirPartida;
     private javax.swing.JPanel replicaTablero;
     // End of variables declaration//GEN-END:variables
