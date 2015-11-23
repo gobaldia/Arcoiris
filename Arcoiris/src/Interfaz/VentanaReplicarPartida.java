@@ -343,7 +343,12 @@ public class VentanaReplicarPartida extends javax.swing.JFrame {
         if (ultimoMovimiento) {
             jButtonSiguienteJugada.setVisible(false);
             jLabelUltimoMovimiento.setVisible(true);
-            jTextAreaResultadosAcciones.append("\nGanador: " + partidaElegida.getGanador().getAlias());
+            if (partidaElegida.getGanador() != null) {
+                jTextAreaResultadosAcciones.append("\n\nGanador: " + partidaElegida.getGanador().getAlias());
+            } else {
+                jTextAreaResultadosAcciones.append("\n\nEmpate");
+            }
+            
         }
 
 // TODO add your handling code here:
